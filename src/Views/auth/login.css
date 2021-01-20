@@ -1,0 +1,196 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto:500");
+
+p {
+  margin-bottom: 32px;
+  margin-top: 0px;
+  font-weight: 400;
+}
+
+h2 {
+  line-height: 1.2;
+  margin: 0;
+  padding: 0;
+  font-weight: bold;
+  color: #fff;
+  font: "Open Sans", sans-serif;
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.main {
+  text-align: center;
+  position: relative;
+  font-size: 14px;
+  line-height: 1.8;
+  color: #fff;
+  font-weight: 600;
+  font: "Open Sans", sans-serif;
+  margin: 0px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  -moz-background-size: cover;
+  -webkit-background-size: cover;
+  -o-background-size: cover;
+  -ms-background-size: cover;
+  background-position: center center;
+}
+
+.container {
+  width: 100%;
+  margin: auto;
+  max-width: 525px;
+  min-height: 100vh;
+  position: relative;
+}
+
+.signin-content {
+  margin-top: 15vh;
+  width: 562px;
+  margin-right: 0px;
+  background: rgba(40, 57, 101, 0.9) !important;
+  float: right;
+}
+
+.signin-form {
+  padding: 54px 80px 120px 55px;
+}
+
+.form-group {
+  margin-bottom: 23px;
+}
+
+input {
+  border: none;
+  box-sizing: border-box;
+  border-bottom: 1px solid #ebebeb;
+  background: transparent;
+  width: 100%;
+  display: block;
+  color: #fff;
+  font-weight: bold;
+  font: "Open Sans", sans-serif;
+  font-size: 14px;
+  padding: 3px 0;
+}
+input::-webkit-input-placeholder {
+  font-weight: 400;
+  color: #fff;
+}
+input::-moz-placeholder {
+  font-weight: 400;
+  color: #fff;
+}
+input:-ms-input-placeholder {
+  font-weight: 400;
+  color: #fff;
+}
+input:-moz-placeholder {
+  font-weight: 400;
+  color: #fff;
+}
+input:focus {
+  font-weight: bold;
+}
+
+.label-agree-term {
+  font-size: 13px;
+  font-weight: 400;
+  color: #fff;
+}
+
+.term-service {
+  color: #fff;
+}
+
+.submit {
+  width: 130px;
+  border-radius: 25px;
+  -moz-border-radius: 25px;
+  -webkit-border-radius: 25px;
+  -o-border-radius: 25px;
+  -ms-border-radius: 25px;
+  text-transform: uppercase;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.submit-link {
+  border: 2px solid #fff;
+  text-decoration: none;
+  display: inline-block;
+  vertical-align: middle;
+  padding: 12px 0;
+  text-align: center;
+  color: #fff;
+}
+.submit-link:hover {
+  background: #fff;
+  color: #283965;
+}
+
+/*google button */
+
+.google-div {
+  display: flex;
+  justify-content: center;
+}
+
+.google-btn {
+  width: 184px;
+  height: 42px;
+  background-color: #283965;
+  border-radius: 2px;
+  box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.25);
+}
+
+.google-btn:hover {
+  background-color: #0a0d38;
+  cursor: pointer;
+}
+
+.google-icon {
+  position: absolute;
+  margin-top: 11px;
+  margin-left: 11px;
+  width: 18px;
+  height: 18px;
+}
+.btn-text {
+  float: right;
+  margin: 11px 11px 0 0;
+  color: #fff;
+  font-size: 1rem;
+  letter-spacing: 0.2px;
+  font-family: "Roboto";
+}
+
+@media screen and (max-width: 640px) {
+  .container {
+    width: calc(100% - 30px);
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .signin-content {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .submit {
+    width: 100%;
+  }
+
+  .form-submit {
+    margin-bottom: 20px;
+    margin-right: 0px;
+  }
+
+  .signin-form {
+    padding: 54px 30px 36px 30px;
+  }
+
+  .btn-text {
+    display: none;
+  }
+}
