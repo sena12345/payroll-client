@@ -5,8 +5,8 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import PrivateRoute from './_services/private-route';
 import { AuthProvider } from './_services/auth-context';
 import Home from './Views/dashboard/Home';
-import RegisterUser from './Views/dashboard/RegisterUser';
-import ViewUsers from './Views/dashboard/ViewUsers';
+//import RegisterUser from './Views/dashboard/RegisterUser';
+//import ViewUsers from './Views/dashboard/ViewUsers';
 function App() {
 	return (
 		 <Router>

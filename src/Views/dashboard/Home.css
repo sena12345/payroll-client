@@ -28,7 +28,7 @@
   box-sizing: border-box;
 }
 
-body {
+.overlay-scrollbar {
   font-family: "Roboto", sans-serif;
   background: #5e5e5e;
   color: #212529;
@@ -110,13 +110,17 @@ a {
 }
 
 .navbar-search input {
-  background: #f1f1f1;
+  background: #fff;
   border: none;
   padding: 12px 50px 12px 50px;
   width: 100%;
   outline: none;
-  color: #212529;
+  color: #000;
   border-radius: 20px;
+}
+
+.navbar-search ::placeholder {
+  color: #000;
 }
 
 .navbar-search i {
@@ -654,6 +658,7 @@ select {
   border: 1px solid #000;
   border-radius: 4px;
   box-sizing: border-box;
+  color: #000;
 }
 
 input[type="submit"] {
