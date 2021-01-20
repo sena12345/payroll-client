@@ -1,5 +1,5 @@
 .registeruser {
-  font-family: Arial;
+  font-family: "Roboto", sans-serif;
   font-size: 17px;
   padding: 8px;
 }
@@ -58,14 +58,16 @@
 input[type="text"],
 select,
 option {
+  background-color: #fff;
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
   display: inline-block;
-  border: 1px solid #000;
+  border: 1px solid #d95a27;
   border-radius: 4px;
   box-sizing: border-box;
   color: #000;
+  font-size: 17px;
 }
 
 input[type="submit"] {
