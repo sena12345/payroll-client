@@ -1,5 +1,6 @@
 import axiosInstance from '../_sahred/data-source';
 import * as enpoints from '../_sahred/end-points';
+import { NationalCards } from '../_sahred/models';
 const config = (currentUser) => {
 	// console.log(currentUser);
 	// const user = currentUser ? currentUser : auth.currentUser;
@@ -8,6 +9,13 @@ const config = (currentUser) => {
 	//get all roles
 	async function getRoles() {
 		return await http.get(enpoints.GET_ROLES_ENDPOINT);
+	}
+
+	/**
+     * get card types...
+     */
+	async function getCardTypes() {
+		return await http.get(enpoints.GET_CARDTYPES_ENDPOINT);
 	}
 
 	/**
@@ -97,6 +105,7 @@ const config = (currentUser) => {
 	//return function references...
 	return {
 		getRoles,
+		getCardTypes,
 		createDepartment,
 		getDepartments,
 		deleteDepartment,
