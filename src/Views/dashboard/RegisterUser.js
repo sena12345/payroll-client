@@ -11,14 +11,15 @@ function RegisterUser() {
   	const { currentUser } = useAuth();
 
 	const [ roles, setRoles ] = useState([ Roles ]);
+
 	const queriesStore = Config(currentUser);
 
 	async function fetchInits() {
 		queriesStore
-			.getDepartments()
+			.getRoles()
 			.then((res) => {
 				setRoles(res.data);
-				console.log(res.data);
+				console.log(roles);
 			})
 			.catch((err) => {
 				console.log('cannot fetch roles due to: ' + err);
@@ -125,5 +126,6 @@ function RegisterUser() {
 
 
     );
+
 
 
