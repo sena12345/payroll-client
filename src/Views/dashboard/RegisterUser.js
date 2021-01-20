@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import 'react-bootstrap';
 import { Container, Form, Row, InputGroup, FormControl, Button, Col } from 'react-bootstrap';
@@ -94,6 +95,7 @@ function RegisterUser() {
 			</Container>
 		</div>
 	);
+
 }
 
 export default RegisterUser;
