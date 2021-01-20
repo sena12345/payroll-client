@@ -18,8 +18,9 @@ export const CREATE_ALLOWANCE_ENDPOINT = `${ALLOWANCE_REST_MAP}create`;
 export const CREATE_DESIGNATION_ENDPOINT = `${DESIGNATION_REST_MAP}create`;
 
 export const GET_ROLES_ENDPOINT = 'role/roles';
+export const GET_CARDTYPES_ENDPOINT = 'role/card-types';
 export const GET_DEPARTMENT_ENDPOINT = `${DEPARTMENT_REST_MAP}departments`;
-export const GET_POSITION_ENDPOINT = `${POSITION_REST_MAP}postions`;
+export const GET_POSITION_ENDPOINT = `${POSITION_REST_MAP}positions`;
 export const GET_ALLOWANCE_ENDPOINT = `${ALLOWANCE_REST_MAP}allowances`;
 export const GET_DESIGNATION_ENDPOINT = `${DESIGNATION_REST_MAP}designations`;
 

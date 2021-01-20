@@ -45,8 +45,3 @@ export const Designation = {
 	designation    : '',
 	date           : CURRENT_DATE_TIME
 };
-
-export const NationalCards = {
-	national_card_id : null,
-	cardTypes        : ''
-};
