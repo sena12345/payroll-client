@@ -1,90 +1,101 @@
-import React from 'react';
-import './RegisterUser.css';
 
-function RegisterUser() { 
-    return (
-        <div className="registeruser">
-            <h2>Register User</h2>
-            
-            <form>
-                <div className="form-row">
-                    <div className="col-50">
-                        <h3>Personal Information</h3><br />                       
-                        <label htmlFor="fname"><i className="fa fa-user"></i> Full Name</label>   
-                        <input type="text" id="fname" placeholder="Moe" />                           
-                        <label htmlFor="email"><i className="fa fa-envelope"></i> Email</label>                       
-                        <input type="text" id="email" placeholder="john@example.com"/>                           
-                        <label htmlFor="ssnit"> SSNIT Number</label>
-                        <input type="text" id="ssnit"/>
-                        <div className="form-row">
-                            <div className="col-10">
-                                <label htmlFor="zip">Zip</label>
-                                <input type="text" id="zip" placeholder="+233"/>
-                            </div>
-                            <div className="col-50">
-                                <label htmlFor="contact">Contact</label>
-                                <input type="text" id="contact" maxLength='10' placeholder="0541234567"/>
-                            </div>
-                        </div>
-                    </div>                     
-                    <div className="col-50">
-                    <h3>Other Details</h3><br/>
-                    <div className="form-row">
-                        <div className="col-50">
-                            <label htmlFor="role">Role</label>
-                            <input type="text" id="role" name="role" />
-                        </div>
-                        <div className="col-50">
-                            <label htmlFor="designation">Designation</label>
-                            <input type="text" id="designation" name="designation" />
-                        </div>
-                    </div>
-                    <div className="form-row">
-                        <div className="col-50">
-                        <label htmlFor="basic-salary">Basic Salary</label>
-                        <input type="text" id="basic-salary" name="basic-salary"/>
-                        </div>
-                        <div className="col-50">
-                        <label htmlFor="allowance">Allowance</label>
-                        <input type="text" id="allowance" name="allowance" />
-                        </div>
-                    </div> 
-                    <div className="form-row">
-                        <div className="col-50">
-                        <label htmlFor="department">Department</label>
-                        <input type="text" id="department" name="department" />
-                        </div>
-                        <div className="col-50">
-                        <label htmlFor="position">Position</label>
-                        <input type="text" id="position" name="position"/>
-                        </div>
-                    </div>                                    
-                    
-                    <div className="form-row">
-                        <div className="col-50">
-                        <label htmlFor="cardtype">National Card Type</label>
-                            <select id="cardtype" name="cardtype" >
-                                <option>Passport</option>
-                                <option>Voter's</option> 
-                                <option>Drivers Licence</option> 
-                                <option>Ghana Card</option> 
-                            </select>
-                        </div>
-                        <div className="col-50">
-                        <label htmlFor="cardnumber">National Card Number</label>
-                        <input type="text" id="cardnumber" name="cardnumber" />
-                        </div>
-                    </div>
-                    
+import React, { useState, useEffect } from 'react';
+import 'react-bootstrap';
+import { Container, Form, Row, InputGroup, FormControl, Button, Col } from 'react-bootstrap';
+import Config from '../../data-operations/data-queries/config';
+import { Roles, Department, Position, Designation } from '../../data-operations/_sahred/models';
+import { useAuth } from '../../_services/auth-context';
 
-                </div>
-                </div>                    
-                <input type="submit" value="Register" className="register-form-btn"/>
-            </form>
-        </div>
+function RegisterUser() {
+	const { currentUser } = useAuth();
 
+	const [ roles, setRoles ] = useState([ Roles ]);
+	const queriesStore = Config(currentUser);
 
-    );
+	async function fetchInits() {
+		queriesStore
+			.getDepartments()
+			.then((res) => {
+				setRoles(res.data);
+				console.log(res.data);
+			})
+			.catch((err) => {
+				console.log('cannot fetch roles due to: ' + err);
+			});
+	}
+
+	useEffect(() => {
+		fetchInits();
+	}, []);
+
+	return (
+		<div className="registeruser">
+			<Container>
+				<Form className="register-form">
+					<Form.Group controlId="empFullName">
+						<Form.Label>Full Name</Form.Label>
+						<Form.Control type="text" placeholder="Enter Employee Full Name" />
+					</Form.Group>
+
+					<Form.Group controlId="empEmail">
+						<Form.Label>Email</Form.Label>
+						<Form.Control type="text" placeholder="Enter Employee Email" />
+					</Form.Group>
+
+					<Form.Group controlId="empID">
+						<Form.Label>Employee ID</Form.Label>
+						<Form.Control type="text" />
+					</Form.Group>
+
+					<Form.Row>
+						<Form.Group as={Col} controlId="empPosition">
+							<Form.Label>Position</Form.Label>
+							<Form.Control type="text" />
+						</Form.Group>
+
+						<Form.Group as={Col} controlId="empDepartment">
+							<Form.Label>Department</Form.Label>
+							<Form.Control type="text" />
+						</Form.Group>
+					</Form.Row>
+
+					<Form.Row>
+						<Form.Group as={Col} controlId="empSalary">
+							<Form.Label>Salary</Form.Label>
+							<Form.Control type="text" />
+						</Form.Group>
+						<Form.Group as={Col} controlId="empAllowance">
+							<Form.Label>Allowance</Form.Label>
+							<Form.Control type="text" />
+						</Form.Group>
+					</Form.Row>
+
+					<Form.Group controlId="empDesignation">
+						<Form.Label>Designation</Form.Label>
+						<Form.Control type="text" />
+					</Form.Group>
+
+					<Form.Row>
+						<Form.Group as={Col} controlId="formGridState">
+							<Form.Label>Roles</Form.Label>
+							<Form.Control as="select" defaultValue="Choose...">
+								<option>Choose...</option>
+								<option>Admin HR</option>
+								<option>Admin Accountant</option>
+								<option>Admin Super</option>
+								<option>Employee</option>
+							</Form.Control>
+						</Form.Group>
+					</Form.Row>
+
+					<Button variant="primary" type="submit">
+						Submit
+					</Button>
+				</Form>
+			</Container>
+		</div>
+	);
+
 }
 
 export default RegisterUser;

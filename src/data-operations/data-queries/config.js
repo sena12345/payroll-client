@@ -1,5 +1,5 @@
-import axiosInstance from './_sahred/data-source';
-import * as enpoints from './_sahred/end-points';
+import axiosInstance from '../_sahred/data-source';
+import * as enpoints from '../_sahred/end-points';
 const config = (currentUser) => {
 	// console.log(currentUser);
 	// const user = currentUser ? currentUser : auth.currentUser;
@@ -21,7 +21,7 @@ const config = (currentUser) => {
      * get list of departments...
      */
 	async function getDepartments() {
-		return await http.get(enpoints.GET_DEPARTMENTS_ENDPOINT);
+		return await http.get(enpoints.GET_DEPARTMENT_ENDPOINT);
 	}
 
 	/**
@@ -42,14 +42,14 @@ const config = (currentUser) => {
      * get list of positions...
      */
 	async function getPositions() {
-		return await http.get(enpoints.GET_POSITIONS_ENDPOINT);
+		return await http.get(enpoints.GET_POSITION_ENDPOINT);
 	}
 
 	/**
      * delete department...
      */
 	async function deletePosition(position = {}) {
-		return await http.delete(enpoints.DELETE_POSITION_ENDPOINT, department);
+		return await http.delete(enpoints.DELETE_POSITION_ENDPOINT, position);
 	}
 
 	/**
@@ -77,7 +77,7 @@ const config = (currentUser) => {
      * create new designation...
      */
 	async function createDesignation(designation = {}) {
-		return await http.post(enpoints.CREATE_DESIGNSTION_ENDPOINT, designation);
+		return await http.post(enpoints.CREATE_DESIGNATION_ENDPOINT, designation);
 	}
 
 	/**

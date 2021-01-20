@@ -1,5 +1,5 @@
-import axiosInstance from './_sahred/data-source';
-import * as enpoints from './_sahred/end-points';
+import axiosInstance from '../_sahred/data-source';
+import * as enpoints from '../_sahred/end-points';
 
 const employeesInstance = (currentUser) => {
 	// const user = currentUser ? currentUser : auth.currentUser;
