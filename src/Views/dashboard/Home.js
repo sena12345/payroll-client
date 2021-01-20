@@ -2,7 +2,7 @@ import React, { Component, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { SidebarData } from './SideBarData';
 import RegisterUser from './RegisterUser';
-import ViewUsers from './ViewUsers';
+//import ViewUsers from './ViewUsers';
 import './Home.css'
 
 function Home({ path }) {
