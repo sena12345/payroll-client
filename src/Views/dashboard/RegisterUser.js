@@ -1,7 +1,34 @@
+
 import React from 'react';
 import './RegisterUser.css';
+import React, { useState, useEffect } from 'react';
+
+import Config from '../../data-operations/data-queries/config';
+import { Roles, Department, Position, Designation } from '../../data-operations/_sahred/models';
+import { useAuth } from '../../_services/auth-context';
 
 function RegisterUser() { 
+  	const { currentUser } = useAuth();
+
+	const [ roles, setRoles ] = useState([ Roles ]);
+	const queriesStore = Config(currentUser);
+
+	async function fetchInits() {
+		queriesStore
+			.getDepartments()
+			.then((res) => {
+				setRoles(res.data);
+				console.log(res.data);
+			})
+			.catch((err) => {
+				console.log('cannot fetch roles due to: ' + err);
+			});
+	}
+
+	useEffect(() => {
+		fetchInits();
+	}, []);
+
     return (
         <div className="registeruser">
             <h2>Register User</h2>
@@ -98,6 +125,5 @@ function RegisterUser() {
 
 
     );
-}
 
-export default RegisterUser;
+
