@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import './login.css';
+import '../../assets/css/login.css';
 import background from '../../assets/images/body-bg.jpg';
 import google_image from '../../assets/google_logo.svg';
 import { useAuth } from '../../_services/auth-context';
