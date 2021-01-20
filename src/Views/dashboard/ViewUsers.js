@@ -1,13 +1,11 @@
 import React from 'react';
-import 'react-bootstrap';
-import {Table} from 'react-bootstrap';
 
 function ViewUsers() { 
 
     return (
         <div className="viewusers">
       
-        <Table striped bordered hover>
+        <table striped bordered hover>
             <thead>
                 <tr>
                 <th>#</th>
@@ -97,7 +95,7 @@ function ViewUsers() {
                     <td>Admin</td>
                 </tr>
             </tbody>
-        </Table>
+        </table>
         </div>
 
 

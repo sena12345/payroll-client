@@ -1,5 +1,5 @@
 import React from 'react';
-import './RegisterUser.css';
+import '../../assets/css/RegisterUser.css';
 
 function RegisterUser() { 
     return (
@@ -8,7 +8,7 @@ function RegisterUser() {
             
             <form>
                 <div className="form-row">
-                    <div className="col-50">
+                    <div className="col-50 left-col" >
                         <h3>Personal Information</h3><br />
                          <div className="form-row">
                             <div className="col-50">
@@ -44,32 +44,45 @@ function RegisterUser() {
                     <h3>Other Details</h3><br/>
                     <div className="form-row">
                         <div className="col-50">
-                            <label htmlFor="role">Role</label>
-                            <input type="text" id="role" name="role" />
+                        <label htmlFor="role">Role</label>
+                            <select type="text" id="role" name="role">
+                                    <option>choose option...</option>    
+                                    <option>choose option...</option> 
+                            </select>
                         </div>
                         <div className="col-50">
                             <label htmlFor="designation">Designation</label>
-                            <input type="text" id="designation" name="designation" />
+                            <select type="text" id="designation" name="designation">
+                                <option>choose option...</option>
+                            </select>
                         </div>
                     </div>
                     <div className="form-row">
                         <div className="col-50">
                         <label htmlFor="basic-salary">Basic Salary</label>
-                        <input type="text" id="basic-salary" name="basic-salary"/>
+                        <select type="text" id="basic-salary" name="basic-salary">
+                            <option>choose option...</option>
+                            </select>
                         </div>
                         <div className="col-50">
                         <label htmlFor="allowance">Allowance</label>
-                        <input type="text" id="allowance" name="allowance" />
+                            <select type="text" id="allowance" name="allowance">
+                            <option>choose option...</option>
+                            </select>
                         </div>
                     </div> 
                     <div className="form-row">
                         <div className="col-50">
                         <label htmlFor="department">Department</label>
-                        <input type="text" id="department" name="department" />
+                            <select type="text" id="department" name="department">
+                               <option>choose option...</option>         
+                            </select>
                         </div>
                         <div className="col-50">
                         <label htmlFor="position">Position</label>
-                        <input type="text" id="position" name="position"/>
+                        <select type="text" id="position" name="position">
+                            <option>choose option...</option>
+                            </select>
                         </div>
                     </div>                                    
                     
@@ -84,7 +97,7 @@ function RegisterUser() {
                             </select>
                         </div>
                         <div className="col-50">
-                        <label htmlFor="cardnumber">National Card Number</label>
+                        <label htmlFor="cardnumber"> Card Number</label>
                         <input type="text" id="cardnumber" name="cardnumber" />
                         </div>
                     </div>
