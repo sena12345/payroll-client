@@ -9,13 +9,26 @@ function RegisterUser() {
             <form>
                 <div className="form-row">
                     <div className="col-50">
-                        <h3>Personal Information</h3><br />                       
-                        <label htmlFor="fname"><i className="fa fa-user"></i> Full Name</label>   
-                        <input type="text" id="fname" placeholder="Moe" />                           
-                        <label htmlFor="email"><i className="fa fa-envelope"></i> Email</label>                       
-                        <input type="text" id="email" placeholder="john@example.com"/>                           
-                        <label htmlFor="ssnit"> SSNIT Number</label>
-                        <input type="text" id="ssnit"/>
+                        <h3>Personal Information</h3><br />
+                         <div className="form-row">
+                            <div className="col-50">
+                                <label htmlFor="fname"><i className="fa fa-user"></i> Full Name</label>   
+                                <input type="text" id="fname" placeholder="Moe" />         
+                            </div>
+                        </div>
+                        <div className="form-row">
+                            <div className="col-50">
+                                <label htmlFor="email"><i className="fa fa-envelope"></i> Email</label>                       
+                                <input type="text" id="email" placeholder="john@example.com"/>
+                            </div>
+                        </div>
+                        <div className="form-row">
+                            <div className="col-50">
+                                <label htmlFor="ssnit"> SSNIT Number</label>
+                                <input type="text" id="ssnit"/>
+                            </div>
+                        </div>                         
+                      
                         <div className="form-row">
                             <div className="col-10">
                                 <label htmlFor="zip">Zip</label>
