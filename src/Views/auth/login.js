@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import '../../assets/css/login.css';
 import background from '../../assets/images/body-bg.jpg';
 import google_image from '../../assets/google_logo.svg';
@@ -19,8 +19,8 @@ export function Login() {
 	}
 
 	return (
-		<div className="main" style={{ backgroundImage: `url(${background})` }}>
-			<div className="container">
+		<div className="login-main" style={{ backgroundImage: `url(${background})` }}>
+			<div className="login-container">
 				<div className="signin-content">
 					<form className="signin-form">
 						<h2>Sign In </h2>
@@ -44,10 +44,10 @@ export function Login() {
 						<h2>OR</h2>
 						<br />
 						<div className="google-div">
-							<a onClick={handleLogin} className=" google-btn btn btn-block btn-social btn-google">
-								<img style={{ margin: `0.5rem` }} src={google_image} width="20rem" alt="" />
-								<span className="btn-text">Sign in with Google</span>
-							</a>
+							<Link onClick={handleLogin} className=" google-btn btn btn-block btn-social btn-google">
+								<div><img src={google_image} width="20rem" alt="" /></div>
+								<div className="btn-text"><span>Sign in with Google</span></div>
+							</Link>
 						</div>
 					</form>
 				</div>

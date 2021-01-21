@@ -85,12 +85,19 @@ function RegisterUser() {
 
     return (
         <div className="registeruser">
-            <h2>Register User</h2>
+            
+            <h2>Register User</h2><br/>
             
             <form>
                 <div className="form-row">
                     <div className="col-50 left-col" >
                         <h3>Personal Information</h3><br />
+                        <div className="form-row">
+                            <div className="col-50">
+                                <label htmlFor="employee-id"><i className="fa fa-id-badge"></i> Employee ID</label>   
+                                <input type="text" id="employee-id" />         
+                            </div>
+                        </div>
                          <div className="form-row">
                             <div className="col-50">
                                 <label htmlFor="fname"><i className="fa fa-user"></i> Full Name</label>   
@@ -105,18 +112,14 @@ function RegisterUser() {
                         </div>
                         <div className="form-row">
                             <div className="col-50">
-                                <label htmlFor="ssnit"> SSNIT Number</label>
+                                <label htmlFor="ssnit"> <i className="fas fa-money-check"></i> SSNIT Number</label>
                                 <input type="text" id="ssnit"/>
                             </div>
                         </div>                         
                       
-                        <div className="form-row">
-                            <div className="col-10">
-                                <label htmlFor="zip">Zip</label>
-                                <input type="text" id="zip" placeholder="+233"/>
-                            </div>
+                        <div className="form-row"> 
                             <div className="col-50">
-                                <label htmlFor="contact">Contact</label>
+                                <label htmlFor="contact"><i className="fa fa-phone-alt"></i> Contact</label>
                                 <input type="text" id="contact" maxLength='10' placeholder="0541234567"/>
                             </div>
                         </div>
@@ -182,7 +185,24 @@ function RegisterUser() {
                         <input type="text" id="cardnumber" name="cardnumber" />
                         </div>
                     </div>
-                    )
+
+                    <div className="form-row">                        
+                        <div className="col-50">
+                          <label htmlFor="enable-user-check"> Enable Employee By Default</label>
+                         <input defaultChecked="true" type="checkbox" id="enable-user-check" name="enable-user-check" />
+                        </div>
+                    </div>
+                    
+
+                </div>
+                </div>                    
+                <input type="submit" value="Register" className="register-form-btn"/>
+            </form>
+        </div>
+
+
+    );
+          
 }
 
 export default RegisterUser;

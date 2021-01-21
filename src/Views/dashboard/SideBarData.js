@@ -2,25 +2,25 @@ export const SidebarData = [
 	{
 		title : 'Home',
 		path  : '/',
-		icon  : 'fas fa-search',
+		icon  : 'fas fa-home',
 		cName : 'sidebar-nav-item'
 	},
 	{
-		title : 'Users',
-		path  : '/admin/user',
-		icon  : 'fas fa-user',
+		title : 'Fields Configuration',
+		path  : '/configuration',
+		icon  : 'fas fa-wrench',
 		cName : 'sidebar-nav-item'
 	},
 	{
 		title : 'Add User',
 		path  : '/registeruser',
-		icon  : 'fas fa-user',
+		icon  : 'fas fa-user-plus',
 		cName : 'sidebar-nav-item'
 	},
 	{
 		title : 'View Users',
 		path  : '/viewusers',
-		icon  : 'fas fa-user',
+		icon  : 'fas fa-user-clock',
 		cName : 'sidebar-nav-item'
 	}
 ];
