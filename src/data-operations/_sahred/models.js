@@ -1,20 +1,5 @@
 const CURRENT_DATE_TIME = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
-export const Employee = {
-	uid           : '',
-	employee_id   : '',
-	email         : '',
-	name          : '',
-	basic_salary  : 0.0,
-	disable       : false,
-	roles         : [],
-	positions     : [],
-	departments   : [],
-	allowances    : [],
-	designations  : [],
-	nationalCards : []
-};
-
 export const Roles = {
 	role_id : null,
 	role    : '',
@@ -44,4 +29,20 @@ export const Designation = {
 	designation_id : null,
 	designation    : '',
 	date           : CURRENT_DATE_TIME
+};
+
+export const Employee = {
+	uid          : '',
+	employee_id  : '',
+	email        : '',
+	name         : '',
+	cardType     : 0,
+	cardNumber   : '',
+	basic_salary : 0.0,
+	disable      : false,
+	roles        : [ Roles ],
+	positions    : [ Position ],
+	departments  : [ Department ],
+	allowances   : [ Allowance ],
+	designations : [ Designation ]
 };

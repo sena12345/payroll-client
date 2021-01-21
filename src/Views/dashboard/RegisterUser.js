@@ -1,22 +1,23 @@
-import React from 'react';
-import React, { useState, useEffect } from 'react';
 import '../../assets/css/RegisterUser.css';
-
+import React, { useState, useEffect, useRef } from 'react';
+import { useForm } from 'react-hook-form';
 import Config from '../../data-operations/data-queries/config';
-import { Roles, Department, Position, Designation, Allowance } from '../../data-operations/_sahred/models';
+import { Roles, Department, Position, Designation, Allowance, Employee } from '../../data-operations/_sahred/models';
 import { useAuth } from '../../_services/auth-context';
 
+import EmployeeInstance from '../../data-operations/data-queries/employees';
+
 function RegisterUser() {
-	const effect = -1;
 	const { currentUser } = useAuth();
 	const [ roles, setRoles ] = useState([ Roles ]);
 	const [ departments, setDepartments ] = useState([ Department ]);
 	const [ positions, setPositions ] = useState([ Position ]);
 	const [ designations, setDesignations ] = useState([ Designation ]);
 	const [ allowances, setAllowances ] = useState([ Allowance ]);
-	const [ cardTypes, setCardTypes ] = useState();
+	const [ cardTypes, setCardTypes ] = useState([]);
 
 	const queriesStore = Config(currentUser);
+	const empInstance = EmployeeInstance(currentUser);
 
 	function fetchInits() {
 		queriesStore
@@ -75,52 +76,80 @@ function RegisterUser() {
 				console.log('cannot fetch allowances due to: ' + err);
 			});
 	}
-  
-  useEffect(
-		() => {
-			fetchInits();
-		},
-		[ effect + 1 ]
-	);
+
+	useEffect(() => {
+		fetchInits();
+	}, []);
+
+	const { register, handleSubmit, errors } = useForm();
+
+	const onSubmit = (data) => {
+		console.log(data);
+		const employee = {
+			employee_id  : data.employee_id,
+			email        : data.email,
+			name         : data.name,
+			cardType     : parseInt(data.cardtype),
+			cardNumber   : data.cardnumber,
+			phone        : data.phone,
+			basic_salary : 0.0, //data.basic_salary,
+			disable      : false,
+			roles        : [ { role_id: parseInt(data.role) } ],
+			positions    : [ { position_id: parseInt(data.position) } ],
+			departments  : [ { department_id: parseInt(data.department) } ],
+			allowances   : [ { allowance_id: parseInt(data.allowance) } ],
+			designations : [ { designation_id: parseInt(data.designation) } ]
+		};
+		console.log(employee);
+
+		empInstance
+			.addEmployees(employee)
+			.then((res) => {
+				console.log(res.data);
+			})
+			.catch((err) => {
+				console.log(err.message);
+			});
+	};
 
     return (
         <div className="registeruser">
             
             <h2>Register User</h2><br/>
             
-            <form>
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="form-row">
                     <div className="col-50 left-col" >
                         <h3>Personal Information</h3><br />
                         <div className="form-row">
                             <div className="col-50">
                                 <label htmlFor="employee-id"><i className="fa fa-id-badge"></i> Employee ID</label>   
-                                <input type="text" id="employee-id" />         
+                                <input ref={register} type="text" id="employee-id" />         
                             </div>
                         </div>
                          <div className="form-row">
                             <div className="col-50">
                                 <label htmlFor="fname"><i className="fa fa-user"></i> Full Name</label>   
-                                <input type="text" id="fname" placeholder="Moe" />         
+                                <input  ref={register} name="name" type="text" id="fname" placeholder="Moe" />         
                             </div>
                         </div>
                         <div className="form-row">
                             <div className="col-50">
                                 <label htmlFor="email"><i className="fa fa-envelope"></i> Email</label>                       
-                                <input type="text" id="email" placeholder="john@example.com"/>
+                                <input  ref={register} name="email" type="text" id="email" placeholder="john@example.com"/>
                             </div>
                         </div>
                         <div className="form-row">
                             <div className="col-50">
                                 <label htmlFor="ssnit"> <i className="fas fa-money-check"></i> SSNIT Number</label>
-                                <input type="text" id="ssnit"/>
+                                <input  ref={register} name="ssnit" type="text" id="ssnit"/>
                             </div>
                         </div>                         
                       
                         <div className="form-row"> 
                             <div className="col-50">
                                 <label htmlFor="contact"><i className="fa fa-phone-alt"></i> Contact</label>
-                                <input type="text" id="contact" maxLength='10' placeholder="0541234567"/>
+                                <input  ref={register} name="phone" type="text" id="contact" maxLength='10' placeholder="0541234567"/>
                             </div>
                         </div>
                     </div>                     
@@ -129,43 +158,80 @@ function RegisterUser() {
                     <div className="form-row">
                         <div className="col-50">
                         <label htmlFor="role">Role</label>
-                            <select type="text" id="role" name="role">
-                                    <option>choose option...</option>    
-                                    <option>choose option...</option> 
+                            <select ref={register} type="text" id="role" name="role">
+                                    <option defaultValue disabled>choose option...</option>    
+                                    	{roles.map((data) => {
+										return (
+											<option key={data.role_id} value={data.role_id}>
+												{data.role}
+											</option>
+										);
+									})}
                             </select>
                         </div>
                         <div className="col-50">
                             <label htmlFor="designation">Designation</label>
-                            <select type="text" id="designation" name="designation">
-                                <option>choose option...</option>
+                            <select ref={register} type="text" id="designation" name="designation">
+                                <option defaultValue disabled>choose option...</option>
+                                   	{designations.map((data) => {
+                                  return (
+                                    <option key={data.designation_id} value={data.designation_id}>
+                                      {data.designation}
+                                    </option>
+                                  );
+                                })} 
                             </select>
                         </div>
                     </div>
                     <div className="form-row">
                         <div className="col-50">
                         <label htmlFor="basic-salary">Basic Salary</label>
-                        <select type="text" id="basic-salary" name="basic-salary">
-                            <option>choose option...</option>
-                            </select>
+                        <input ref={register} type="text" id="basic-salary" name="basic_salary" />
+                            
                         </div>
                         <div className="col-50">
                         <label htmlFor="allowance">Allowance</label>
-                            <select type="text" id="allowance" name="allowance">
-                            <option>choose option...</option>
+                            <select ref={register} type="text" id="allowance" name="allowance">
+                            <option defaultValue disabled>choose option...</option>
+                                 	</option>
+                              {allowances.map((data) => {
+                                return (
+                                  <option value={data.allowance_id} key={data.allowance_id}>
+                                    {data.allowance}
+                                  </option>
+                                );
+								            	})}                   
                             </select>
                         </div>
                     </div> 
                     <div className="form-row">
                         <div className="col-50">
                         <label htmlFor="department">Department</label>
-                            <select type="text" id="department" name="department">
-                               <option>choose option...</option>         
+                            <select ref={register} type="text" id="department" name="department">
+                               <option defaultValue disabled>
+                                choose option...
+                              </option>
+                              {departments.map((data) => {
+                                return (
+                                  <option value={data.department_id} key={data.department_id}>
+                                    {data.department}
+                                  </option>
+                                );
+                              })}    
                             </select>
                         </div>
                         <div className="col-50">
                         <label htmlFor="position">Position</label>
-                        <select type="text" id="position" name="position">
-                            <option>choose option...</option>
+                        <select ref={register} type="text" id="position" name="position">
+                            <option defaultValue disabled>choose option...</option>
+      	</option>
+									{positions.map((data) => {
+										return (
+											<option value={data.position_id} key={data.position_id}>
+												{data.position}
+											</option>
+										);
+									})}
                             </select>
                         </div>
                     </div>                                    
@@ -173,8 +239,8 @@ function RegisterUser() {
                     <div className="form-row">
                         <div className="col-50">
                         <label htmlFor="cardtype">National Card Type</label>
-                            <select id="cardtype" name="cardtype" >
-                                	<option>Choose..</option>
+                            <select ref{register} id="cardtype" name="cardtype" >
+                                	<option defaultValue disabled >Choose..</option>
                                   {cardTypes.map((card) => {
                                     return <option>{card}</option>;
                                   })}
@@ -182,14 +248,14 @@ function RegisterUser() {
                         </div>
                         <div className="col-50">
                         <label htmlFor="cardnumber"> Card Number</label>
-                        <input type="text" id="cardnumber" name="cardnumber" />
+                        <input ref={register} type="text" id="cardnumber" name="cardnumber" />
                         </div>
                     </div>
 
                     <div className="form-row">                        
                         <div className="col-50">
                           <label htmlFor="enable-user-check"> Enable Employee By Default</label>
-                         <input defaultChecked="true" type="checkbox" id="enable-user-check" name="enable-user-check" />
+                         <input ref={register} defaultChecked="false" type="checkbox" id="enable-user-check" name="disable_user" />
                         </div>
                     </div>
                     
@@ -203,6 +269,7 @@ function RegisterUser() {
 
     );
           
+
 }
 
 export default RegisterUser;

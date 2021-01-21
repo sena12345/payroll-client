@@ -1,6 +1,6 @@
 import axiosInstance from '../_sahred/data-source';
 import * as enpoints from '../_sahred/end-points';
-import { NationalCards } from '../_sahred/models';
+
 const config = (currentUser) => {
 	// console.log(currentUser);
 	// const user = currentUser ? currentUser : auth.currentUser;
