@@ -112,157 +112,119 @@ function RegisterUser() {
 			});
 	};
 
-	return (
-		<div className="registeruser">
-			<h2>Register User</h2>
-
-			<form onSubmit={handleSubmit(onSubmit)}>
-				<div className="form-row">
-					<div className="col-50 left-col">
-						<h3>Personal Information</h3>
-						<br />
-						<div className="form-row">
-							<div className="col-50">
-								<label htmlFor="employee_id">
-									<i className="fa fa-user" /> Employee Id
-								</label>
-								<input
-									name="employee_id"
-									ref={register}
-									type="text"
-									id="ememployee_id"
-									placeholder="001"
-									required
-								/>
-							</div>
-						</div>
-						<div className="form-row">
-							<div className="col-50">
-								<label htmlFor="fname">
-									<i className="fa fa-user" /> Full Name
-								</label>
-								<input name="name" ref={register} type="text" id="fname" placeholder="Moe" required />
-							</div>
-						</div>
-						<div className="form-row">
-							<div className="col-50">
-								<label htmlFor="email">
-									<i className="fa fa-envelope" /> Email
-								</label>
-								<input
-									ref={register}
-									name="email"
-									type="text"
-									id="email"
-									placeholder="john@example.com"
-								/>
-							</div>
-						</div>
-						<div className="form-row">
-							<div className="col-50">
-								<label htmlFor="ssnit"> SSNIT Number</label>
-								<input ref={register} name="ssnit" type="text" id="ssnit" />
-							</div>
-						</div>
-
-						<div className="form-row">
-							<div className="col-10">
-								<label htmlFor="zip">Zip</label>
-								<input name="zip" type="text" id="zip" placeholder="+233" />
-							</div>
-							<div className="col-50">
-								<label htmlFor="contact">Contact</label>
-								<input
-									name="phone"
-									ref={register}
-									type="text"
-									id="contact"
-									maxLength="10"
-									placeholder="0541234567"
-								/>
-							</div>
-						</div>
-					</div>
-					<div className="col-50">
-						<h3>Other Details</h3>
-						<br />
-						<div className="form-row">
-							<div className="col-50">
-								<label htmlFor="role">Role</label>
-								<select ref={register} type="text" id="role" name="role">
-									<option defaultValue disabled>
-										choose option...
-									</option>
-									{roles.map((data) => {
+    return (
+        <div className="registeruser">
+            
+            <h2>Register User</h2><br/>
+            
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="form-row">
+                    <div className="col-50 left-col" >
+                        <h3>Personal Information</h3><br />
+                        <div className="form-row">
+                            <div className="col-50">
+                                <label htmlFor="employee-id"><i className="fa fa-id-badge"></i> Employee ID</label>   
+                                <input ref={register} type="text" id="employee-id" />         
+                            </div>
+                        </div>
+                         <div className="form-row">
+                            <div className="col-50">
+                                <label htmlFor="fname"><i className="fa fa-user"></i> Full Name</label>   
+                                <input  ref={register} name="name" type="text" id="fname" placeholder="Moe" />         
+                            </div>
+                        </div>
+                        <div className="form-row">
+                            <div className="col-50">
+                                <label htmlFor="email"><i className="fa fa-envelope"></i> Email</label>                       
+                                <input  ref={register} name="email" type="text" id="email" placeholder="john@example.com"/>
+                            </div>
+                        </div>
+                        <div className="form-row">
+                            <div className="col-50">
+                                <label htmlFor="ssnit"> <i className="fas fa-money-check"></i> SSNIT Number</label>
+                                <input  ref={register} name="ssnit" type="text" id="ssnit"/>
+                            </div>
+                        </div>                         
+                      
+                        <div className="form-row"> 
+                            <div className="col-50">
+                                <label htmlFor="contact"><i className="fa fa-phone-alt"></i> Contact</label>
+                                <input  ref={register} name="phone" type="text" id="contact" maxLength='10' placeholder="0541234567"/>
+                            </div>
+                        </div>
+                    </div>                     
+                    <div className="col-50">
+                    <h3>Other Details</h3><br/>
+                    <div className="form-row">
+                        <div className="col-50">
+                        <label htmlFor="role">Role</label>
+                            <select ref={register} type="text" id="role" name="role">
+                                    <option defaultValue disabled>choose option...</option>    
+                                    	{roles.map((data) => {
 										return (
 											<option key={data.role_id} value={data.role_id}>
 												{data.role}
 											</option>
 										);
 									})}
-								</select>
-							</div>
-							<div className="col-50">
-								<label htmlFor="designation">Designation</label>
-								<select ref={register} type="text" id="designation" name="designation">
-									<option defaultValue disabled>
-										choose option...
-									</option>
-									{designations.map((data) => {
-										return (
-											<option value={data.designation_id} key={data.designation_id}>
-												{data.designation}
-											</option>
-										);
-									})}
-								</select>
-							</div>
-						</div>
-						<div className="form-row">
-							<div className="col-50">
-								<label htmlFor="basic-salary">Basic Salary</label>
-								<select type="text" id="basic-salary" name="basic_salary">
-									<option>choose option...</option>
-								</select>
-							</div>
-							<div className="col-50">
-								<label htmlFor="allowance">Allowance</label>
-								<select ref={register} type="text" id="allowance" name="allowance">
-									<option defaultValue disabled>
-										choose option...
-									</option>
-									{allowances.map((data) => {
-										return (
-											<option value={data.allowance_id} key={data.allowance_id}>
-												{data.allowance}
-											</option>
-										);
-									})}
-								</select>
-							</div>
-						</div>
-						<div className="form-row">
-							<div className="col-50">
-								<label htmlFor="department">Department</label>
-								<select ref={register} type="text" id="department" name="department">
-									<option defaultValue disabled>
-										choose option...
-									</option>
-									{departments.map((data) => {
-										return (
-											<option value={data.department_id} key={data.department_id}>
-												{data.department}
-											</option>
-										);
-									})}
-								</select>
-							</div>
-							<div className="col-50">
-								<label htmlFor="position">Position</label>
-								<select ref={register} type="text" id="position" name="position">
-									<option defaultValue disabled>
-										choose option...
-									</option>
+                            </select>
+                        </div>
+                        <div className="col-50">
+                            <label htmlFor="designation">Designation</label>
+                            <select ref={register} type="text" id="designation" name="designation">
+                                <option defaultValue disabled>choose option...</option>
+                                   	{designations.map((data) => {
+                                  return (
+                                    <option key={data.designation_id} value={data.designation_id}>
+                                      {data.designation}
+                                    </option>
+                                  );
+                                })} 
+                            </select>
+                        </div>
+                    </div>
+                    <div className="form-row">
+                        <div className="col-50">
+                        <label htmlFor="basic-salary">Basic Salary</label>
+                        <input ref={register} type="text" id="basic-salary" name="basic_salary" />
+                            
+                        </div>
+                        <div className="col-50">
+                        <label htmlFor="allowance">Allowance</label>
+                            <select ref={register} type="text" id="allowance" name="allowance">
+                            <option defaultValue disabled>choose option...</option>
+                                 	</option>
+                              {allowances.map((data) => {
+                                return (
+                                  <option value={data.allowance_id} key={data.allowance_id}>
+                                    {data.allowance}
+                                  </option>
+                                );
+								            	})}                   
+                            </select>
+                        </div>
+                    </div> 
+                    <div className="form-row">
+                        <div className="col-50">
+                        <label htmlFor="department">Department</label>
+                            <select ref={register} type="text" id="department" name="department">
+                               <option defaultValue disabled>
+                                choose option...
+                              </option>
+                              {departments.map((data) => {
+                                return (
+                                  <option value={data.department_id} key={data.department_id}>
+                                    {data.department}
+                                  </option>
+                                );
+                              })}    
+                            </select>
+                        </div>
+                        <div className="col-50">
+                        <label htmlFor="position">Position</label>
+                        <select ref={register} type="text" id="position" name="position">
+                            <option defaultValue disabled>choose option...</option>
+      	</option>
 									{positions.map((data) => {
 										return (
 											<option value={data.position_id} key={data.position_id}>
@@ -270,37 +232,44 @@ function RegisterUser() {
 											</option>
 										);
 									})}
-								</select>
-							</div>
-						</div>
+                            </select>
+                        </div>
+                    </div>                                    
+                    
+                    <div className="form-row">
+                        <div className="col-50">
+                        <label htmlFor="cardtype">National Card Type</label>
+                            <select ref{register} id="cardtype" name="cardtype" >
+                                	<option defaultValue disabled >Choose..</option>
+                                  {cardTypes.map((card) => {
+                                    return <option>{card}</option>;
+                                  })}
+                            </select>
+                        </div>
+                        <div className="col-50">
+                        <label htmlFor="cardnumber"> Card Number</label>
+                        <input ref={register} type="text" id="cardnumber" name="cardnumber" />
+                        </div>
+                    </div>
 
-						<div className="form-row">
-							<div className="col-50">
-								<label htmlFor="cardtype">National Card Type</label>
-								<select ref={register} id="cardtype" name="cardtype" required>
-									<option defaultValue disabled>
-										Choose..
-									</option>
-									{cardTypes.map((card) => {
-										return (
-											<option value={cardTypes.indexOf(card)} key={card}>
-												{card}
-											</option>
-										);
-									})}
-								</select>
-							</div>
-							<div className="col-50">
-								<label htmlFor="cardnumber"> Card Number</label>
-								<input ref={register} required type="text" id="cardnumber" name="cardnumber" />
-							</div>
-						</div>
-					</div>
-				</div>
-				<button type="submit">Submit</button>
-			</form>
-		</div>
-	);
+                    <div className="form-row">                        
+                        <div className="col-50">
+                          <label htmlFor="enable-user-check"> Enable Employee By Default</label>
+                         <input ref={register} defaultChecked="false" type="checkbox" id="enable-user-check" name="disable_user" />
+                        </div>
+                    </div>
+                    
+
+                </div>
+                </div>                    
+                <input type="submit" value="Register" className="register-form-btn"/>
+            </form>
+        </div>
+
+
+    );
+          
+
 }
 
 export default RegisterUser;
