@@ -1,105 +1,146 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, { useEffect, useState } from 'react';
+import EmployeeInstance from '../../data-operations/data-queries/employees';
+import { Employee } from '../../data-operations/_sahred/models';
+import { useAuth } from '../../_services/auth-context';
+function ViewUsers() {
+	const { currentUser } = useAuth();
+	const empInstance = EmployeeInstance(currentUser);
+	const [ employeesData, setEmployeesData ] = useState([ Employee ]);
 
- function ViewUsers() { 
+	useEffect(() => {
+		empInstance.getEmployees().then((res) => {
+			setEmployeesData(res.data.content);
+			console.log(employeesData);
+		});
+	}, []);
 
-     function switchButtonState() {
-        
-        }
+	const disableEmployee = (employee) => {
+		const employees = [ employee ];
 
-     
-    return (
-        <div className="Viewusers">
-            <div className="action-btn-container">
-                <button title="Disable Selected" className="btn bg-primary">
-                  Disable All <i className="fa fa-times"></i>
-                </button>
-                <button title="Delete Selected" className="btn bg-danger">
-                    Delete All <i className="fa fa-trash" ></i>
-                </button>  
-            </div>
-      
-            <table>               
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Full Name</th>
-                        <th>Email</th>
-                        <th>Employee ID</th>
-                        <th>Position</th>
-                        <th>Department</th>
-                        <th>Salary</th>
-                        <th>Allowance</th>
-                        <th>Designation</th>
-                        <th>Roles</th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        
-                        <th>   
-                        </th>
-                        <th>                           
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Sonny Torch</td>
-                        <td>torch@mail.com</td>
-                        <td>XPos</td>
-                        <td>123443333</td>
-                        <td>Xdep</td>
-                        <td>GH20</td>
-                        <td>GH10</td>
-                        <td>XDes</td>
-                        <td>Admin</td>                        
-                        <td><input  onChange={switchButtonState} type="checkbox" className="disable-btn-check" value="" /></td>
-                        <td><button title="View Details" className="btn bg-success"><i className="fa fa-eye" ></i></button></td>
-                        <td><button title="Edit Details" className="btn bg-warning"><i className="fa fa-pen" ></i></button></td> 
-                        <td><button title="Disable Employee" className="btn bg-primary"><i className="fa fa-times"></i></button></td> 
-                        <td><button title="Delete Employee" className="btn bg-danger"><i className="fa fa-trash" ></i></button></td> 
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Sonny Torch</td>
-                        <td>torch@mail.com</td>
-                        <td>XPos</td>
-                        <td>123443333</td>
-                        <td>Xdep</td>
-                        <td>GH20</td>
-                        <td>GH10</td>
-                        <td>XDes</td>
-                        <td>Admin</td>
-                        <td><input type="checkbox" onChange={switchButtonState} className="disable-btn-check" value=""/></td>
-                        <td><button title="View Details" className="btn bg-success"><i className="fa fa-eye" ></i></button></td>
-                        <td><button title="Edit Details" className="btn bg-warning"><i className="fa fa-pen" ></i></button></td> 
-                        <td><button title="Disable Employee" className="btn bg-primary"><i className="fa fa-times"></i></button></td> 
-                        <td><button title="Delete Employee" className="btn bg-danger"><i className="fa fa-trash" ></i></button></td> 
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Sonny Torch</td>
-                        <td>torch@mail.com</td>
-                        <td>XPos</td>
-                        <td>123443333</td>
-                        <td>Xdep</td>
-                        <td>GH20</td>
-                        <td>GH10</td>
-                        <td>XDes</td>
-                        <td>Admin</td>
-                        <td><input type="checkbox" onChange={switchButtonState} className="disable-btn-check" value=""/></td>
-                        <td><button title="View Details" className="btn bg-success"><i className="fa fa-eye" ></i></button></td>
-                        <td><button title="Edit Details" className="btn bg-warning"><i className="fa fa-pen" ></i></button></td> 
-                        <td><button title="Disable Employee" className="btn bg-primary"><i className="fa fa-times"></i></button></td> 
-                        <td><button title="Delete Employee" className="btn bg-danger"><i className="fa fa-trash" ></i></button></td> 
-                    </tr>
+		if (!window.confirm(`Continue to change ${employee.name} state?`)) return;
 
-                </tbody>
-            </table>
-        </div>
+		empInstance
+			.disableEmployees(employees)
+			.then((res) => {
+				console.log(res.data);
+			})
+			.catch((err) => {
+				console.log(err.message);
+			});
+	};
 
+	return (
+		<div className="Viewusers">
+			<div className="action-btn-container">
+				<button title="Disable Selected" className="btn bg-primary">
+					Disable All <i className="fa fa-times" />
+				</button>
+				<button title="Delete Selected" className="btn bg-danger">
+					Delete All <i className="fa fa-trash" />
+				</button>
+			</div>
 
-    );
+			<table>
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Full Name</th>
+						<th>Email</th>
+						<th>Employee ID</th>
+						<th>Position</th>
+						<th>Department</th>
+						<th>Salary</th>
+						<th>Allowance</th>
+						<th>Designation</th>
+						<th>Roles</th>
+						<th />
+						<th />
+						<th />
+
+						<th />
+						<th />
+					</tr>
+				</thead>
+				<tbody>
+					{employeesData.length > 0 ? (
+						employeesData.map((emp) => {
+							const index = employeesData.indexOf(emp) + 1;
+							return (
+								<tr key={index}>
+									<td>{index}</td>
+									<td>
+										{emp.name} <pre>{emp.disable ? 'Disabled' : ''}</pre>
+									</td>
+									<td>{emp.email}</td>
+									<td>{emp.employee_id}</td>
+									<td>
+										{emp.positions.map((positions) => {
+											return positions.position;
+										})}
+									</td>
+									<td>
+										{emp.departments.map((departments) => {
+											return departments.department;
+										})}
+									</td>
+									<td>{emp.basic_salary}</td>
+									<td>
+										{emp.allowances.map((allowances) => {
+											return (
+												<pre key={emp.allowances.indexOf(allowances)}>
+													{allowances.allowance}
+												</pre>
+											);
+										})}
+									</td>
+									<td>
+										{emp.designations.map((designations) => {
+											return designations.designation;
+										})}
+									</td>
+									<td>
+										{emp.roles.map((role) => {
+											return role.role;
+										})}
+									</td>
+									<td>
+										<input type="checkbox" className="disable-btn-check" value="" />
+									</td>
+									<td>
+										<button title="View Details" className="btn bg-success">
+											<i className="fa fa-eye" />
+										</button>
+									</td>
+									<td>
+										<button title="Edit Details" className="btn bg-warning">
+											<i className="fa fa-pen" />
+										</button>
+									</td>
+									<td>
+										<button
+											title="Disable Employee"
+											className="btn bg-primary"
+											onClick={() => {
+												disableEmployee(emp);
+											}}
+										>
+											<i className="fa fa-times" />
+										</button>
+									</td>
+									<td>
+										<button title="Delete Employee" className="btn bg-danger">
+											<i className="fa fa-trash" />
+										</button>
+									</td>
+								</tr>
+							);
+						})
+					) : (
+						<tr>No data found</tr>
+					)}
+				</tbody>
+			</table>
+		</div>
+	);
 }
 export default ViewUsers;

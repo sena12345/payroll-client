@@ -18,6 +18,13 @@ const employeesInstance = (currentUser) => {
 	}
 
 	/**
+     * update employee data...
+     */
+	async function updateEmployee(employeeObject) {
+		return await http.patch(enpoints.UPDATE_EMPLOYEES_ENDPOINT, employeeObject);
+	}
+
+	/**
      * disable list of employees...
      */
 	async function disableEmployees(employees) {
@@ -32,7 +39,7 @@ const employeesInstance = (currentUser) => {
 	}
 
 	//return function references...
-	return { getEmployees, addEmployees, disableEmployees, deleteEmployees };
+	return { getEmployees, addEmployees, updateEmployee, disableEmployees, deleteEmployees };
 };
 
 export default employeesInstance;
