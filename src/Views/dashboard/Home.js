@@ -1,19 +1,18 @@
-import React, { useState } from "react";
-import { Switch, Route } from "react-router-dom";
-import { Link } from "react-router-dom";
-import "../../assets/css/Home.css";
-import "../../assets/js/Home.js";
-import { SidebarData } from "./SideBarData";
-import RegisterUser from "./RegisterUser";
-import ViewUsers from "./ViewUsers";
 
+import React, { useState } from 'react';
+import { Switch, Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import '../../assets/css/Home.css';
+import '../../assets/js/Home.js';
+import { SidebarData } from './SideBarData';
+import RegisterUser from './RegisterUser';
+import ViewUsers from './ViewUsers';
 
 function Home({ page }) {
+
   const [sidebar, setSidebar] = useState(false);
   const showSidebar = () => setSidebar(!sidebar);
   
-
-
   return (
     <div className="container-fluid">
       <div className="overlay-scrollbar">
@@ -109,6 +108,7 @@ function Home({ page }) {
       <div className="wrapper">{page}</div>
     </div>
   );
+
 }
 
 export default Home;
