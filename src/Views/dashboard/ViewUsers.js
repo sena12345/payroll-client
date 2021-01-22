@@ -1,4 +1,6 @@
+
 import React, { useEffect, useState } from 'react';
+import ReactDOM from "react-dom";
 import EmployeeInstance from '../../data-operations/data-queries/employees';
 import { Employee } from '../../data-operations/_sahred/models';
 import { useAuth } from '../../_services/auth-context';
@@ -28,17 +30,26 @@ function ViewUsers() {
 				console.log(err.message);
 			});
 	};
-
+  
+ function switchButtonState() {}
+  
 	return (
-		<div className="Viewusers">
-			<div className="action-btn-container">
-				<button title="Disable Selected" className="btn bg-primary">
-					Disable All <i className="fa fa-times" />
-				</button>
-				<button title="Delete Selected" className="btn bg-danger">
-					Delete All <i className="fa fa-trash" />
-				</button>
-			</div>
+		    <div className="Viewusers">
+      <div className="action-btn-container ">
+             
+        <span className="enable-disable">Disabled</span> <label className="toggle">
+            <input type="checkbox"/>
+            <span className="slider"></span>
+        </label> <span className="enable-disable">Enabled</span>
+      
+        <button title="Disable Selected" className="btn bg-primary float-right">
+          Disable All <i className="fa fa-times"></i>
+        </button>
+        <button title="Delete Selected" className="btn bg-danger float-right">
+          Delete All <i className="fa fa-trash"></i>
+        </button>
+      </div>
+      <br />
 
 			<table>
 				<thead>
@@ -142,5 +153,6 @@ function ViewUsers() {
 			</table>
 		</div>
 	);
+
 }
 export default ViewUsers;
