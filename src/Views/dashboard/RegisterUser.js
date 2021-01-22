@@ -1,9 +1,11 @@
+
 import '../../assets/css/RegisterUser.css';
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Config from '../../data-operations/data-queries/config';
 import { Roles, Department, Position, Designation, Allowance, Employee } from '../../data-operations/_sahred/models';
 import { useAuth } from '../../_services/auth-context';
+
 
 import EmployeeInstance from '../../data-operations/data-queries/employees';
 
@@ -114,9 +116,9 @@ function RegisterUser() {
 	};
 
 	return (
-		        <div className="registeruser">
-            
-            <h2>Register User</h2><br/>
+ <div className="registeruser">
+      <h2>Register User</h2>
+      <br />
 
 			<form onSubmit={handleSubmit(onSubmit)}>
 				<div className="form-row">
@@ -296,6 +298,18 @@ function RegisterUser() {
 								<input ref={register} type="text" id="cardnumber" name="cardnumber" />
 							</div>
 						</div>
+            <div className="form-row">
+              <div className="col-50">
+                <label htmlFor="marriage-cert">
+                  Marriage Certificate Number
+                </label>
+                <input type="text" id="marriage-cert" name="marriage-cert" />
+              </div>
+              <div className="col-50">
+                <label htmlFor="tin-number"> Tin Number</label>
+                <input type="text" id="tin-number" name="tin-number" />
+              </div>
+            </div>
 						<div className="form-row">
 							<div className="col-50">
 								<label htmlFor="enable-user-check"> Enable Employee</label>
@@ -318,6 +332,7 @@ function RegisterUser() {
 		</div>
 
 	);
+
 }
 
 export default RegisterUser;
