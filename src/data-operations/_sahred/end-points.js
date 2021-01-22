@@ -8,6 +8,7 @@ const DESIGNATION_REST_MAP = '/designation/';
 //employees endpoints....
 export const EMPLOYEES_ENDPOINT = `${EMPLOYEE_REST_MAP}employees`;
 export const CREATE_EMPLOYEES_ENDPOINT = `${EMPLOYEE_REST_MAP}create`;
+export const UPDATE_EMPLOYEES_ENDPOINT = `${EMPLOYEE_REST_MAP}update`;
 export const DELETE_EMPLOYEES_ENDPOINT = `${EMPLOYEE_REST_MAP}delete`;
 export const DISABLE_EMPLOYEES_ENDPOINT = `${EMPLOYEE_REST_MAP}disable`;
 
