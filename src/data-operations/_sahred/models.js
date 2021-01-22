@@ -32,17 +32,19 @@ export const Designation = {
 };
 
 export const Employee = {
-	uid          : '',
-	employee_id  : '',
-	email        : '',
-	name         : '',
-	cardType     : 0,
-	cardNumber   : '',
-	basic_salary : 0.0,
-	disable      : false,
-	roles        : [ Roles ],
-	positions    : [ Position ],
-	departments  : [ Department ],
-	allowances   : [ Allowance ],
-	designations : [ Designation ]
+	uid           : '',
+	employee_id   : '',
+	email         : '',
+	name          : '',
+	cardType      : 0,
+	cardNumber    : '',
+	basic_salary  : 0.0,
+	disable       : false,
+	marriage_cert : '',
+	tin           : '',
+	roles         : [ Roles ],
+	positions     : [ Position ],
+	departments   : [ Department ],
+	allowances    : [ Allowance ],
+	designations  : [ Designation ]
 };
