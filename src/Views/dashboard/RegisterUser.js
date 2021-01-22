@@ -114,9 +114,9 @@ function RegisterUser() {
 	};
 
 	return (
-		<div className="registeruser">
-			<h2>Register User</h2>
-			<br />
+		        <div className="registeruser">
+            
+            <h2>Register User</h2><br/>
 
 			<form onSubmit={handleSubmit(onSubmit)}>
 				<div className="form-row">
@@ -316,6 +316,7 @@ function RegisterUser() {
 				<input type="submit" value="Register" className="register-form-btn" />
 			</form>
 		</div>
+
 	);
 }
 
