@@ -18,6 +18,12 @@ export const CREATE_POSITION_ENDPOINT = `${POSITION_REST_MAP}create`;
 export const CREATE_ALLOWANCE_ENDPOINT = `${ALLOWANCE_REST_MAP}create`;
 export const CREATE_DESIGNATION_ENDPOINT = `${DESIGNATION_REST_MAP}create`;
 
+//config endpoints2
+export const UPDATE_DEPARTMENT_ENDPOINT = `${DEPARTMENT_REST_MAP}update`;
+export const UPDATE_POSITION_ENDPOINT = `${POSITION_REST_MAP}update`;
+export const UPDATE_ALLOWANCE_ENDPOINT = `${ALLOWANCE_REST_MAP}update`;
+export const UPDATE_DESIGNATION_ENDPOINT = `${DESIGNATION_REST_MAP}update`;
+
 export const GET_ROLES_ENDPOINT = 'role/roles';
 export const GET_CARDTYPES_ENDPOINT = 'role/card-types';
 export const GET_DEPARTMENT_ENDPOINT = `${DEPARTMENT_REST_MAP}departments`;

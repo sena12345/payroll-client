@@ -5,14 +5,21 @@ import { useAuth } from '../../_services/auth-context';
 function ViewUsers() {
 	const { currentUser } = useAuth();
 	const empInstance = EmployeeInstance(currentUser);
-	const [ employeesData, setEmployeesData ] = useState([ Employee ]);
-
-	useEffect(() => {
-		empInstance.getEmployees().then((res) => {
-			setEmployeesData(res.data.content);
-			console.log(employeesData);
-		});
-	}, []);
+	const [ employeesData, setEmployeesData ] = useState([]);
+	const [ load, setLoading ] = useState('true');
+	const selectedEmployees = [];
+	useEffect(
+		() => {
+			empInstance.getEmployees().then((res) => {
+				if (load) {
+					setEmployeesData(res.data.content);
+					console.log(employeesData);
+					setLoading(false);
+				}
+			});
+		},
+		[ load ]
+	);
 
 	const disableEmployee = (employee) => {
 		const employees = [ employee ];
@@ -22,20 +29,73 @@ function ViewUsers() {
 		empInstance
 			.disableEmployees(employees)
 			.then((res) => {
-				console.log(res.data);
+				const index = employeesData.indexOf(employee);
+				employeesData[index] = { ...employee, disable: !employee.disable };
+				setEmployeesData([ ...employeesData ]);
+				// console.log(res.data);
 			})
 			.catch((err) => {
 				console.log(err.message);
 			});
 	};
 
+	const handleCheck = (e, emp) => {
+		if (e.target.checked === true) {
+			selectedEmployees.push(emp);
+			return;
+		}
+
+		selectedEmployees.splice(selectedEmployees.indexOf(emp), 1);
+		return;
+	};
+
+	const handleDisableDeleteList = (isDelete) => {
+		if (!isDelete) {
+			if (!window.confirm('Continue with group disabling?')) return;
+			empInstance
+				.disableEmployees(selectedEmployees)
+				.then((res) => {
+					for (const emp of selectedEmployees) {
+						const index = employeesData.indexOf(emp);
+						employeesData[index] = { ...emp, disable: !emp.disable };
+						setEmployeesData([ ...employeesData ]);
+					}
+				})
+				.catch((err) => {
+					console.log(err.message);
+				});
+		} else {
+			if (!window.confirm('Continue with group deleting?')) return;
+			empInstance
+				.deleteEmployees(selectedEmployees)
+				.then((res) => {
+					setLoading(true);
+				})
+				.catch((err) => {
+					console.log(err.message);
+				});
+		}
+	};
+
 	return (
 		<div className="Viewusers">
 			<div className="action-btn-container">
-				<button title="Disable Selected" className="btn bg-primary">
+				<button
+					title="Disable Selected"
+					className="btn bg-primary"
+					onClick={() => {
+						handleDisableDeleteList(false);
+					}}
+				>
 					Disable All <i className="fa fa-times" />
 				</button>
-				<button title="Delete Selected" className="btn bg-danger">
+				<button
+					title="Delete Selected"
+					className="btn bg-danger"
+					onClick={() => {
+						handleDisableDeleteList(true);
+					}}
+				>
 					Delete All <i className="fa fa-trash" />
 				</button>
 			</div>
@@ -53,7 +113,7 @@ function ViewUsers() {
 						<th>Allowance</th>
 						<th>Designation</th>
 						<th>Roles</th>
-						<th />
+						<th>Status</th>
 						<th />
 						<th />
 
@@ -68,9 +128,7 @@ function ViewUsers() {
 							return (
 								<tr key={index}>
 									<td>{index}</td>
-									<td>
-										{emp.name} <pre>{emp.disable ? 'Disabled' : ''}</pre>
-									</td>
+									<td>{emp.name}</td>
 									<td>{emp.email}</td>
 									<td>{emp.employee_id}</td>
 									<td>
@@ -103,8 +161,15 @@ function ViewUsers() {
 											return role.role;
 										})}
 									</td>
+									<td>{<pre>{emp.disable ? 'Disabled' : 'Active'}</pre>}</td>
 									<td>
-										<input type="checkbox" className="disable-btn-check" value="" />
+										<input
+											type="checkbox"
+											className="disable-btn-check"
+											onChange={(e) => {
+												handleCheck(e, emp);
+											}}
+										/>
 									</td>
 									<td>
 										<button title="View Details" className="btn bg-success">
@@ -136,7 +201,9 @@ function ViewUsers() {
 							);
 						})
 					) : (
-						<tr>No data found</tr>
+						<tr>
+							<td colSpan="10">No data found</td>
+						</tr>
 					)}
 				</tbody>
 			</table>
