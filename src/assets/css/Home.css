@@ -280,7 +280,7 @@ a {
 	padding: 10px;
 	margin-left: 82px;
 	padding-top: 75px;
-	background: #f1f1f1;
+	background: transparent;
 	transition: margin-left 0.5s;
 }
 
@@ -583,6 +583,7 @@ table {
 	font-family: arial, sans-serif;
 	border-collapse: collapse;
 	width: 100rem;
+	zoom: 0.78;
 }
 
 td,
@@ -594,6 +595,10 @@ th {
 
 tr:nth-child(even) {
 	background-color: #dddddd;
+}
+
+a {
+	cursor: pointer;
 }
 
 .btn {
@@ -617,9 +622,20 @@ tr:nth-child(even) {
 	user-select: none;
 }
 
-th .btn {
-	line-height: 0.8;
-	margin: 5px;
+tr a {
+	width: 1.5rem;
+	height: 1.5rem;
+	margin: 0.5rem;
+}
+
+tr input {
+	width: 1.2rem;
+	height: 1.2rem;
+	cursor: pointer;
+}
+
+tr :hover {
+	background-color: #fff;
 }
 
 @keyframes cd-item-slide-out {
@@ -715,6 +731,7 @@ th .btn {
 	padding: 5px;
 	margin: 25px;
 	display: inline-table;
+	zoom: 0.78;
 }
 
 .card:hover {
@@ -738,12 +755,10 @@ th .btn {
 	color: white;
 }
 
-/* .card p {
-	margin: 10px;
-	padding: 5px;
-	width: auto;
-	height: auto;
-} */
+.card a {
+	margin: 0.5rem;
+	color: #b92121;
+}
 
 .child-container {
 	display: flex;
