@@ -245,12 +245,13 @@ function ViewUsers() {
 										/>
 									</td>
 									<td>
-										<a title="View Details">
+										<Link to="/userdetails" title="View Details">
 											<i className="fa fa-eye" />
-										</a>
-										<a title="Edit Details">
+										</Link>
+										
+										<Link to="/edituserdetails">
 											<i className="fa fa-pen" />
-										</a>
+										</Link>
 										<a
 											title="Disable Employee"
 											onClick={() => {
