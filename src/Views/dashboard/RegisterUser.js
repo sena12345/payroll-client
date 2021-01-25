@@ -385,7 +385,9 @@ function RegisterUser() {
 							</div>
 						</div>
 					</div>
+
 					<input type="submit" value="Register" className="form-btn" />
+
 				</form>
 			</div>
 		</div>
