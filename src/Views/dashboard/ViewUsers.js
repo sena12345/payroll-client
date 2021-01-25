@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import EmployeeInstance from '../../data-operations/data-queries/employees';
 import { showConfirmAlert } from '../my-alerts';
-import { Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAlert } from 'react-alert';
 import { useAuth } from '../../_services/auth-context';
 import { MyLoader } from './my-spiner';
@@ -248,8 +248,9 @@ function ViewUsers() {
 										<Link to="/userdetails" title="View Details">
 											<i className="fa fa-eye" />
 										</Link>
-										
+
 										<Link to="/edituserdetails">
+
 											<i className="fa fa-pen" />
 										</Link>
 										<a
