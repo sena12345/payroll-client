@@ -43,12 +43,13 @@ function Home({ page }) {
 
 	const handlePasswordReset = async () => {
 		try {
-			await resetPassword(currentUser.email);
+			await resetPassword(currentUser?currentUser.email:'');
 			alert.success(`Reset link sent to your ${currentUser.email}`);
 		} catch (error) {
 			alert.error(error.message);
 		}
 	};
+
 
 	return (
 		<div className="container-fluid">
@@ -70,20 +71,20 @@ function Home({ page }) {
 					</form>
 					<div className="nav-link">
 						<span>
-							<b>xxxxxx</b>
+							{currentUser? currentUser.email:''}
 						</span>
 					</div>
 
 					<ul className="navbar-nav nav-right">
 						<li className="nav-item mode">
-							<Link className="nav-link" to="#">
-								ss
-							</Link>
+							<pre className="nav-link" to="#">
+								{currentUser?currentUser.displayName[0]:'' }
+							</pre>
 						</li>
 
 						<li className="nav-item avt-wrapper">
 							<div className="avt dropdown">
-								<img src="img/usr.png" className="dropdown-toggle" data-toggle="user-menu" alt="" />
+								<img src={ currentUser?currentUser.photoURL:'../../../public/img/usr.png'} className="dropdown-toggle" data-toggle="user-menu" alt="" />
 								<ul id="user-menu" className="dropdown-menu">
 									<li className="dropdown-menu-item">
 										<Link to="#" className="dropdown-menu-link">

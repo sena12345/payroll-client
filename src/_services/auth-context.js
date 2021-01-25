@@ -10,6 +10,7 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }) {
+
 	const history = useHistory();
 	const [ currentUser, setCurrentUser ] = useState();
 	const [ loading, setLoading ] = useState(true);
@@ -47,7 +48,9 @@ export function AuthProvider({ children }) {
 		const unsubscribe = auth.onAuthStateChanged((user) => {
 			setCurrentUser(user);
 			setLoading(false);
-			if (!user) history.push('/');
+			if (!user)
+				history.push('/');
+			
 		});
 
 		return unsubscribe;
@@ -55,6 +58,7 @@ export function AuthProvider({ children }) {
 
 	const value = {
 		currentUser,
+		loading,
 		login,
 		signup,
 		signupWithPop,

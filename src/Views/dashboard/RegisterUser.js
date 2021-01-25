@@ -385,7 +385,11 @@ function RegisterUser() {
 							</div>
 						</div>
 					</div>
+<<<<<<< Updated upstream
 					<input type="submit" value="Register" className="register-form-btn" />
+=======
+					<input type="submit" value="Register" className="form-btn" />
+>>>>>>> Stashed changes
 				</form>
 			</div>
 		</div>
