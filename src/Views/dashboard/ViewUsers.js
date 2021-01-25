@@ -248,9 +248,11 @@ function ViewUsers() {
 										<Link to="/userdetails" title="View Details">
 											<i className="fa fa-eye" />
 										</Link>
-										<a title="Edit Details">
+
+										<Link to="/edituserdetails">
+
 											<i className="fa fa-pen" />
-										</a>
+										</Link>
 										<a
 											title="Disable Employee"
 											onClick={() => {
