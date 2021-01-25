@@ -1,18 +1,44 @@
 @import url("https://fonts.googleapis.com/css?family=Trirong");
 
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: "Lato", sans-serif;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	font-family: "Lato", sans-serif;
+
+	scrollbar-width: thin;
+	scrollbar-color: dimgray transparent;
 }
 
 .home,
 .reports,
 .products {
-  display: flex;
-  height: 90vh;
-  align-items: center;
-  justify-content: flex-start;
-  font-size: 3rem;
+	display: flex;
+	height: 90vh;
+	align-items: center;
+	justify-content: flex-start;
+	font-size: 3rem;
+}
+
+/* Works on Chrome/Edge/Safari */
+*::-webkit-scrollbar {
+	width: 5px;
+	height: 10px;
+}
+*::-webkit-scrollbar-track {
+	background: rgb(34, 33, 33);
+}
+*::-webkit-scrollbar-thumb {
+	background-color: dimgray;
+	border-radius: 20px;
+	border: 1px solid transparent;
+}
+
+.spinerContainer {
+	margin-top: 30vh;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	justify-items: center;
 }

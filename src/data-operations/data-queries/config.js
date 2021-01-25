@@ -24,6 +24,12 @@ const config = (currentUser) => {
 	async function createDepartment(department = {}) {
 		return await http.post(enpoints.CREATE_DEPARTMENT_ENDPOINT, department);
 	}
+	/**
+     * update department...
+     */
+	async function updateDepartment(department = { department_id: -1, department: '' }) {
+		return await http.patch(enpoints.UPDATE_DEPARTMENT_ENDPOINT, department);
+	}
 
 	/**
      * get list of departments...
@@ -36,7 +42,7 @@ const config = (currentUser) => {
      * delete department...
      */
 	async function deleteDepartment(department = {}) {
-		return await http.delete(enpoints.DELETE_DEPARTMENT_ENDPOINT, department);
+		return await http.delete(enpoints.DELETE_DEPARTMENT_ENDPOINT, { data: department });
 	}
 
 	/**
@@ -44,6 +50,12 @@ const config = (currentUser) => {
      */
 	async function createPosition(position = {}) {
 		return await http.post(enpoints.CREATE_POSITION_ENDPOINT, position);
+	}
+	/**
+     * update position...
+     */
+	async function updatePosition(position = { position_id: -1, position: '' }) {
+		return await http.patch(enpoints.UPDATE_POSITION_ENDPOINT, position);
 	}
 
 	/**
@@ -57,7 +69,7 @@ const config = (currentUser) => {
      * delete department...
      */
 	async function deletePosition(position = {}) {
-		return await http.delete(enpoints.DELETE_POSITION_ENDPOINT, position);
+		return await http.delete(enpoints.DELETE_POSITION_ENDPOINT, { data: position });
 	}
 
 	/**
@@ -65,6 +77,12 @@ const config = (currentUser) => {
      */
 	async function createAllowance(allowance = {}) {
 		return await http.post(enpoints.CREATE_ALLOWANCE_ENDPOINT, allowance);
+	}
+	/**
+     * update allowance...
+     */
+	async function updateAllowance(allowance = { allowance_id: -1, allowance: '', amount: 0.0 }) {
+		return await http.patch(enpoints.UPDATE_ALLOWANCE_ENDPOINT, allowance);
 	}
 
 	/**
@@ -78,7 +96,7 @@ const config = (currentUser) => {
      * delete allowance...
      */
 	async function deleteAllowance(allowance = {}) {
-		return await http.delete(enpoints.DELETE_ALLOWANCE_ENDPOINT, allowance);
+		return await http.delete(enpoints.DELETE_ALLOWANCE_ENDPOINT, { data: allowance });
 	}
 
 	/**
@@ -86,6 +104,12 @@ const config = (currentUser) => {
      */
 	async function createDesignation(designation = {}) {
 		return await http.post(enpoints.CREATE_DESIGNATION_ENDPOINT, designation);
+	}
+	/**
+     * update designation...
+     */
+	async function updateDesignation(designation = { designation_id: -1, designation: '' }) {
+		return await http.patch(enpoints.UPDATE_DESIGNATION_ENDPOINT, designation);
 	}
 
 	/**
@@ -99,7 +123,7 @@ const config = (currentUser) => {
      * delete designation...
      */
 	async function deleteDesignation(designation = {}) {
-		return await http.delete(enpoints.DELETE_DESIGNATION_ENDPOINT, designation);
+		return await http.delete(enpoints.DELETE_DESIGNATION_ENDPOINT, { data: designation });
 	}
 
 	//return function references...
@@ -107,15 +131,19 @@ const config = (currentUser) => {
 		getRoles,
 		getCardTypes,
 		createDepartment,
+		updateDepartment,
 		getDepartments,
 		deleteDepartment,
 		createPosition,
+		updatePosition,
 		getPositions,
 		deletePosition,
 		createAllowance,
+		updateAllowance,
 		getAllowances,
 		deleteAllowance,
 		createDesignation,
+		updateDesignation,
 		getAllDesignation,
 		deleteDesignation
 	};
