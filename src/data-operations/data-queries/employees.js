@@ -35,7 +35,7 @@ const employeesInstance = (currentUser) => {
      * disable list of employees...
      */
 	async function deleteEmployees(employees = [ Employee ]) {
-		return await http.post(enpoints.DISABLE_EMPLOYEES_ENDPOINT, employees);
+		return await http.delete(enpoints.DELETE_EMPLOYEES_ENDPOINT, { data: employees });
 	}
 
 	//return function references...
