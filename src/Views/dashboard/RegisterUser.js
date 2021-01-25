@@ -1,4 +1,4 @@
-import '../../assets/css/RegisterUser.css';
+import '../../assets/css/Form.css';
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Config from '../../data-operations/data-queries/config';
