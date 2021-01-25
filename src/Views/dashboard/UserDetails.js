@@ -6,7 +6,7 @@ function UserDetails() {
     
 return (
 		<div className="userdetails">
-			<h2>User Details</h2>
+			<h2> View User Details</h2>
 			<br />
 
 			<form>
