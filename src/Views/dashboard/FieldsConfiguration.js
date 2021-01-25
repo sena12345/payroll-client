@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal, EditModal } from './Modal';
 import { useAuth } from '../../_services/auth-context';
 import Configs from '../../data-operations/data-queries/config';
-import { Roles, Department, Position, Designation, Allowance } from '../../data-operations/_sahred/models';
+import { Roles, Department, Position, Designation, Allowance, Employee } from '../../data-operations/_sahred/models';
 import * as constants from '../../data-operations/_sahred/constants';
 import { useAlert } from 'react-alert';
 import { showConfirmAlert } from '../my-alerts';
@@ -24,6 +24,13 @@ function FieldsConfiguration() {
 	const [ fetchData, setFetchData ] = useState(true);
 	const [ seletedItem, setSeletedItem ] = useState();
 	const [ selectedItemPlaceHolder, setSeletedItemPlaceHolder ] = useState({ name: '', id: '', amount: 0.0 });
+
+	const init = {
+		id   : 'Sena ',
+		name : '100'
+	};
+
+	const [ array, setArray ] = useState(init);
 
 	function fetchInits() {
 		setFetchData(true);
