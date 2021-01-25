@@ -7,6 +7,8 @@ import { AuthProvider } from './_services/auth-context';
 import Home from './Views/dashboard/Home';
 import RegisterUser from './Views/dashboard/RegisterUser';
 import ViewUsers from './Views/dashboard/ViewUsers';
+import UserDetails from './Views/dashboard/UserDetails';
+import EditUserDetails from './Views/dashboard/EditUserDetails'
 import FieldsConfiguration from './Views/dashboard/FieldsConfiguration';
 import { transitions, positions, Provider as AlertProvider } from 'react-alert';
 import AlertTemplate from 'react-alert-template-basic';
@@ -33,7 +35,12 @@ function App() {
 						<Route path="/viewusers">
 							<Home page={<ViewUsers />} />
 						</Route>
-
+						<Route path="/edituserdetails">
+							<Home page={<EditUserDetails />} />
+						</Route>
+						<Route path="/userdetails">
+							<Home page={<UserDetails />} />
+						</Route>
 						<Route path="/configuration">
 							<Home page={<FieldsConfiguration />} />
 						</Route>

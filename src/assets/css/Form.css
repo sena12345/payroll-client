@@ -1,4 +1,4 @@
-.registeruser {
+.registeruser, .edituserdetails, .userdetails {
 	width: 100%;
 	height: 100%;
 	font-family: "Roboto", sans-serif;
@@ -12,37 +12,18 @@
 
 .form-row {
 	display: -ms-flexbox;
-	/* IE10 */
 	display: flex;
 	-ms-flex-wrap: wrap;
-	/* IE10 */
 	flex-wrap: wrap;
 	margin: 0 -16px;
 }
 
-.col-25 {
-	-ms-flex: 25%;
-	/* IE10 */
-	flex: 25%;
-}
-
-.col-10 {
-	-ms-flex: 10%;
-	/* IE10 */
-	flex: 10%;
-}
 
 .col-50 {
 	-ms-flex: 50%;
-	/* IE10 */
 	flex: 50%;
 }
 
-.col-75 {
-	-ms-flex: 75%;
-	/* IE10 */
-	flex: 75%;
-}
 
 .col-25,
 .col-50,
@@ -61,19 +42,16 @@
 input[type="email"],
 select,
 option {
-	background-color: #fff;
 	width: 100%;
 	padding: 12px 20px;
 	margin: 8px 0;
 	display: inline-block;
-	border: 1px solid #d95a27;
 	border-radius: 0px;
 	box-sizing: border-box;
-	color: #000;
 	font-size: 17px;
 }
 
-.register-form-btn {
+.form-btn {
 	width: 10rem;
 	background-color: #999b9c;
 	color: #fff;
@@ -84,7 +62,7 @@ option {
 	cursor: pointer;
 }
 
-.register-form-btn:hover {
+.form-btn:hover {
 	background-color: #d95a27;
 }
 
@@ -118,7 +96,6 @@ hr {
 	height: 20px;
 }
 
-/* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other (also change the direction - make the "cart" column go on top) */
 @media (max-width: 800px) {
 	.form-row {
 		flex-direction: column;
@@ -136,4 +113,14 @@ hr {
 .valid::before {
 	display: inline;
 	content: "⚠ ";
+}
+
+/*RegisterUser*/
+.registeruser .form-row .col-50 input[type="text"],
+input[type="email"],
+select,
+option{
+	background-color: #fff;
+	border: 1px solid #d95a27;
+	color: #000;
 }
