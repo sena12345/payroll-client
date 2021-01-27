@@ -96,7 +96,9 @@ function ViewUsers() {
 				alert.success('successfully change state employees!');
 				const index = employeesData.indexOf(selectedEmployee);
 				employeesData[index] = { ...selectedEmployee, disable: !selectedEmployee.disable };
+				console.log(employeesData[index].disable);
 				setEmployeesData([ ...employeesData ]);
+
 				setLoading(false);
 			})
 			.catch((err) => {
@@ -183,11 +185,8 @@ function ViewUsers() {
 						<th>Full Name</th>
 						<th>Email</th>
 						<th>Employee ID</th>
-						<th>Position</th>
 						<th>Department</th>
 						<th>Salary</th>
-						<th>Allowance</th>
-						<th>Designation</th>
 						<th>Roles</th>
 						<th>Status</th>
 						<th>Select</th>
@@ -204,31 +203,10 @@ function ViewUsers() {
 									<td>{emp.name}</td>
 									<td>{emp.email}</td>
 									<td>{emp.employee_id}</td>
-									<td>
-										{emp.positions.map((positions) => {
-											return positions.position;
-										})}
-									</td>
-									<td>
-										{emp.departments.map((departments) => {
-											return departments.department;
-										})}
-									</td>
+
+									<td>{emp.departments}</td>
 									<td>{emp.basic_salary}</td>
-									<td>
-										{emp.allowances.map((allowances) => {
-											return (
-												<pre key={emp.allowances.indexOf(allowances)}>
-													{allowances.allowance}
-												</pre>
-											);
-										})}
-									</td>
-									<td>
-										{emp.designations.map((designations) => {
-											return designations.designation;
-										})}
-									</td>
+
 									<td>
 										{emp.roles.map((role) => {
 											return role.role;
@@ -250,7 +228,6 @@ function ViewUsers() {
 										</Link>
 
 										<Link to="/edituserdetails">
-
 											<i className="fa fa-pen" />
 										</Link>
 										<a
