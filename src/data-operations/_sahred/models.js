@@ -19,16 +19,30 @@ export const Department = {
 };
 
 export const Allowance = {
-	allowance_id : null,
-	allowance    : '',
-	amount       : 0.0,
-	date         : CURRENT_DATE_TIME
+	allowance         : '',
+	amount            : 0.0,
+	percentage        : 0,
+	frequency         : 0,
+	toAllDesignations : false,
+	toAllDepartments  : false,
+	date              : '2021-01-25T09:09:43.377',
+	departments       : [],
+	designations      : [],
+	departmental      : false,
+	flat              : false
 };
 
 export const Designation = {
-	designation_id : null,
+	designation_id : '',
 	designation    : '',
-	date           : CURRENT_DATE_TIME
+	date           : CURRENT_DATE_TIME,
+	departments    : [
+		{
+			department_id : '',
+			department    : '',
+			date          : CURRENT_DATE_TIME
+		}
+	]
 };
 
 export const Employee = {

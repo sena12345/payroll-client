@@ -1,11 +1,11 @@
 .registeruser,
 .edituserdetails,
 .userdetails {
-  width: 100%;
-  height: 100%;
-  font-family: "Roboto", sans-serif;
-  font-size: 17px;
-  padding: 8px;
+	width: 100%;
+	height: 100%;
+	font-family: "Roboto", sans-serif;
+	font-size: 17px;
+	padding: 8px;
 }
 
 * {
@@ -27,6 +27,7 @@
   -ms-flex: 75%;
   flex: 75%;
 }
+
 .col-50 {
   -ms-flex: 50%;
   flex: 50%;
@@ -167,4 +168,5 @@ option {
 .userdetails .form-row .col-50 table {
   border-spacing: 0;
   width: 100%;
+
 }

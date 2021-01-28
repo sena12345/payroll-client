@@ -1,5 +1,6 @@
 import axiosInstance from '../_sahred/data-source';
 import * as enpoints from '../_sahred/end-points';
+import { Allowance } from '../_sahred/models';
 
 const config = (currentUser) => {
 	// console.log(currentUser);
@@ -102,13 +103,13 @@ const config = (currentUser) => {
 	/**
      * create new designation...
      */
-	async function createDesignation(designation = {}) {
+	async function createDesignation(designation) {
 		return await http.post(enpoints.CREATE_DESIGNATION_ENDPOINT, designation);
 	}
 	/**
      * update designation...
      */
-	async function updateDesignation(designation = { designation_id: -1, designation: '' }) {
+	async function updateDesignation(designation) {
 		return await http.patch(enpoints.UPDATE_DESIGNATION_ENDPOINT, designation);
 	}
 

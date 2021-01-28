@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
-import EmployeeInstance from "../../data-operations/data-queries/employees";
-import { showConfirmAlert } from "../my-alerts";
-import { Link } from "react-router-dom";
-import { useAlert } from "react-alert";
-import { useAuth } from "../../_services/auth-context";
-import { MyLoader } from "./my-spiner";
+
+import React, { useEffect, useState } from 'react';
+import EmployeeInstance from '../../data-operations/data-queries/employees';
+import { showConfirmAlert } from '../my-alerts';
+import { Link } from 'react-router-dom';
+import { useAlert } from 'react-alert';
+import { useAuth } from '../../_services/auth-context';
+import { MyLoader } from './my-spiner';
+
 function ViewUsers() {
   const { currentUser } = useAuth();
   const empInstance = EmployeeInstance(currentUser);
@@ -85,25 +87,25 @@ function ViewUsers() {
       });
   };
 
-  const handleSingleDisable = () => {
-    setLoading(true);
-    empInstance
-      .disableEmployees([selectedEmployee])
-      .then((res) => {
-        alert.success("successfully change state employees!");
-        const index = employeesData.indexOf(selectedEmployee);
-        employeesData[index] = {
-          ...selectedEmployee,
-          disable: !selectedEmployee.disable,
-        };
-        setEmployeesData([...employeesData]);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-        alert.error(`oops! error due to ${err.message}`);
-      });
-  };
+
+	const handleSingleDisable = () => {
+		setLoading(true);
+		empInstance
+			.disableEmployees([ selectedEmployee ])
+			.then((res) => {
+				alert.success('successfully change state employees!');
+				const index = employeesData.indexOf(selectedEmployee);
+				employeesData[index] = { ...selectedEmployee, disable: !selectedEmployee.disable };
+				console.log(employeesData[index].disable);
+				setEmployeesData([ ...employeesData ]);
+
+				setLoading(false);
+			})
+			.catch((err) => {
+				setLoading(false);
+				alert.error(`oops! error due to ${err.message}`);
+			});
+	};
 
   const handleSingleDelete = () => {
     setLoading(true);
@@ -184,112 +186,88 @@ function ViewUsers() {
         </a>
       </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Full Name</th>
-            <th>Email</th>
-            <th>Employee ID</th>
-            <th>Position</th>
-            <th>Department</th>
-            <th>Salary</th>
-            <th>Allowance</th>
-            <th>Designation</th>
-            <th>Roles</th>
-            <th>Status</th>
-            <th>Select</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {employeesData.length > 0 ? (
-            employeesData.map((emp) => {
-              const index = employeesData.indexOf(emp) + 1;
-              return (
-                <tr key={index}>
-                  <td>{index}</td>
-                  <td>{emp.name}</td>
-                  <td>{emp.email}</td>
-                  <td>{emp.employee_id}</td>
-                  <td>
-                    {emp.positions.map((positions) => {
-                      return positions.position;
-                    })}
-                  </td>
-                  <td>
-                    {emp.departments.map((departments) => {
-                      return departments.department;
-                    })}
-                  </td>
-                  <td>{emp.basic_salary}</td>
-                  <td>
-                    {emp.allowances.map((allowances) => {
-                      return (
-                        <pre key={emp.allowances.indexOf(allowances)}>
-                          {allowances.allowance}
-                        </pre>
-                      );
-                    })}
-                  </td>
-                  <td>
-                    {emp.designations.map((designations) => {
-                      return designations.designation;
-                    })}
-                  </td>
-                  <td>
-                    {emp.roles.map((role) => {
-                      return role.role;
-                    })}
-                  </td>
-                  <td>{<pre>{emp.disable ? "Disabled" : "Active"}</pre>}</td>
-                  <td>
-                    <input
-                      type="checkbox"
-                      className="disable-btn-check"
-                      onChange={(e) => {
-                        handleCheck(e, emp);
-                      }}
-                    />
-                  </td>
-                  <td>
-                    <Link to="/userdetails" title="View Details">
-                      <i className="fa fa-eye" />
-                    </Link>
+			<table>
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Full Name</th>
+						<th>Email</th>
+						<th>Employee ID</th>
+						<th>Department</th>
+						<th>Salary</th>
+						<th>Roles</th>
+						<th>Status</th>
+						<th>Select</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{employeesData.length > 0 ? (
+						employeesData.map((emp) => {
+							const index = employeesData.indexOf(emp) + 1;
+							return (
+								<tr key={index}>
+									<td>{index}</td>
+									<td>{emp.name}</td>
+									<td>{emp.email}</td>
+									<td>{emp.employee_id}</td>
 
-                    <Link to="/edituserdetails">
-                      <i className="fa fa-pen" />
-                    </Link>
-                    <a
-                      title="Disable Employee"
-                      onClick={() => {
-                        setSeletecEmployee(emp);
-                        handleSingleDeleteAndDisable(false, emp);
-                      }}
-                    >
-                      <i className="fa fa-times" />
-                    </a>
-                    <a
-                      title="Delete Employee"
-                      onClick={() => {
-                        setSeletecEmployee(emp);
-                        handleSingleDeleteAndDisable(true, emp);
-                      }}
-                    >
-                      <i className="fa fa-trash" />
-                    </a>
-                  </td>
-                </tr>
-              );
-            })
-          ) : (
-            <tr>
-              <td colSpan="10">No data found</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-    </div>
-  );
+									<td>{emp.departments}</td>
+									<td>{emp.basic_salary}</td>
+
+									<td>
+										{emp.roles.map((role) => {
+											return role.role;
+										})}
+									</td>
+									<td>{<pre>{emp.disable ? 'Disabled' : 'Active'}</pre>}</td>
+									<td>
+										<input
+											type="checkbox"
+											className="disable-btn-check"
+											onChange={(e) => {
+												handleCheck(e, emp);
+											}}
+										/>
+									</td>
+									<td>
+										<Link to="/userdetails" title="View Details">
+											<i className="fa fa-eye" />
+										</Link>
+
+										<Link to="/edituserdetails">
+											<i className="fa fa-pen" />
+										</Link>
+										<a
+											title="Disable Employee"
+											onClick={() => {
+												setSeletecEmployee(emp);
+												handleSingleDeleteAndDisable(false, emp);
+											}}
+										>
+											<i className="fa fa-times" />
+										</a>
+										<a
+											title="Delete Employee"
+											onClick={() => {
+												setSeletecEmployee(emp);
+												handleSingleDeleteAndDisable(true, emp);
+											}}
+										>
+											<i className="fa fa-trash" />
+										</a>
+									</td>
+								</tr>
+							);
+						})
+					) : (
+						<tr>
+							<td colSpan="10">No data found</td>
+						</tr>
+					)}
+				</tbody>
+			</table>
+		</div>
+	);
 }
 export default ViewUsers;

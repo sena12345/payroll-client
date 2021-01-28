@@ -73,6 +73,7 @@ export const Modal = (props) => {
 		</div>
 	);
 };
+
 export const EditModal = (props) => {
 	const [ itemName, setItemName ] = useState();
 	const [ itemAmount, setItemAmount ] = useState();

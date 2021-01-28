@@ -8,10 +8,12 @@ import Home from './Views/dashboard/Home';
 import RegisterUser from './Views/dashboard/RegisterUser';
 import ViewUsers from './Views/dashboard/ViewUsers';
 import UserDetails from './Views/dashboard/UserDetails';
-import EditUserDetails from './Views/dashboard/EditUserDetails'
-import FieldsConfiguration from './Views/dashboard/FieldsConfiguration';
+import EditUserDetails from './Views/dashboard/EditUserDetails';
 import { transitions, positions, Provider as AlertProvider } from 'react-alert';
 import AlertTemplate from 'react-alert-template-basic';
+import Departments from './Views/dashboard/departments';
+import Designations from './Views/dashboard/designations';
+import Allowances from './Views/dashboard/allowances';
 function App() {
 	// optional configuration
 	const options = {
@@ -41,8 +43,14 @@ function App() {
 						<Route path="/userdetails">
 							<Home page={<UserDetails />} />
 						</Route>
-						<Route path="/configuration">
-							<Home page={<FieldsConfiguration />} />
+						<Route path="/department">
+							<Home page={<Departments />} />
+						</Route>
+						<Route path="/designation">
+							<Home page={<Designations />} />
+						</Route>
+						<Route path="/allowance">
+							<Home page={<Allowances />} />
 						</Route>
 						<Route path="/login" component={Login} />
 					</Switch>
