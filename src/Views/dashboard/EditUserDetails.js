@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { useHistory, useLocation } from "react-router-dom";
-import "../../assets/css/Form.css";
-import { useAuth } from "../../_services/auth-context";
-import Config from "../../data-operations/data-queries/config";
-import { useForm } from "react-hook-form";
-import { MyLoader } from "./my-spiner";
-import EmployeeInstance from "../../data-operations/data-queries/employees";
-import { useAlert } from "react-alert";
+
+import React, { useEffect, useState } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
+import '../../assets/css/Form.css';
+import { useAuth } from '../../_services/auth-context';
+import Config from '../../data-operations/data-queries/config';
+import { useForm } from 'react-hook-form';
+import { MyLoader } from './my-spiner';
+import EmployeeInstance from '../../data-operations/data-queries/employees';
+import { useAlert } from 'react-alert';
+import { showConfirmAlert } from '../my-alerts';
+
 function EditUserDetails() {
   const location = useLocation();
   const history = useHistory();
@@ -49,6 +52,7 @@ function EditUserDetails() {
   // 	const selectedValues = options.filter((x) => x.selected).map((x) => x.value);
   // 	return selectedValues;
   // };
+
 
   const onSubmit = (data) => {
     setLoading(true);
@@ -184,6 +188,7 @@ function EditUserDetails() {
               </div>
             </div>
 
+
             <div className="form-row">
               <div className="col-50">
                 <label htmlFor="contact">
@@ -257,6 +262,7 @@ function EditUserDetails() {
                 )}
               </div>
             </div>
+
 
             <div className="form-row">
               <div className="col-50">

@@ -187,6 +187,7 @@ function ViewUsers() {
         </button>
       </div>
 
+
       <table>
         <thead>
           <tr>
@@ -214,109 +215,105 @@ function ViewUsers() {
                   <td>{emp.email}</td>
                   <td>{emp.employee_id}</td>
 
-                  <td>
-                    <ol>
-                      {" "}
-                      {emp.departments.map((d) => {
-                        return <li key={d.department_id}>{d.department}</li>;
-                      })}
-                    </ol>
-                  </td>
-                  <td>
-                    <ol>
-                      {" "}
-                      {emp.designations.map((d) => {
-                        return <li key={d.designation_id}>{d.designation}</li>;
-                      })}
-                    </ol>
-                  </td>
-                  <td>{emp.basic_salary}</td>
 
-                  <td>
-                    <ol>
-                      {" "}
-                      {emp.roles.map((r) => {
-                        return <li key={r.role_id}>{r.role}</li>;
-                      })}
-                    </ol>
-                  </td>
-                  <td>
-                    {<pre>{emp.disable == true ? "Disabled" : "Active"}</pre>}
-                  </td>
-                  <td>
-                    <input
-                      type="checkbox"
-                      className="disable-btn-check"
-                      onChange={(e) => {
-                        handleCheck(e, emp);
-                      }}
-                    />
-                  </td>
-                  <td>
-                    <button
-                      className="bg-success"
-                      title="View Details"
-                      onClick={(e) => {
-                        if (e) {
-                          history.push({
-                            pathname: "/userdetails",
-                            state: { data: emp },
-                          });
-                        }
-                      }}
-                    >
-                      <i className="fa fa-eye" />
-                    </button>
+									<td>
+										<ol style={{ margin: '1rem' }}>
+											{' '}
+											{emp.departments.map((d) => {
+												return <li key={d.department_id}>{d.department}</li>;
+											})}
+										</ol>
+									</td>
+									<td>
+										<ol style={{ margin: '1rem' }}>
+											{' '}
+											{emp.designations.map((d) => {
+												return <li key={d.designation_id}>{d.designation}</li>;
+											})}
+										</ol>
+									</td>
+									<td>{emp.basic_salary}</td>
 
-                    <button
-                      className="bg-warning"
-                      onClick={(e) => {
-                        if (e) {
-                          history.push({
-                            pathname: "/edituserdetails",
-                            state: { data: emp },
-                          });
-                        }
-                      }}
-                    >
-                      <i className="fa fa-pen" />
-                    </button>
-                    <button
-                      className="bg-primary"
-                      title="Disable Employee"
-                      onClick={(e) => {
-                        if (e.target.dispatchEvent) {
-                          setSeletecEmployee(emp);
-                          handleConfirmSingleDisable(emp);
-                        }
-                      }}
-                    >
-                      <i className="fa fa-times" />
-                    </button>
-                    <button
-                      className="bg-danger"
-                      title="Delete Employee"
-                      onClick={(e) => {
-                        if (e.target.dispatchEvent) {
-                          setSeletecEmployee(emp);
-                          handleConfirmSingleDelete(emp);
-                        }
-                      }}
-                    >
-                      <i className="fa fa-trash" />
-                    </button>
-                  </td>
-                </tr>
-              );
-            })
-          ) : (
-            <tr>
-              <td colSpan="10">No data found</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-    </div>
-  );
+									<td>
+										<ol style={{ margin: '1rem' }}>
+											{' '}
+											{emp.roles.map((r) => {
+												return <li key={r.role_id}>{r.role}</li>;
+											})}
+										</ol>
+									</td>
+									<td>{<pre>{emp.disable == true ? 'Disabled' : 'Active'}</pre>}</td>
+									<td>
+										<input
+											type="checkbox"
+											className="disable-btn-check"
+											onChange={(e) => {
+												handleCheck(e, emp);
+											}}
+										/>
+									</td>
+									<td>
+										<button
+											className="bg-orange"
+											title="View Details"
+											onClick={(e) => {
+												if (e) {
+													history.push({ pathname: '/userdetails', state: { data: emp } });
+												}
+											}}
+										>
+											<i className="fa fa-eye" />
+										</button>
+
+										<button
+											className="bg-orange"
+											onClick={(e) => {
+												if (e) {
+													history.push({
+														pathname : '/edituserdetails',
+														state    : { data: emp }
+													});
+												}
+											}}
+										>
+											<i className="fa fa-pen" />
+										</button>
+										<button
+											className="bg-orange"
+											title="Disable Employee"
+											onClick={(e) => {
+												if (e.target.dispatchEvent) {
+													setSeletecEmployee(emp);
+													handleConfirmSingleDisable(emp);
+												}
+											}}
+										>
+											<i className="fa fa-times" />
+										</button>
+										<button
+											className="bg-orange"
+											title="Delete Employee"
+											onClick={(e) => {
+												if (e.target.dispatchEvent) {
+													setSeletecEmployee(emp);
+													handleConfirmSingleDelete(emp);
+												}
+											}}
+										>
+											<i className="fa fa-trash" />
+										</button>
+									</td>
+								</tr>
+							);
+						})
+					) : (
+						<tr>
+							<td colSpan="10">No data found</td>
+						</tr>
+					)}
+				</tbody>
+			</table>
+		</div>
+	);
 }
 export default ViewUsers;
