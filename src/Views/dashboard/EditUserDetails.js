@@ -102,7 +102,7 @@ function EditUserDetails() {
 		<MyLoader />
 	) : (
 		<div className="edituserdetails">
-			<h2>User Details</h2>
+			<h2>Edit User Details</h2>
 			<br />
 
 			<form onSubmit={handleSubmit(onSubmit)}>
