@@ -582,7 +582,7 @@ a {
 table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
-  width: 100rem;
+  width: 100%;
   zoom: 0.78;
 }
 
@@ -599,10 +599,8 @@ tr:nth-child(even) {
 
 button,
 a {
-
-	cursor: pointer;
-	background-color: transparent ;
-
+  cursor: pointer;
+  background-color: transparent;
 }
 
 .btn {
@@ -627,16 +625,14 @@ a {
 }
 
 tr button {
-	width: 1.5rem;
-	height: 1.5rem;
-	margin: 0.5rem;
-	background-color: #bc2612;
-
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: 0.5rem;
+}
 tr a {
   width: 1.5rem;
   height: 1.5rem;
   margin: 0.5rem;
-
 }
 
 tr input {
@@ -668,6 +664,7 @@ tr :hover {
 .action-btn-container button {
   margin: 10px;
   width: 8rem;
+  padding: 2px;
 }
 
 .toggle input {
@@ -726,13 +723,12 @@ tr :hover {
 
 /*FieldsConfiguration*/
 .fieldconfig {
-
-	width: 100vw;
-	height: 100vh;
-	font-family: "Roboto", sans-serif;
-	font-size: 20px;
-	padding: 2px 0px 0px 2px;
-	align-content: stretch;
+  width: 100vw;
+  height: 100vh;
+  font-family: "Roboto", sans-serif;
+  font-size: 20px;
+  padding: 2px 0px 0px 2px;
+  align-content: stretch;
 }
 
 .card {
@@ -777,11 +773,11 @@ tr :hover {
   font-size: 18px;
 }
 .card-btns {
-	width: 10vw;
+  width: 10vw;
 }
 
 .child-container p {
-	width: 45vw;
+  width: 45vw;
 }
 
 .card-head {
@@ -796,9 +792,9 @@ tr :hover {
 	margin: 15px;
 } */
 
-/* .fieldconfig .float-right {
-	float: right;
-}*/
+.float-right {
+  float: right;
+}
 
 .modal-btn {
   min-width: 8rem;
@@ -868,23 +864,23 @@ tr :hover {
 }
 
 .radio-container {
-	display: flex;
-	justify-content: space-around;
-	justify-items: center;
-	align-items: center;
-	padding: 1rem;
+  display: flex;
+  justify-content: space-around;
+  justify-items: center;
+  align-items: center;
+  padding: 1rem;
 }
 
 input[type="radio"] {
-	cursor: pointer;
-	width: 1.5rem;
-	height: 1.5rem;
+  cursor: pointer;
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .radio-container label {
-	font-size: larger;
-	cursor: pointer;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
+  font-size: larger;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
