@@ -50,6 +50,13 @@ function Home({ page }) {
 		}
 	};
 
+		let strName = currentUser.displayName;
+		var userInit = '';
+		var initials = strName.split(' ');
+		for (var i = 0; i < initials.length; i++) {		
+			userInit = userInit.concat(initials[i].charAt(0).concat('.'))		
+		}
+
 
 	return (
 		<div className="container-fluid">
@@ -78,7 +85,7 @@ function Home({ page }) {
 					<ul className="navbar-nav nav-right">
 						<li className="nav-item mode">
 							<pre className="nav-link" to="#">
-								{currentUser?currentUser.displayName[0]:'' }
+								{userInit?userInit:'' }
 							</pre>
 						</li>
 
