@@ -156,7 +156,7 @@ function ViewUsers() {
 			<div className="action-btn-container">
 				<button
 					title="enable or disable Selected"
-					className="bg-transparent"
+					className="bg-orange"
 					onClick={() => {
 						if (selectedEmployees.length < 1) {
 							alert.info('kindly select employees to disable!');
@@ -169,7 +169,7 @@ function ViewUsers() {
 				</button>
 				<button
 					title="Delete Selected"
-					className="bg-transparent"
+					className="bg-orange"
 					onClick={() => {
 						if (selectedEmployees.length < 1) {
 							alert.info('kindly select employees to delete!');
@@ -210,7 +210,7 @@ function ViewUsers() {
 									<td>{emp.employee_id}</td>
 
 									<td>
-										<ol>
+										<ol style={{ margin: '1rem' }}>
 											{' '}
 											{emp.departments.map((d) => {
 												return <li key={d.department_id}>{d.department}</li>;
@@ -218,7 +218,7 @@ function ViewUsers() {
 										</ol>
 									</td>
 									<td>
-										<ol>
+										<ol style={{ margin: '1rem' }}>
 											{' '}
 											{emp.designations.map((d) => {
 												return <li key={d.designation_id}>{d.designation}</li>;
@@ -228,7 +228,7 @@ function ViewUsers() {
 									<td>{emp.basic_salary}</td>
 
 									<td>
-										<ol>
+										<ol style={{ margin: '1rem' }}>
 											{' '}
 											{emp.roles.map((r) => {
 												return <li key={r.role_id}>{r.role}</li>;
@@ -247,6 +247,7 @@ function ViewUsers() {
 									</td>
 									<td>
 										<button
+											className="bg-orange"
 											title="View Details"
 											onClick={(e) => {
 												if (e) {
@@ -258,6 +259,7 @@ function ViewUsers() {
 										</button>
 
 										<button
+											className="bg-orange"
 											onClick={(e) => {
 												if (e) {
 													history.push({
@@ -270,6 +272,7 @@ function ViewUsers() {
 											<i className="fa fa-pen" />
 										</button>
 										<button
+											className="bg-orange"
 											title="Disable Employee"
 											onClick={(e) => {
 												if (e.target.dispatchEvent) {
@@ -281,6 +284,7 @@ function ViewUsers() {
 											<i className="fa fa-times" />
 										</button>
 										<button
+											className="bg-orange"
 											title="Delete Employee"
 											onClick={(e) => {
 												if (e.target.dispatchEvent) {
