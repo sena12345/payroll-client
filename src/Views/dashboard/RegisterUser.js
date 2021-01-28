@@ -129,6 +129,7 @@ function RegisterUser() {
   // 	});
   // 	setSortedDesignations(sortData);
   // };
+  
   const handleConfirm = (data) => {
     showConfirmAlert({
       title: "confirmation",
@@ -229,6 +230,7 @@ function RegisterUser() {
                   )}
                 </div>
               </div>
+
 
               <div className="form-row">
                 <div className="col-50">
