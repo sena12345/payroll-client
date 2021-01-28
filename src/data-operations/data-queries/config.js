@@ -1,6 +1,6 @@
 import axiosInstance from '../_sahred/data-source';
 import * as enpoints from '../_sahred/end-points';
-import { Allowance } from '../_sahred/models';
+// import { Allowance } from '../_sahred/models';
 
 const config = (currentUser) => {
 	// console.log(currentUser);

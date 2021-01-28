@@ -43,20 +43,19 @@ function Home({ page }) {
 
 	const handlePasswordReset = async () => {
 		try {
-			await resetPassword(currentUser?currentUser.email:'');
+			await resetPassword(currentUser ? currentUser.email : '');
 			alert.success(`Reset link sent to your ${currentUser.email}`);
 		} catch (error) {
 			alert.error(error.message);
 		}
 	};
 
-		let strName = currentUser.displayName;
-		var userInit = '';
-		var initials = strName.split(' ');
-		for (var i = 0; i < initials.length; i++) {		
-			userInit = userInit.concat(initials[i].charAt(0).concat('.'))		
-		}
-
+	let strName = currentUser ? currentUser.displayName : '';
+	var userInit = '';
+	var initials = strName.split(' ');
+	for (var i = 0; i < initials.length; i++) {
+		userInit = userInit.concat(initials[i].charAt(0).concat('.'));
+	}
 
 	return (
 		<div className="container-fluid">
@@ -77,21 +76,24 @@ function Home({ page }) {
 						<i className="fas fa-search" />
 					</form>
 					<div className="nav-link">
-						<span>
-							{currentUser? currentUser.email:''}
-						</span>
+						<span>{currentUser ? currentUser.email : ''}</span>
 					</div>
 
 					<ul className="navbar-nav nav-right">
 						<li className="nav-item mode">
 							<pre className="nav-link" to="#">
-								{userInit?userInit:'' }
+								{userInit ? userInit : ''}
 							</pre>
 						</li>
 
 						<li className="nav-item avt-wrapper">
 							<div className="avt dropdown">
-								<img src={ currentUser?currentUser.photoURL:'../../../public/img/usr.png'} className="dropdown-toggle" data-toggle="user-menu" alt="" />
+								<img
+									src={currentUser ? currentUser.photoURL : '../../../public/img/usr.png'}
+									className="dropdown-toggle"
+									data-toggle="user-menu"
+									alt=""
+								/>
 								<ul id="user-menu" className="dropdown-menu">
 									<li className="dropdown-menu-item">
 										<Link to="#" className="dropdown-menu-link">
