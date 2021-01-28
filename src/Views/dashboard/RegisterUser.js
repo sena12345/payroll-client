@@ -129,7 +129,7 @@ function RegisterUser() {
 	const handleConfirm = (data) => {
 		showConfirmAlert({
 			title   : 'confirmation',
-			message : `Continue to add ${data.name} to employees?`,
+			message : `Continue to add ${data.name} to employees ?`,
 			buttons : [
 				{
 					label   : 'No',
