@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import Image from '../../assets/images/avataaars.png';
+import Image from '../../assets/images/img.png';
 import '../../assets/css/Form.css';
 
 import { useAuth } from '../../_services/auth-context';
@@ -24,7 +24,7 @@ function UserDetails() {
 								<div className="form-row">
 									<div className="col-25">
 										<div className="imgcontainer">
-											<img src={currentUser.photoURL} alt="image" className="image" />
+											<img src={Image} alt="image" className="image" />
 										</div>
 										<div className="details-box">
 											<label htmlFor="username">
