@@ -86,6 +86,7 @@ export default function Allowances() {
 						onClick={() => {
 							setIsEdit(false);
 							setShow(true);
+							setSelected({ flat: '' });
 						}}
 						className="bg-success"
 					>

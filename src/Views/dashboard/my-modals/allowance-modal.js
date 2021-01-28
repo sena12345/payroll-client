@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../../_services/auth-context';
 import Config from '../../../data-operations/data-queries/config';
-import { Allowance, Department, Designation } from '../../../data-operations/_sahred/models';
 import { useAlert } from 'react-alert';
 import { useForm } from 'react-hook-form';
 
@@ -13,7 +12,7 @@ export default function AllowanceModal(props) {
 	const [ departments, setDepartments ] = useState([]);
 	const [ designations, setDesignations ] = useState([]);
 	const [ sortedDesignations, setSortedDesignations ] = useState([]);
-	const { register, handleSubmit, errors, reset } = useForm();
+	const { register, handleSubmit, reset } = useForm();
 	const freqs = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ];
 
 	useEffect(
@@ -41,7 +40,7 @@ export default function AllowanceModal(props) {
 		const sortData = [];
 		designations.forEach((des) => {
 			des.departments.forEach((dep) => {
-				if (dep.department_id == val.target.value) {
+				if (dep.department_id === val.target.value) {
 					sortData.push(des);
 				}
 			});
@@ -115,7 +114,7 @@ export default function AllowanceModal(props) {
 							<label htmlFor="amount">Amount</label>
 							<input
 								required
-								defaultValue={props.isEdit ? props.data.amount : 0}
+								defaultValue={props && props.isEdit ? props.data.amount : 0}
 								ref={register({ required: true })}
 								id="amount"
 								name="amount"
@@ -131,7 +130,7 @@ export default function AllowanceModal(props) {
 									required
 									type="radio"
 									id="flat"
-									defaultChecked={props.isEdit ? props.data.flat ? true : false : true}
+									defaultChecked={props && props.isEdit ? props.data.flat ? true : false : true}
 									name="flat"
 									value={isFlat}
 									ref={register({ required: true })}
@@ -145,7 +144,7 @@ export default function AllowanceModal(props) {
 									required
 									type="radio"
 									id="calculated"
-									defaultChecked={props.isEdit ? props.data.flat ? false : true : false}
+									defaultChecked={props && props.isEdit ? props.data.flat ? false : true : false}
 									name="flat"
 									value={isFlat}
 									ref={register({ required: true })}
@@ -159,8 +158,18 @@ export default function AllowanceModal(props) {
 							<label htmlFor="percentage">Percentage(%)</label>
 							<input
 								required
-								defaultValue={props.isEdit ? props.data.percentage : 0}
-								readOnly={!props.data.isEdit ? isFlat ? true : false : props.data.flat ? true : false}
+								defaultValue={props.data && props.isEdit ? props.data.percentage : 0}
+								readOnly={
+									!props && !props.data.isEdit ? isFlat ? (
+										true
+									) : (
+										false
+									) : props && props.data.flat ? (
+										true
+									) : (
+										false
+									)
+								}
 								ref={register()}
 								id="percentage"
 								name="percentage"
@@ -174,7 +183,7 @@ export default function AllowanceModal(props) {
 							<label htmlFor="department">Departments</label>
 							<select
 								required
-								defaultValue={props.isEdit ? props.data.department_id : ''}
+								defaultValue={props && props.isEdit ? props.data.department_id : ''}
 								ref={register({ required: true })}
 								name="department"
 								id="department"
@@ -197,7 +206,7 @@ export default function AllowanceModal(props) {
 							<label htmlFor="designation">Designations</label>
 							<select
 								required
-								defaultValue={props.isEdit ? props.data.department_id : ''}
+								defaultValue={props && props.isEdit ? props.data.department_id : ''}
 								ref={register}
 								name="designation"
 								id="designation"
@@ -219,7 +228,7 @@ export default function AllowanceModal(props) {
 						<div>
 							<label htmlFor="frequency">Frequency(Monthly)</label>
 							<input
-								defaultValue={props.isEdit ? props.data.frequency : '0.0'}
+								defaultValue={props && props.isEdit ? props.data.frequency : '0.0'}
 								required
 								className="modal-field-value"
 								list="dl"

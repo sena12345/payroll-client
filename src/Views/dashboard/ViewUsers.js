@@ -1,104 +1,77 @@
-
 import React, { useEffect, useState } from 'react';
 import EmployeeInstance from '../../data-operations/data-queries/employees';
 import { showConfirmAlert } from '../my-alerts';
-import { Link } from 'react-router-dom';
 import { useAlert } from 'react-alert';
 import { useAuth } from '../../_services/auth-context';
 import { MyLoader } from './my-spiner';
-
+import { useHistory } from 'react-router-dom';
 function ViewUsers() {
-  const { currentUser } = useAuth();
-  const empInstance = EmployeeInstance(currentUser);
-  const [employeesData, setEmployeesData] = useState([]);
-  const [selectedEmployee, setSeletecEmployee] = useState();
-  const [load, setLoading] = useState("true");
-  const alert = useAlert();
-  const selectedEmployees = [];
-  useEffect(() => {
-    empInstance.getEmployees().then((res) => {
-      if (load) {
-        setEmployeesData(res.data.content);
-        console.log(employeesData);
-        setLoading(false);
-      }
-    });
-  }, [load]);
+	const { currentUser } = useAuth();
+	const history = useHistory();
+	const empInstance = EmployeeInstance(currentUser);
+	const [ employeesData, setEmployeesData ] = useState([]);
+	const [ selectedEmployee, setSeletecEmployee ] = useState();
+	const [ load, setLoading ] = useState(true);
+	const alert = useAlert();
+	const selectedEmployees = [];
+	useEffect(
+		() => {
+			if (load) {
+				empInstance
+					.getEmployees()
+					.then((res) => {
+						setEmployeesData(res.data.content);
+						setLoading(false);
+					})
+					.catch((err) => {
+						setLoading(false);
+						console.log(err);
+					});
+			}
+		},
+		[ load ]
+	);
 
-  const handleConfirm = (title, message, action) => {
-    showConfirmAlert({
-      title: title,
-      message: message,
-      buttons: [
-        {
-          label: "No",
-          onClick: () => {
-            console.log("cancel");
-          },
-        },
-        {
-          label: "Yes",
-          onClick: () => action(),
-        },
-      ],
-    });
-  };
+	const handleConfirm = (title, message, action) => {
+		showConfirmAlert({
+			title   : title,
+			message : message,
+			buttons : [
+				{
+					label   : 'No',
+					onClick : () => {
+						console.log('cancel');
+					}
+				},
+				{
+					label   : 'Yes',
+					onClick : () => action()
+				}
+			]
+		});
+	};
 
-  const handleCheck = (e, employee) => {
-    if (e.target.checked === true) {
-      selectedEmployees.push(employee);
-      return;
-    }
+	const handleCheck = (e, employee) => {
+		if (e.target.checked === true) {
+			selectedEmployees.push(employee);
+			return;
+		}
 
-    selectedEmployees.splice(selectedEmployees.indexOf(employee), 1);
-    return;
-  };
+		selectedEmployees.splice(selectedEmployees.indexOf(employee), 1);
+		return;
+	};
 
-  const handleMultiDisable = () => {
-    setLoading(true);
-    empInstance
-      .disableEmployees(selectedEmployees)
-      .then((res) => {
-        alert.success("successfully change state of employees!");
-        for (const emp of selectedEmployees) {
-          const index = employeesData.indexOf(emp);
-          employeesData[index] = { ...emp, disable: !emp.disable };
-          setEmployeesData([...employeesData]);
-        }
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-        alert.error(`oops! error due to ${err.message}`);
-      });
-  };
-
-  const handleMultiDelete = () => {
-    setLoading(true);
-    empInstance
-      .deleteEmployees(selectedEmployees)
-      .then((res) => {
-        alert.success("successfully deleted employees!");
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-        alert.error(`oops! error due to ${err.message}`);
-      });
-  };
-
-
-	const handleSingleDisable = () => {
+	const handleMultiDisable = () => {
 		setLoading(true);
 		empInstance
-			.disableEmployees([ selectedEmployee ])
+			.disableEmployees(selectedEmployees)
 			.then((res) => {
-				alert.success('successfully change state employees!');
-				const index = employeesData.indexOf(selectedEmployee);
-				employeesData[index] = { ...selectedEmployee, disable: !selectedEmployee.disable };
-				console.log(employeesData[index].disable);
-				setEmployeesData([ ...employeesData ]);
-
+				alert.success('successfully change state of employees!');
+				for (const emp of selectedEmployees) {
+					const index = employeesData.indexOf(emp);
+					employeesData[index] = { ...emp, disable: !emp.disable };
+					setEmployeesData([ ...employeesData ]);
+				}
 				setLoading(false);
 			})
 			.catch((err) => {
@@ -107,84 +80,107 @@ function ViewUsers() {
 			});
 	};
 
-  const handleSingleDelete = () => {
-    setLoading(true);
-    empInstance
-      .deleteEmployees([selectedEmployee])
-      .then((res) => {
-        alert.success("successfully deleted employees!");
-        setLoading(false);
-      })
-      .catch((err) => {
-        alert.error(`oops! error due to ${err.message}`);
-        setLoading(false);
-      });
-  };
+	const handleMultiDelete = () => {
+		setLoading(true);
+		empInstance
+			.deleteEmployees(selectedEmployees)
+			.then((res) => {
+				setLoading(true);
+				alert.success('successfully deleted employees!');
+			})
+			.catch((err) => {
+				setLoading(false);
+				alert.error(`oops! error due to ${err.message}`);
+			});
+	};
 
-  const handleMultiDisableAndDeleteList = (isDelete) => {
-    if (!isDelete) {
-      handleConfirm(
-        "Confirm",
-        `Continue to change status of ${selectedEmployees.length} employees?`,
-        handleMultiDisable
-      );
-    } else {
-      handleConfirm(
-        "Warning",
-        `You are about to permanently delete ${selectedEmployees.length} employees?`,
-        handleMultiDelete
-      );
-    }
-  };
+	const handleSingleDisable = () => {
+		// setLoading(true);
+		empInstance
+			.disableEmployees([ selectedEmployee ])
+			.then((res) => {
+				alert.success('successfully change state employees!');
+				setLoading(true);
+			})
+			.catch((err) => {
+				setLoading(false);
+				alert.error(`oops! error due to ${err.message}`);
+			});
+	};
 
-  const handleSingleDeleteAndDisable = (isDelete, employee) => {
-    if (!isDelete) {
-      handleConfirm(
-        "Confirm",
-        `Continue to changes status of ${employee.name}?`,
-        handleSingleDisable
-      );
-    } else {
-      handleConfirm(
-        "Warning",
-        `You are about to permanently delete ${employee.name}?`,
-        handleSingleDelete
-      );
-    }
-  };
+	const handleSingleDelete = () => {
+		setLoading(true);
+		empInstance
+			.deleteEmployees([ selectedEmployee ])
+			.then((res) => {
+				alert.success('successfully deleted employees!');
+				setLoading(false);
+			})
+			.catch((err) => {
+				alert.error(`oops! error due to ${err.message}`);
+				setLoading(false);
+			});
+	};
 
-  return load ? (
-    <MyLoader />
-  ) : (
-    <div className="Viewusers">
-      <div className="action-btn-container">
-        <a
-          title="enable or disable Selected"
-          className="btn bg-transparent"
-          onClick={() => {
-            if (selectedEmployees.length < 1) {
-              alert.info("kindly select employees to disable!");
-              return;
-            }
-            handleMultiDisableAndDeleteList(false);
-          }}
-        >
-          Change state <i className="fa fa-times " />
-        </a>
-        <a
-          title="Delete Selected"
-          className="btn bg-transparent"
-          onClick={() => {
-            if (selectedEmployees.length < 1) {
-              alert.info("kindly select employees to delete!");
-              return;
-            }
-            handleMultiDisableAndDeleteList(true);
-          }}
-        >
-          Delete selected <i className="fa fa-trash" />
-        </a>
-      </div>
+	const handleMultiDisableAndDeleteList = (isDelete) => {
+		if (!isDelete) {
+			handleConfirm(
+				'Confirm',
+				`Continue to change status of ${selectedEmployees.length} employees?`,
+				handleMultiDisable
+			);
+		} else {
+			handleConfirm(
+				'Warning',
+				`You are about to permanently delete ${selectedEmployees.length} employees?`,
+				handleMultiDelete
+			);
+		}
+	};
+
+	const handleConfirmSingleDisable = (employee) => {
+		if (!employee) return;
+
+		handleConfirm('Confirm', `Continue to changes status of ${employee.name}?`, handleSingleDisable);
+	};
+
+	const handleConfirmSingleDelete = (employee) => {
+		if (!employee) return;
+		handleConfirm('Confirm', `Continue to changes status of ${employee.name}?`, handleSingleDelete);
+	};
+
+	return load ? (
+		<MyLoader />
+	) : (
+		<div className="Viewusers">
+			<div className="action-btn-container">
+				<button
+					title="enable or disable Selected"
+					className="bg-transparent"
+					onClick={() => {
+						if (selectedEmployees.length < 1) {
+							alert.info('kindly select employees to disable!');
+							return null;
+						}
+						handleMultiDisableAndDeleteList(false);
+					}}
+				>
+					Change state <i className="fa fa-times " />
+				</button>
+				<button
+					title="Delete Selected"
+					className="bg-transparent"
+					onClick={() => {
+						if (selectedEmployees.length < 1) {
+							alert.info('kindly select employees to delete!');
+							return;
+						}
+						handleMultiDisableAndDeleteList(true);
+					}}
+				>
+					Delete selected <i className="fa fa-trash" />
+				</button>
+			</div>
 
 			<table>
 				<thead>
@@ -194,6 +190,7 @@ function ViewUsers() {
 						<th>Email</th>
 						<th>Employee ID</th>
 						<th>Department</th>
+						<th>Designation</th>
 						<th>Salary</th>
 						<th>Roles</th>
 						<th>Status</th>
@@ -212,15 +209,33 @@ function ViewUsers() {
 									<td>{emp.email}</td>
 									<td>{emp.employee_id}</td>
 
-									<td>{emp.departments}</td>
+									<td>
+										<ol>
+											{' '}
+											{emp.departments.map((d) => {
+												return <li key={d.department_id}>{d.department}</li>;
+											})}
+										</ol>
+									</td>
+									<td>
+										<ol>
+											{' '}
+											{emp.designations.map((d) => {
+												return <li key={d.designation_id}>{d.designation}</li>;
+											})}
+										</ol>
+									</td>
 									<td>{emp.basic_salary}</td>
 
 									<td>
-										{emp.roles.map((role) => {
-											return role.role;
-										})}
+										<ol>
+											{' '}
+											{emp.roles.map((r) => {
+												return <li key={r.role_id}>{r.role}</li>;
+											})}
+										</ol>
 									</td>
-									<td>{<pre>{emp.disable ? 'Disabled' : 'Active'}</pre>}</td>
+									<td>{<pre>{emp.disable == true ? 'Disabled' : 'Active'}</pre>}</td>
 									<td>
 										<input
 											type="checkbox"
@@ -231,31 +246,51 @@ function ViewUsers() {
 										/>
 									</td>
 									<td>
-										<Link to="/userdetails" title="View Details">
+										<button
+											title="View Details"
+											onClick={(e) => {
+												if (e) {
+													history.push({ pathname: '/userdetails', state: { data: emp } });
+												}
+											}}
+										>
 											<i className="fa fa-eye" />
-										</Link>
+										</button>
 
-										<Link to="/edituserdetails">
+										<button
+											onClick={(e) => {
+												if (e) {
+													history.push({
+														pathname : '/edituserdetails',
+														state    : { data: emp }
+													});
+												}
+											}}
+										>
 											<i className="fa fa-pen" />
-										</Link>
-										<a
+										</button>
+										<button
 											title="Disable Employee"
-											onClick={() => {
-												setSeletecEmployee(emp);
-												handleSingleDeleteAndDisable(false, emp);
+											onClick={(e) => {
+												if (e.target.dispatchEvent) {
+													setSeletecEmployee(emp);
+													handleConfirmSingleDisable(emp);
+												}
 											}}
 										>
 											<i className="fa fa-times" />
-										</a>
-										<a
+										</button>
+										<button
 											title="Delete Employee"
-											onClick={() => {
-												setSeletecEmployee(emp);
-												handleSingleDeleteAndDisable(true, emp);
+											onClick={(e) => {
+												if (e.target.dispatchEvent) {
+													setSeletecEmployee(emp);
+													handleConfirmSingleDelete(emp);
+												}
 											}}
 										>
 											<i className="fa fa-trash" />
-										</a>
+										</button>
 									</td>
 								</tr>
 							);

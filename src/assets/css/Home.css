@@ -597,8 +597,12 @@ tr:nth-child(even) {
   background-color: #dddddd;
 }
 
+button,
 a {
-  cursor: pointer;
+
+	cursor: pointer;
+	background-color: transparent ;
+
 }
 
 .btn {
@@ -622,10 +626,17 @@ a {
   user-select: none;
 }
 
+tr button {
+	width: 1.5rem;
+	height: 1.5rem;
+	margin: 0.5rem;
+	background-color: #bc2612;
+
 tr a {
   width: 1.5rem;
   height: 1.5rem;
   margin: 0.5rem;
+
 }
 
 tr input {

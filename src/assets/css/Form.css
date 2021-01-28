@@ -48,14 +48,28 @@
 
 .form-row .col-50 input[type="text"],
 input[type="email"],
-select,
+
+input[type="tel"] {
+	width: 100%;
+	padding: 12px 20px;
+	margin: 8px 0;
+	display: inline-block;
+	border-radius: 0px;
+	box-sizing: border-box;
+	font-size: 17px;
+}
+
+select {
+	width: 100%;
+	padding: 0px 0px;
+	margin: 8px 0;
+	border-radius: 0px;
+	box-sizing: border-box;
+	font-size: 17px;
+}
+
 option {
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border-radius: 0px;
-  box-sizing: border-box;
-  font-size: 17px;
+	border: transparent;
 }
 
 .form-btn {

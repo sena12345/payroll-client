@@ -22,7 +22,7 @@ function RegisterUser() {
 	const [ roles, setRoles ] = useState([ Roles ]);
 	const [ departments, setDepartments ] = useState([ Department ]);
 	const [ designations, setDesignations ] = useState([ Designation ]);
-	const [ sortedDesignations, setSortedDesignations ] = useState([ Designation ]);
+	// const [ sortedDesignations, setSortedDesignations ] = useState([ Designation ]);
 	const [ cardTypes, setCardTypes ] = useState([]);
 	const [ isEnabled, setEnabled ] = useState(false);
 	const [ loading, setLoading ] = useState(true);
@@ -76,6 +76,18 @@ function RegisterUser() {
 	}, []);
 
 	const onSubmit = (data) => {
+		let rolesData = [];
+		data.role.forEach((rol) => {
+			rolesData.push({ role_id: parseInt(rol) });
+		});
+		let departmentData = [];
+		data.department.forEach((dep) => {
+			departmentData.push({ department_id: parseInt(dep) });
+		});
+		let designationData = [];
+		data.designation.forEach((des) => {
+			designationData.push({ designation_id: parseInt(des) });
+		});
 		const employee = {
 			employee_id   : data.employee_id,
 			email         : data.email,
@@ -89,12 +101,13 @@ function RegisterUser() {
 			disable       : isEnabled,
 			marriage_cert : data.marriage_certificate,
 			tin           : data.tin_number,
-			roles         : data.role ? [ { role_id: parseInt(data.role) } ] : [],
+			roles         : rolesData,
 
-			departments   : data.department ? [ { department_id: parseInt(data.department) } ] : [],
+			departments   : departmentData,
 			// allowances    : data.allowance ? [ { allowance_id: parseInt(data.allowance) } ] : [],
-			designations  : data.designation ? [ { designation_id: parseInt(data.designation) } ] : []
+			designations  : designationData
 		};
+
 		setLoading(true);
 		empInstance
 			.addEmployees(employee)
@@ -109,16 +122,16 @@ function RegisterUser() {
 			});
 	};
 
-	const handleSetDesignation = (val) => {
-		const sortData = [];
-		designations.forEach((des) => {
-			console.log('des: ', des.departments.department, val.target.value);
-			if (des.departments.department_id == val.target.value) {
-				sortData.push(des);
-			}
-		});
-		setSortedDesignations(sortData);
-	};
+	// const handleSetDesignation = (val) => {
+	// 	const sortData = [];
+	// 	designations.forEach((des) => {
+	// 		console.log('des: ', des.departments.department, val.target.value);
+	// 		if (des.departments.department_id == val.target.value) {
+	// 			sortData.push(des);
+	// 		}
+	// 	});
+	// 	setSortedDesignations(sortData);
+	// };
 
 	const handleConfirm = (data) => {
 		showConfirmAlert({
@@ -244,13 +257,7 @@ function RegisterUser() {
 							<div className="form-row">
 								<div className="col-50">
 									<label htmlFor="department">Department</label>
-									<select
-										ref={register}
-										type="text"
-										id="department"
-										name="department"
-										onChange={(val) => handleSetDesignation(val)}
-									>
+									<select ref={register} multiple type="text" id="department" name="department">
 										<option />
 										<option defaultValue disabled>
 											choose option...
@@ -266,11 +273,11 @@ function RegisterUser() {
 								</div>
 								<div className="col-50">
 									<label htmlFor="designation">Designation</label>
-									<select ref={register} type="text" id="designation" name="designation">
+									<select ref={register} type="text" id="designation" name="designation" multiple>
 										<option defaultValue disabled>
 											choose option...
 										</option>
-										{sortedDesignations.map((designation) => {
+										{designations.map((designation) => {
 											return (
 												<option
 													key={designation.designation_id}
@@ -298,7 +305,7 @@ function RegisterUser() {
 							<div className="form-row">
 								<div className="col-50">
 									<label htmlFor="role">Role</label>
-									<select ref={register} type="text" id="role" name="role">
+									<select multiple ref={register} type="text" id="role" name="role">
 										<option defaultValue disabled>
 											choose option...
 										</option>
