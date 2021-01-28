@@ -10,6 +10,7 @@ import { showConfirmAlert } from '../my-alerts';
 import { useAlert } from 'react-alert';
 import { MyLoader } from './my-spiner';
 function RegisterUser() {
+
 	const { currentUser } = useAuth();
 	const alert = useAlert();
 	const [ roles, setRoles ] = useState([ Roles ]);
@@ -24,107 +25,108 @@ function RegisterUser() {
 	const empInstance = EmployeeInstance(currentUser);
 	const { register, handleSubmit, errors, reset } = useForm();
 
-	function fetchInits() {
-		queriesStore
-			.getRoles()
-			.then((res) => {
-				setRoles(res.data);
-			})
-			.catch((err) => {
-				alert.error(`oops failed to load roles ${err.message}`);
-			});
-		queriesStore
-			.getCardTypes()
-			.then((res) => {
-				setCardTypes(res.data);
-			})
-			.catch((err) => {
-				alert.error(`oops failed to load cardTypes ${err.message}`);
-			});
+  function fetchInits() {
+    queriesStore
+      .getRoles()
+      .then((res) => {
+        setRoles(res.data);
+      })
+      .catch((err) => {
+        alert.error(`oops failed to load roles ${err.message}`);
+      });
+    queriesStore
+      .getCardTypes()
+      .then((res) => {
+        setCardTypes(res.data);
+      })
+      .catch((err) => {
+        alert.error(`oops failed to load cardTypes ${err.message}`);
+      });
 
-		queriesStore
-			.getDepartments()
-			.then((res) => {
-				setDepartments(res.data);
-			})
-			.catch((err) => {
-				alert.error(`oops failed to load departments ${err.message}`);
-			});
+    queriesStore
+      .getDepartments()
+      .then((res) => {
+        setDepartments(res.data);
+      })
+      .catch((err) => {
+        alert.error(`oops failed to load departments ${err.message}`);
+      });
 
-		queriesStore
-			.getAllDesignation()
-			.then((res) => {
-				setDesignations(res.data);
+    queriesStore
+      .getAllDesignation()
+      .then((res) => {
+        setDesignations(res.data);
 
-				setLoading(false);
-			})
-			.catch((err) => {
-				alert.error(`oops failed to load designations ${err.message}`);
-				setLoading(false);
-			});
-	}
+        setLoading(false);
+      })
+      .catch((err) => {
+        alert.error(`oops failed to load designations ${err.message}`);
+        setLoading(false);
+      });
+  }
 
-	useEffect(() => {
-		fetchInits();
-	}, []);
+  useEffect(() => {
+    fetchInits();
+  }, []);
 
-	const onSubmit = (data) => {
-		let rolesData = [];
-		data.role.forEach((rol) => {
-			rolesData.push({ role_id: parseInt(rol) });
-		});
-		let departmentData = [];
-		data.department.forEach((dep) => {
-			departmentData.push({ department_id: parseInt(dep) });
-		});
-		let designationData = [];
-		data.designation.forEach((des) => {
-			designationData.push({ designation_id: parseInt(des) });
-		});
-		const employee = {
-			employee_id   : data.employee_id,
-			email         : data.email,
-			name          : data.name,
-			gender        : data.gender,
-			ssnit         : data.ssnit,
-			cardType      : parseInt(data.cardtype),
-			cardNumber    : data.cardnumber,
-			phone         : data.phone,
-			basic_salary  : parseFloat(data.basic_salary),
-			disable       : isEnabled,
-			marriage_cert : data.marriage_certificate,
-			tin           : data.tin_number,
-			roles         : rolesData,
+  const onSubmit = (data) => {
+    let rolesData = [];
+    data.role.forEach((rol) => {
+      rolesData.push({ role_id: parseInt(rol) });
+    });
+    let departmentData = [];
+    data.department.forEach((dep) => {
+      departmentData.push({ department_id: parseInt(dep) });
+    });
+    let designationData = [];
+    data.designation.forEach((des) => {
+      designationData.push({ designation_id: parseInt(des) });
+    });
+    const employee = {
+      employee_id: data.employee_id,
+      email: data.email,
+      name: data.name,
+      gender: data.gender,
+      ssnit: data.ssnit,
+      cardType: parseInt(data.cardtype),
+      cardNumber: data.cardnumber,
+      phone: data.phone,
+      basic_salary: parseFloat(data.basic_salary),
+      disable: isEnabled,
+      marriage_cert: data.marriage_certificate,
+      tin: data.tin_number,
+      roles: rolesData,
 
-			departments   : departmentData,
-			// allowances    : data.allowance ? [ { allowance_id: parseInt(data.allowance) } ] : [],
-			designations  : designationData
-		};
+      departments: departmentData,
+      // allowances    : data.allowance ? [ { allowance_id: parseInt(data.allowance) } ] : [],
+      designations: designationData,
+    };
 
-		setLoading(true);
-		empInstance
-			.addEmployees(employee)
-			.then((res) => {
-				alert.success(`${res.data.name} data submited successfully!`);
-				reset();
-				setLoading(false);
-			})
-			.catch((err) => {
-				alert.error(`error due to ${err.message}`);
-				setLoading(false);
-			});
-	};
+    setLoading(true);
+    empInstance
+      .addEmployees(employee)
+      .then((res) => {
+        alert.success(`${res.data.name} data submited successfully!`);
+        reset();
+        setLoading(false);
+      })
+      .catch((err) => {
+        alert.error(`error due to ${err.message}`);
+        setLoading(false);
+      });
+  };
 
-	// const handleSetDesignation = (val) => {
-	// 	const sortData = [];
-	// 	designations.forEach((des) => {
-	// 		console.log('des: ', des.departments.department, val.target.value);
-	// 		if (des.departments.department_id == val.target.value) {
-	// 			sortData.push(des);
-	// 		}
-	// 	});
-	// 	setSortedDesignations(sortData);
-	// };
+  // const handleSetDesignation = (val) => {
+  // 	const sortData = [];
+  // 	designations.forEach((des) => {
+  // 		console.log('des: ', des.departments.department, val.target.value);
+  // 		if (des.departments.department_id == val.target.value) {
+  // 			sortData.push(des);
+  // 		}
+  // 	});
+  // 	setSortedDesignations(sortData);
+  // };
+
 
 	const handleConfirm = (data) => {
 		showConfirmAlert({
@@ -146,6 +148,7 @@ function RegisterUser() {
 			]
 		});
 	};
+
 
 	return loading ? (
 		<MyLoader />
@@ -215,162 +218,213 @@ function RegisterUser() {
 								</div>
 							</div>
 
-							<div className="form-row">
-								<div className="col-50">
-									<label htmlFor="contact">
-										<i className="fa fa-phone-alt" /> Contact
-									</label>
-									<input
-										ref={register({ maxLength: 16 })}
-										name="phone"
-										type="text"
-										id="contact"
-										placeholder="XXXXXXXXXXXX"
-									/>
-								</div>
-							</div>
-						</div>
-						<div className="col-50">
-							<b>Other Details</b>
-							<br />
-							<div className="form-row">
-								<div className="col-50">
-									<label htmlFor="department">Department</label>
-									<select ref={register} multiple type="text" id="department" name="department">
-										<option />
-										<option defaultValue disabled>
-											choose option...
-										</option>
-										{departments.map((department) => {
-											return (
-												<option key={department.department} value={department.department_id}>
-													{department.department}
-												</option>
-											);
-										})}
-									</select>
-								</div>
-								<div className="col-50">
-									<label htmlFor="designation">Designation</label>
-									<select ref={register} type="text" id="designation" name="designation" multiple>
-										<option defaultValue disabled>
-											choose option...
-										</option>
-										{designations.map((designation) => {
-											return (
-												<option
-													key={designation.designation_id}
-													value={designation.designation_id}
-												>
-													{designation.designation}
-												</option>
-											);
-										})}
-									</select>
-								</div>
-							</div>
-							<div className="form-row">
-								<div className="col-50">
-									<label htmlFor="basic-salary">Basic Salary</label>
-									<input
-										ref={register}
-										type="text"
-										id="basic-salary"
-										name="basic_salary"
-										placeholder="0.0"
-									/>
-								</div>
-							</div>
-							<div className="form-row">
-								<div className="col-50">
-									<label htmlFor="role">Role</label>
-									<select multiple ref={register} type="text" id="role" name="role">
-										<option defaultValue disabled>
-											choose option...
-										</option>
+              <div className="form-row">
+                <div className="col-50">
+                  <label htmlFor="contact">
+                    <i className="fa fa-phone-alt" /> Contact
+                  </label>
+                  <input
+                    ref={register({ maxLength: 16 })}
+                    name="phone"
+                    type="text"
+                    id="contact"
+                    placeholder="XXXXXXXXXXXX"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="col-50">
+              <b>Other Details</b>
+              <br />
+              <div className="form-row">
+                <div className="col-50">
+                  <label htmlFor="department">Department</label>
+                  <select
+                    ref={register}
+                    multiple
+                    type="text"
+                    id="department"
+                    name="department"
+                  >
+                    <option className="form-option" defaultValue disabled>
+                      choose option...
+                    </option>
+                    {departments.map((department) => {
+                      return (
+                        <option
+                          className="form-option"
+                          key={department.department}
+                          value={department.department_id}
+                        >
+                          {department.department}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+                <div className="col-50">
+                  <label htmlFor="designation">Designation</label>
+                  <select
+                    ref={register}
+                    type="text"
+                    id="designation"
+                    name="designation"
+                    multiple
+                  >
+                    <option className="form-option" defaultValue disabled>
+                      choose option...
+                    </option>
+                    {designations.map((designation) => {
+                      return (
+                        <option
+                          className="form-option"
+                          key={designation.designation_id}
+                          value={designation.designation_id}
+                        >
+                          {designation.designation}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+              </div>
+              <div className="form-row">
+                <div className="col-50">
+                  <label htmlFor="basic-salary">Basic Salary</label>
+                  <input
+                    ref={register}
+                    type="text"
+                    id="basic-salary"
+                    name="basic_salary"
+                    placeholder="0.0"
+                  />
+                </div>
+              </div>
+              <div className="form-row">
+                <div className="col-50">
+                  <label htmlFor="role">Role</label>
+                  <select
+                    multiple
+                    ref={register}
+                    type="text"
+                    id="role"
+                    name="role"
+                  >
+                    <option className="form-option" defaultValue disabled>
+                      choose option...
+                    </option>
 
-										{roles.map((role) => {
-											return (
-												<option key={role.role_id} value={role.role_id}>
-													{role.role}
-												</option>
-											);
-										})}
-									</select>
-								</div>
-								<div className="col-50">
-									<label htmlFor="gender">Gender</label>
-									<select ref={register} type="text" id="gender" name="gender">
-										<option disabled>choose option...</option>
-										<option value={0}>Female</option>
-										<option value={1}>Male</option>
-										<option value={2}>Others</option>
-									</select>
-								</div>
-							</div>
+                    {roles.map((role) => {
+                      return (
+                        <option
+                          className="form-option"
+                          key={role.role_id}
+                          value={role.role_id}
+                        >
+                          {role.role}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+                <div className="col-50">
+                  <label htmlFor="gender">Gender</label>
+                  <select
+                    className="form-select"
+                    ref={register}
+                    type="text"
+                    id="gender"
+                    name="gender"
+                  >
+                    <option disabled>choose option...</option>
+                    <option value={0}>Female</option>
+                    <option value={1}>Male</option>
+                    <option value={2}>Others</option>
+                  </select>
+                </div>
+              </div>
 
-							<div className="form-row">
-								<div className="col-50">
-									<label htmlFor="cardtype">National Card Type</label>
-									<select ref={register} id="cardtype" name="cardtype">
-										<option defaultValue disabled>
-											choose option...
-										</option>
-										{cardTypes.map((card) => {
-											return (
-												<option key={card} value={cardTypes.indexOf(card)}>
-													{card}
-												</option>
-											);
-										})}
-									</select>
-								</div>
-								<div className="col-50">
-									<label htmlFor="cardnumber"> Card Number</label>
-									<input
-										ref={register({ required: true })}
-										type="text"
-										id="cardnumber"
-										name="cardnumber"
-									/>
-									{errors.cardnumber && <p className="valid">ID number is required!</p>}
-								</div>
-							</div>
-							<div className="form-row">
-								<div className="col-50">
-									<label htmlFor="marriage-cert">Marriage Certificate Number</label>
-									<input ref={register} type="text" id="marriage-cert" name="marriage_certificate" />
-								</div>
-								<div className="col-50">
-									<label htmlFor="tin-number"> Tin Number</label>
-									<input ref={register} type="text" id="tin-number" name="tin_number" />
-								</div>
-							</div>
-							<div className="form-row">
-								<div className="col-50">
-									<label htmlFor="enable-user-check">
-										<input
-											ref={register}
-											defaultChecked="true"
-											onChange={(e) => {
-												setEnabled(e.target.checked);
-											}}
-											type="checkbox"
-											id="enable-user-check"
-											name="disbale_employee"
-										/>
-										<b>Enable Employee</b>
-									</label>
-								</div>
-							</div>
-						</div>
-					</div>
+              <div className="form-row">
+                <div className="col-50">
+                  <label htmlFor="cardtype">National Card Type</label>
+                  <select
+                    className="form-select"
+                    ref={register}
+                    id="cardtype"
+                    name="cardtype"
+                  >
+                    <option defaultValue disabled>
+                      choose option...
+                    </option>
+                    {cardTypes.map((card) => {
+                      return (
+                        <option key={card} value={cardTypes.indexOf(card)}>
+                          {card}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+                <div className="col-50">
+                  <label htmlFor="cardnumber"> Card Number</label>
+                  <input
+                    ref={register({ required: true })}
+                    type="text"
+                    id="cardnumber"
+                    name="cardnumber"
+                  />
+                  {errors.cardnumber && (
+                    <p className="valid">ID number is required!</p>
+                  )}
+                </div>
+              </div>
+              <div className="form-row">
+                <div className="col-50">
+                  <label htmlFor="marriage-cert">
+                    Marriage Certificate Number
+                  </label>
+                  <input
+                    ref={register}
+                    type="text"
+                    id="marriage-cert"
+                    name="marriage_certificate"
+                  />
+                </div>
+                <div className="col-50">
+                  <label htmlFor="tin-number"> Tin Number</label>
+                  <input
+                    ref={register}
+                    type="text"
+                    id="tin-number"
+                    name="tin_number"
+                  />
+                </div>
+              </div>
+              <div className="form-row">
+                <div className="col-50">
+                  <label htmlFor="enable-user-check">
+                    <input
+                      ref={register}
+                      defaultChecked="true"
+                      onChange={(e) => {
+                        setEnabled(e.target.checked);
+                      }}
+                      type="checkbox"
+                      id="enable-user-check"
+                      name="disbale_employee"
+                    />
+                    <b>Enable Employee</b>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
 
-					<input type="submit" value="Register" className="form-btn" />
-				</form>
-			</div>
-		</div>
-	);
+          <input type="submit" value="Register" className="form-btn" />
+        </form>
+      </div>
+    </div>
+  );
 }
 
 export default RegisterUser;
