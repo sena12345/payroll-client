@@ -129,7 +129,26 @@ function RegisterUser() {
   // 	});
   // 	setSortedDesignations(sortData);
   // };
-
+  const handleConfirm = (data) => {
+    showConfirmAlert({
+      title: "confirmation",
+      message: `Continue to add ${data.name} to employees ?`,
+      buttons: [
+        {
+          label: "No",
+          onClick: () => {
+            console.log("cancel");
+          },
+        },
+        {
+          label: "Yes",
+          onClick: () => {
+            onSubmit(data);
+          },
+        },
+      ],
+    });
+  };
   return loading ? (
     <MyLoader />
   ) : (
