@@ -48,28 +48,27 @@
 
 .form-row .col-50 input[type="text"],
 input[type="email"],
-
 input[type="tel"] {
-	width: 100%;
-	padding: 12px 20px;
-	margin: 8px 0;
-	display: inline-block;
-	border-radius: 0px;
-	box-sizing: border-box;
-	font-size: 17px;
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border-radius: 0px;
+  box-sizing: border-box;
+  font-size: 17px;
 }
 
 select {
-	width: 100%;
-	padding: 0px 0px;
-	margin: 8px 0;
-	border-radius: 0px;
-	box-sizing: border-box;
-	font-size: 17px;
+  width: 100%;
+  padding: 0px 0px;
+  margin: 8px 0;
+  border-radius: 0px;
+  box-sizing: border-box;
+  font-size: 17px;
 }
 
 option {
-	border: transparent;
+  border: transparent;
 }
 
 .form-btn {
@@ -136,6 +135,15 @@ hr {
   content: "⚠ ";
 }
 
+.form-select {
+  height: 47px;
+  border: 2px solid #000;
+}
+
+.form-option {
+  padding: 4px;
+}
+
 /*RegisterUser*/
 .registeruser .form-row .col-50 input[type="text"],
 input[type="email"],
@@ -182,4 +190,10 @@ option {
 .userdetails .form-row .col-50 table {
   border-spacing: 0;
   width: 100%;
+}
+
+/*EditUserDetails */
+
+.edituserdetails table td {
+  width: 100rem;
 }
