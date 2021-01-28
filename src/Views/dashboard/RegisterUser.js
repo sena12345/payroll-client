@@ -1,22 +1,15 @@
-import "../../assets/css/Form.css";
-import React, { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import Config from "../../data-operations/data-queries/config";
-import {
-  Roles,
-  Department,
-  Position,
-  Designation,
-  Allowance,
-} from "../../data-operations/_sahred/models";
-import { useAuth } from "../../_services/auth-context";
+import '../../assets/css/Form.css';
+import React, { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import Config from '../../data-operations/data-queries/config';
+import { Roles, Department, Designation } from '../../data-operations/_sahred/models';
+import { useAuth } from '../../_services/auth-context';
 
-import EmployeeInstance from "../../data-operations/data-queries/employees";
-import { showConfirmAlert } from "../my-alerts";
-import { useAlert } from "react-alert";
-import { MyLoader } from "./my-spiner";
+import EmployeeInstance from '../../data-operations/data-queries/employees';
+import { showConfirmAlert } from '../my-alerts';
+import { useAlert } from 'react-alert';
+import { MyLoader } from './my-spiner';
 function RegisterUser() {
-
 	const { currentUser } = useAuth();
 	const alert = useAlert();
 	const [ roles, setRoles ] = useState([ Roles ]);
@@ -27,9 +20,9 @@ function RegisterUser() {
 	const [ isEnabled, setEnabled ] = useState(false);
 	const [ loading, setLoading ] = useState(true);
 
-  const queriesStore = Config(currentUser);
-  const empInstance = EmployeeInstance(currentUser);
-  const { register, handleSubmit, errors, reset } = useForm();
+	const queriesStore = Config(currentUser);
+	const empInstance = EmployeeInstance(currentUser);
+	const { register, handleSubmit, errors, reset } = useForm();
 
 	function fetchInits() {
 		queriesStore
@@ -154,87 +147,73 @@ function RegisterUser() {
 		});
 	};
 
-
-  return loading ? (
-    <MyLoader />
-  ) : (
-    <div className="registeruser">
-      <div>
-        <h5>Register User</h5>
-        <hr />
-        <br />
-        <form onSubmit={handleSubmit(handleConfirm)}>
-          <div className="form-row">
-            <div className="col-50 left-col">
-              <b>Personal Information</b>
-              <br />
-              <div className="form-row">
-                <div className="col-50">
-                  <label htmlFor="employee-id">
-                    <i className="fa fa-id-badge" /> Employee ID
-                  </label>
-                  <input
-                    ref={register({ required: true })}
-                    name="employee_id"
-                    type="text"
-                    id="employee-id"
-                  />
-                  {errors.employee_id && (
-                    <p className="valid">This is required</p>
-                  )}
-                </div>
-              </div>
-              <div className="form-row">
-                <div className="col-50">
-                  <label htmlFor="fname">
-                    <i className="fa fa-user" /> Full Name
-                  </label>
-                  <input
-                    ref={register({ required: true, minLength: 4 })}
-                    name="name"
-                    type="text"
-                    id="fname"
-                    placeholder="Moe"
-                  />
-                  {errors.name && (
-                    <p className="valid">This is required (min = 4)</p>
-                  )}
-                </div>
-              </div>
-              <div className="form-row">
-                <div className="col-50">
-                  <label htmlFor="email">
-                    <i className="fa fa-envelope" /> Email
-                  </label>
-                  <input
-                    ref={register({ required: true })}
-                    name="email"
-                    type="email"
-                    id="email"
-                    placeholder="john@example.com"
-                  />
-                  {errors.email && (
-                    <p className="valid">This is required for valid email!</p>
-                  )}
-                </div>
-              </div>
-              <div className="form-row">
-                <div className="col-50">
-                  <label htmlFor="ssnit">
-                    {" "}
-                    <i className="fas fa-money-check" /> SSNIT Number
-                  </label>
-                  <input
-                    ref={register({ required: true })}
-                    name="ssnit"
-                    type="text"
-                    id="ssnit"
-                  />
-                  {errors.ssnit && (
-                    <p className="valid">SSNIT number is required</p>
-                  )}
-                </div>
-              </div>
+	return loading ? (
+		<MyLoader />
+	) : (
+		<div className="registeruser">
+			<div>
+				<h5>Register User</h5>
+				<hr />
+				<br />
+				<form onSubmit={handleSubmit(handleConfirm)}>
+					<div className="form-row">
+						<div className="col-50 left-col">
+							<b>Personal Information</b>
+							<br />
+							<div className="form-row">
+								<div className="col-50">
+									<label htmlFor="employee-id">
+										<i className="fa fa-id-badge" /> Employee ID
+									</label>
+									<input
+										ref={register({ required: true })}
+										name="employee_id"
+										type="text"
+										id="employee-id"
+									/>
+									{errors.employee_id && <p className="valid">This is required</p>}
+								</div>
+							</div>
+							<div className="form-row">
+								<div className="col-50">
+									<label htmlFor="fname">
+										<i className="fa fa-user" /> Full Name
+									</label>
+									<input
+										ref={register({ required: true, minLength: 4 })}
+										name="name"
+										type="text"
+										id="fname"
+										placeholder="Moe"
+									/>
+									{errors.name && <p className="valid">This is required (min = 4)</p>}
+								</div>
+							</div>
+							<div className="form-row">
+								<div className="col-50">
+									<label htmlFor="email">
+										<i className="fa fa-envelope" /> Email
+									</label>
+									<input
+										ref={register({ required: true })}
+										name="email"
+										type="email"
+										id="email"
+										placeholder="john@example.com"
+									/>
+									{errors.email && <p className="valid">This is required for valid email!</p>}
+								</div>
+							</div>
+							<div className="form-row">
+								<div className="col-50">
+									<label htmlFor="ssnit">
+										{' '}
+										<i className="fas fa-money-check" /> SSNIT Number
+									</label>
+									<input ref={register({ required: true })} name="ssnit" type="text" id="ssnit" />
+									{errors.ssnit && <p className="valid">SSNIT number is required</p>}
+								</div>
+							</div>
 
 							<div className="form-row">
 								<div className="col-50">

@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { MyLoader } from './my-spiner';
 import EmployeeInstance from '../../data-operations/data-queries/employees';
 import { useAlert } from 'react-alert';
+import { showConfirmAlert } from '../my-alerts';
 function EditUserDetails() {
 	const location = useLocation();
 	const history = useHistory();
@@ -90,12 +91,33 @@ function EditUserDetails() {
 				console.log(res.data);
 				setLoading(false);
 				alert.success('Data updated successfully..');
-				history.push('/userdetails');
+				history.push('/viewusers');
 			})
 			.catch((err) => {
 				setLoading(false);
 				alert.error('oops ' + err.message);
 			});
+	};
+
+	const handleConfirm = (data) => {
+		showConfirmAlert({
+			title   : 'confirmation',
+			message : `Continue to update ${employee.name} data?`,
+			buttons : [
+				{
+					label   : 'No',
+					onClick : () => {
+						console.log('cancel');
+					}
+				},
+				{
+					label   : 'Yes',
+					onClick : () => {
+						onSubmit(data);
+					}
+				}
+			]
+		});
 	};
 
 	return loading ? (
@@ -105,7 +127,7 @@ function EditUserDetails() {
 			<h2>Edit User Details</h2>
 			<br />
 
-			<form onSubmit={handleSubmit(onSubmit)}>
+			<form onSubmit={handleSubmit(handleConfirm)}>
 				<div className="form-row">
 					<div className="col-50 left-col">
 						<h3>Personal Information</h3>
@@ -155,7 +177,13 @@ function EditUserDetails() {
 							</div>
 							<div className="col-50">
 								<label htmlFor="gender">Gender</label>
-								<select ref={register} type="text" id="gender" name="gender">
+								<select
+									defaultValue={employee.gender}
+									ref={register}
+									type="text"
+									id="gender"
+									name="gender"
+								>
 									<option disabled>choose option...</option>
 									<option value={0}>Female</option>
 									<option value={1}>Male</option>
@@ -231,6 +259,7 @@ function EditUserDetails() {
 							<div className="col-50">
 								<label htmlFor="cardnumber"> Card Number</label>
 								<input
+									defaultValue={employee.cardNumber}
 									ref={register({ required: true })}
 									type="text"
 									id="cardnumber"
