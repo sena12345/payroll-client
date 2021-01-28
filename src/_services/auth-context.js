@@ -10,7 +10,6 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }) {
-
 	const history = useHistory();
 	const [ currentUser, setCurrentUser ] = useState();
 	const [ loading, setLoading ] = useState(true);
@@ -33,7 +32,7 @@ export function AuthProvider({ children }) {
 	}
 
 	function resetPassword(email) {
-		return auth.sendPasswordResetEmail(email);
+		return auth.sendPasswordResetEmail(email, { url: 'http://localhost:3000/' });
 	}
 
 	function updateEmail(email) {
@@ -48,9 +47,7 @@ export function AuthProvider({ children }) {
 		const unsubscribe = auth.onAuthStateChanged((user) => {
 			setCurrentUser(user);
 			setLoading(false);
-			if (!user)
-				history.push('/');
-			
+			if (!user) history.push('/');
 		});
 
 		return unsubscribe;
