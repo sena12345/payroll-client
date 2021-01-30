@@ -45,6 +45,16 @@ function EditUserDetails() {
 		});
 	}, []);
 
+	const removeByAttr = function(arr, attr, value) {
+		let i = arr.length;
+		while (i--) {
+			if (arr[i] && arr[i].hasOwnProperty(attr) && (arguments.length > 2 && arr[i][attr] === value)) {
+				arr.splice(i, 1);
+			}
+		}
+		return arr;
+	};
+
 	// const handleChange = (e) => {
 	// 	let { options } = e.target;
 	// 	options = Array.apply(null, options);
@@ -324,7 +334,12 @@ function EditUserDetails() {
 												<p>
 													{d.department}
 													<button type="button" className="float-right">
-														<i className="fa fa-trash" />
+														<i
+															className="fa fa-trash"
+															onClick={(e) => {
+																employee.departments.pop(d);
+															}}
+														/>
 													</button>
 												</p>
 											</li>
@@ -367,7 +382,17 @@ function EditUserDetails() {
 											<li key={des.designation_id}>
 												<p>
 													{des.designation}{' '}
-													<button type="button" className="float-right">
+													<button
+														type="button"
+														className="float-right"
+														onClick={(e) => {
+															removeByAttr(
+																employee.designations,
+																'designation_id',
+																des.designation_id
+															);
+														}}
+													>
 														<i className="fa fa-trash" />
 													</button>
 												</p>
