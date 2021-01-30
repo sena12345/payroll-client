@@ -62,6 +62,13 @@ function EditUserDetails() {
 	// 	return selectedValues;
 	// };
 
+	// const handleChange = (e) => {
+	// 	let { options } = e.target;
+	// 	options = Array.apply(null, options);
+	// 	const selectedValues = options.filter((x) => x.selected).map((x) => x.value);
+	// 	return selectedValues;
+	// };
+
 	const onSubmit = (data) => {
 		setLoading(true);
 		let rolesData = [];
@@ -247,7 +254,6 @@ function EditUserDetails() {
 								/>
 							</div>
 						</div>
-
 						<div className="form-row">
 							<div className="col-50">
 								<label htmlFor="cardtype">National Card Type</label>
@@ -276,7 +282,6 @@ function EditUserDetails() {
 								{errors.cardnumber && <p className="valid">ID number is required!</p>}
 							</div>
 						</div>
-
 						<div className="form-row">
 							<div className="col-50">
 								<label htmlFor="marriage-cert">Marriage Certificate Number</label>
@@ -299,7 +304,7 @@ function EditUserDetails() {
 								/>
 							</div>
 						</div>
-
+						//departments
 						<div className="form-row">
 							<div className="col-50">
 								<label htmlFor="department">Department</label>
@@ -334,12 +339,7 @@ function EditUserDetails() {
 												<p>
 													{d.department}
 													<button type="button" className="float-right">
-														<i
-															className="fa fa-trash"
-															onClick={(e) => {
-																employee.departments.pop(d);
-															}}
-														/>
+														<i className="fa fa-trash" />
 													</button>
 												</p>
 											</li>
@@ -348,7 +348,7 @@ function EditUserDetails() {
 								</ol>
 							</div>
 						</div>
-
+						//designations
 						<div className="form-row">
 							<div className="col-50">
 								<label htmlFor="designation">Designation</label>
@@ -382,17 +382,7 @@ function EditUserDetails() {
 											<li key={des.designation_id}>
 												<p>
 													{des.designation}{' '}
-													<button
-														type="button"
-														className="float-right"
-														onClick={(e) => {
-															removeByAttr(
-																employee.designations,
-																'designation_id',
-																des.designation_id
-															);
-														}}
-													>
+													<button type="button" className="float-right">
 														<i className="fa fa-trash" />
 													</button>
 												</p>
@@ -402,6 +392,7 @@ function EditUserDetails() {
 								</ol>
 							</div>
 						</div>
+						//roles
 						<div className="form-row">
 							<div className="col-50">
 								<label htmlFor="role">Roles</label>

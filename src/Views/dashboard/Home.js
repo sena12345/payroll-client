@@ -50,12 +50,9 @@ function Home({ page }) {
 		}
 	};
 
-	let strName = currentUser ? currentUser.displayName : '';
-	var userInit = '';
+	let strName = currentUser.displayName;
 	var initials = strName.split(' ');
-	for (var i = 0; i < initials.length; i++) {
-		userInit = userInit.concat(initials[i].charAt(0).concat('.'));
-	}
+	var userInit = initials[0];
 
 	return (
 		<div className="container-fluid">
@@ -75,9 +72,6 @@ function Home({ page }) {
 						<input type="search" className="navbar-search-input" placeholder="Search..." />
 						<i className="fas fa-search" />
 					</form>
-					<div className="nav-link">
-						<span>{currentUser ? currentUser.email : ''}</span>
-					</div>
 
 					<ul className="navbar-nav nav-right">
 						<li className="nav-item mode">
@@ -88,12 +82,11 @@ function Home({ page }) {
 
 						<li className="nav-item avt-wrapper">
 							<div className="avt dropdown">
-								<img
-									src={currentUser ? currentUser.photoURL : '../../../public/img/usr.png'}
-									className="dropdown-toggle"
-									data-toggle="user-menu"
-									alt=""
-								/>
+								<img src={currentUser ? currentUser.photoURL : '../../../public/img/usr.png'} />
+								<div className="switcher-icon">
+									<i className="fas fa-cog dropdown-toggle" data-toggle="user-menu" alt="" />
+								</div>
+
 								<ul id="user-menu" className="dropdown-menu">
 									<li className="dropdown-menu-item">
 										<Link to="#" className="dropdown-menu-link">
