@@ -11,6 +11,7 @@ export default function DesignationModal(props) {
 	const alert = useAlert();
 	const [ departments, setDepartments ] = useState([ Department ]);
 	const { register, handleSubmit, errors, reset } = useForm();
+	const selectedDepartments = props.isEdit ? props.data.departments : [];
 
 	useEffect(
 		() => {
@@ -27,12 +28,21 @@ export default function DesignationModal(props) {
 	const onSubmit = (data) => {
 		if (!data) return;
 		if (!data.designation) return;
+		let departmentData = [];
 		if (props.isEdit) {
+			departmentData.push(...props.data.departments);
+			data.department.forEach((dep) => {
+				departmentData.push({ department_id: parseInt(dep) });
+			});
+			if (departmentData.length < 1) {
+				alert.error('Kindly select department!');
+				return;
+			}
 			instance
 				.updateDesignation({
 					designation_id : props.data.designation_id,
 					designation    : data.designation,
-					departments    : [ { department_id: data.department } ]
+					departments    : departmentData
 				})
 				.then((res) => {
 					alert.success('successfully updated..');
@@ -40,10 +50,13 @@ export default function DesignationModal(props) {
 				})
 				.catch((err) => alert.error(`oop err ${err.message}`));
 		} else {
+			data.department.forEach((dep) => {
+				departmentData.push({ department_id: parseInt(dep) });
+			});
 			instance
 				.createDesignation({
 					designation : data.designation,
-					departments : [ { department_id: data.department } ]
+					departments : departmentData
 				})
 				.then((res) => {
 					alert.success('succefully submited data..');
@@ -76,12 +89,7 @@ export default function DesignationModal(props) {
 
 						<div>
 							<label htmlFor="department">Department</label>
-							<select
-								defaultValue={props.isEdit ? props.data.department_id : ''}
-								ref={register({ required: true })}
-								name="department"
-								id="department"
-							>
+							<select ref={register} name="department" id="department" multiple>
 								<option key={-1} disabled>
 									choose...
 								</option>
@@ -95,6 +103,31 @@ export default function DesignationModal(props) {
 								})}
 							</select>
 						</div>
+
+						{props.isEdit ? (
+							<div>
+								<p>Current departments</p>
+								<ol>
+									{selectedDepartments.map((d) => {
+										return (
+											<li key={d.department_id}>
+												<p>
+													{d.department}
+													<input
+														defaultChecked
+														type="checkbox"
+														className="float-right"
+														onClick={(e) => {}}
+													/>
+												</p>
+											</li>
+										);
+									})}
+								</ol>
+							</div>
+						) : (
+							''
+						)}
 					</div>
 					<div className="modal-footer">
 						<button

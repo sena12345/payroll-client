@@ -51,6 +51,37 @@ function ViewUsers() {
 		});
 	};
 
+	const sendRestLink = (email) => {
+		resetPassword(email)
+			.then((res) => {
+				alert.success('Password reset link sent successfully.');
+			})
+			.catch((er) => {
+				alert.error(`oops ${er.message}`);
+			});
+	};
+
+	const handleConfirmSendResetLink = (data) => {
+		showConfirmAlert({
+			title   : 'confirmation',
+			message : `Continue to send password reset link to ${data.name}?`,
+			buttons : [
+				{
+					label   : 'No',
+					onClick : () => {
+						console.log('cancel');
+					}
+				},
+				{
+					label   : 'Yes',
+					onClick : () => {
+						sendRestLink(data.email);
+					}
+				}
+			]
+		});
+	};
+
 	const handleCheck = (e, employee) => {
 		if (e.target.checked === true) {
 			selectedEmployees.push(employee);
@@ -302,7 +333,7 @@ function ViewUsers() {
 											className="bg-grey"
 											title="Password Reset"
 											onClick={(e) => {
-												resetPassword(emp.email);
+												handleConfirmSendResetLink(emp);
 											}}
 										>
 											<i className="fa fa-envelope" />
