@@ -99,9 +99,6 @@ function EditUserDetails() {
 	// };
 
 	const onSubmit = (data) => {
-		console.log(data.chkboxList);
-		return;
-
 		setLoading(true);
 		let rolesData = [];
 		rolesData.push(...employee.roles);
