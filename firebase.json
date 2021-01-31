@@ -1,6 +1,6 @@
 {
 	"hosting": {
-		"public": "build/",
+		"public": "build",
 		"site": "amalitech-payroll",
 		"ignore": [ "firebase.json", "**/.*", "**/node_modules/**" ],
 		"rewrites": [
@@ -10,7 +10,8 @@
 			}
 		]
 	},
-	"storage": {
-		"rules": "storage.rules"
+
+	"remoteconfig": {
+		"template": "remoteconfig.template.json"
 	}
 }
