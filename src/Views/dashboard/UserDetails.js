@@ -9,7 +9,7 @@ function UserDetails() {
 	//   const { logout, resetPassword, currentUser } = useAuth();
 
 	const location = useLocation();
-	const employee = location.state.data;
+	const employee = location.state ? location.state.data : [];
 
 	return (
 		<div id="printform" className="userdetails">

@@ -5,10 +5,10 @@ import Config from '../../data-operations/data-queries/config';
 import { showConfirmAlert } from '../my-alerts';
 import { MyLoader } from './my-spiner';
 import DepartmentModal from './my-modals/department-modal';
-export default function Departments() {
+const Departments = () => {
 	const [ departments, setDepartments ] = useState([]);
 	const [ show, setShow ] = useState(false);
-	const [ isEdit, setIsEdit ] = useState(false);
+	const [ isEdit, setEdit ] = useState(false);
 	const [ loading, setLoading ] = useState(true);
 	const [ selected, setSelected ] = useState();
 	const { currentUser } = useAuth();
@@ -86,15 +86,18 @@ export default function Departments() {
 		});
 	};
 
-	useEffect(() => {
-		if (loading && !show) {
-			console.log('loading departments..');
-			init();
-		}
-		return () => {
-			setLoading(false);
-		};
-	});
+	useEffect(
+		() => {
+			if (loading) {
+				console.log('loading departments..');
+				init();
+			}
+			return () => {
+				setLoading(false);
+			};
+		},
+		[ loading ]
+	);
 
 	return loading ? (
 		<MyLoader />
@@ -108,7 +111,7 @@ export default function Departments() {
 
 					<button
 						onClick={() => {
-							setIsEdit(false);
+							setEdit(false);
 							setShow(true);
 						}}
 						className="bg-success"
@@ -136,7 +139,7 @@ export default function Departments() {
 											href="#"
 											onClick={() => {
 												setSelected(dep);
-												setIsEdit(true);
+												setEdit(true);
 												setShow(true);
 											}}
 										>
@@ -160,4 +163,6 @@ export default function Departments() {
 			</div>
 		</div>
 	);
-}
+};
+
+export default Departments;

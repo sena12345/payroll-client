@@ -8,7 +8,6 @@ import { MyLoader } from './my-spiner';
 import EmployeeInstance from '../../data-operations/data-queries/employees';
 import { useAlert } from 'react-alert';
 import { showConfirmAlert } from '../my-alerts';
-import { DEPARTMENTS } from '../../data-operations/_sahred/constants';
 
 function EditUserDetails() {
 	const location = useLocation();
@@ -24,14 +23,19 @@ function EditUserDetails() {
 	const { register, handleSubmit, errors } = useForm();
 	const [ loading, setLoading ] = useState(true);
 	const alert = useAlert();
-	const employeeDepartments = [];
-	employee.departments.forEach((d) => {
-		employeeDepartments.push(d);
-	});
 
-	const onChange = (d) => {
-		console.log(d);
-	};
+	const defaultRoles = [];
+	employee.roles.forEach((r) => {
+		defaultRoles.push(r.role_id);
+	});
+	const defaultDepartment = [];
+	employee.departments.forEach((d) => {
+		defaultDepartment.push(d.department_id);
+	});
+	const defaultDesignation = [];
+	employee.designations.forEach((d) => {
+		defaultDesignation.push(d.designation_id);
+	});
 
 	const init = () => {
 		instance
@@ -66,6 +70,7 @@ function EditUserDetails() {
 		() => {
 			if (loading) {
 				init();
+				console.log('running...');
 			}
 			return () => {
 				setLoading(false);
@@ -101,17 +106,17 @@ function EditUserDetails() {
 	const onSubmit = (data) => {
 		setLoading(true);
 		let rolesData = [];
-		rolesData.push(...employee.roles);
+		// rolesData.push(...employee.roles);
 		data.roles.forEach((rol) => {
 			rolesData.push({ role_id: parseInt(rol) });
 		});
 		let departmentData = [];
-		departmentData.push(...employee.departments);
+		// departmentData.push(...employee.departments);
 		data.departments.forEach((dep) => {
 			departmentData.push({ department_id: parseInt(dep) });
 		});
 		let designationData = [];
-		designationData.push(...employee.designations);
+		// designationData.push(...employee.designations);
 		data.desigantions.forEach((des) => {
 			designationData.push({ designation_id: parseInt(des) });
 		});
@@ -198,6 +203,15 @@ function EditUserDetails() {
 									defaultValue={employee.employee_id}
 								/>
 							</div>
+							<div className="col-50">
+								<label htmlFor="gender">Gender</label>
+								<select className="form-select" ref={register} type="text" id="gender" name="gender">
+									<option disabled>choose option...</option>
+									<option value={0}>Female</option>
+									<option value={1}>Male</option>
+									<option value={2}>Others</option>
+								</select>
+							</div>
 						</div>
 						<div className="form-row">
 							<div className="col-50">
@@ -228,31 +242,7 @@ function EditUserDetails() {
 									placeholder="john@example.com"
 								/>
 							</div>
-							<div className="col-50">
-								<label htmlFor="gender">Gender</label>
-								<select className="form-select" ref={register} type="text" id="gender" name="gender">
-									<option disabled>choose option...</option>
-									<option value={0}>Female</option>
-									<option value={1}>Male</option>
-									<option value={2}>Others</option>
-								</select>
-							</div>
 						</div>
-						<div className="form-row">
-							<div className="col-50">
-								<label htmlFor="ssnit">
-									<i className="fas fa-money-check" /> SSNIT Number
-								</label>
-								<input
-									ref={register}
-									name="ssnit"
-									type="text"
-									id="ssnit"
-									defaultValue={employee.ssnit}
-								/>
-							</div>
-						</div>
-
 						<div className="form-row">
 							<div className="col-50">
 								<label htmlFor="contact">
@@ -268,24 +258,20 @@ function EditUserDetails() {
 									placeholder="XXXXXXXXXXXX"
 								/>
 							</div>
-						</div>
-					</div>
-					<div className="col-50">
-						<b>Other Details</b>
-						<br />
-						<div className="form-row">
 							<div className="col-50">
-								<label htmlFor="basic-salary">Basic Salary</label>
+								<label htmlFor="ssnit">
+									<i className="fas fa-money-check" /> SSNIT Number
+								</label>
 								<input
 									ref={register}
-									defaultValue={employee.basic_salary}
+									name="ssnit"
 									type="text"
-									id="basic-salary"
-									name="basic_salary"
-									placeholder="0.0"
+									id="ssnit"
+									defaultValue={employee.ssnit}
 								/>
 							</div>
 						</div>
+
 						<div className="form-row">
 							<div className="col-50">
 								<label htmlFor="cardtype">National Card Type</label>
@@ -314,6 +300,7 @@ function EditUserDetails() {
 								{errors.cardnumber && <p className="valid">ID number is required!</p>}
 							</div>
 						</div>
+
 						<div className="form-row">
 							<div className="col-50">
 								<label htmlFor="marriage-cert">Marriage Certificate Number</label>
@@ -336,20 +323,31 @@ function EditUserDetails() {
 								/>
 							</div>
 						</div>
+					</div>
+					<div className="col-50">
+						<b>Other Details</b>
+						<br />
+						<div className="form-row">
+							<div className="col-50">
+								<label htmlFor="basic-salary">Basic Salary</label>
+								<input
+									ref={register}
+									defaultValue={employee.basic_salary}
+									type="text"
+									id="basic-salary"
+									name="basic_salary"
+									placeholder="0.0"
+								/>
+							</div>
+						</div>
 
 						<div className="form-row">
 							<div className="col-50">
 								<label htmlFor="department">Department</label>
-								<select ref={register} multiple name="departments">
+								<select multiple={true} ref={register} name="departments" value={defaultDepartment}>
 									{departments.map((dep) => {
-										let select = false;
-										employee.departments.forEach((dp) => {
-											if (dp.department_id === dep.department_id) select = true;
-										});
-
 										return (
 											<option
-												selected={select}
 												className="form-option"
 												key={dep.department_id}
 												value={dep.department_id}
@@ -361,46 +359,14 @@ function EditUserDetails() {
 								</select>
 							</div>
 							<div className="col-50">
-								<table>
-									<thead>
-										<tr>
-											<th>
-												<p>Current departments</p>
-											</th>
-										</tr>
-									</thead>
-								</table>
-								<ol>
-									{departments.map((d) => {
-										return (
-											<li key={d.department_id}>
-												<p>
-													{d.department}
-													<input
-														defaultChecked={employeeDepartments.indexOf(d) === -1}
-														type="checkbox"
-														value={d.department_id}
-														className="float-right"
-														onChange={(e) => {
-															let ind = employeeDepartments.indexOf(d);
-															if (ind === -1) employeeDepartments.push(d);
-															else employeeDepartments.splice(ind, 1);
-
-															console.log(employeeDepartments);
-														}}
-													/>
-												</p>
-											</li>
-										);
-									})}
-								</ol>
-							</div>
-						</div>
-
-						<div className="form-row">
-							<div className="col-50">
 								<label htmlFor="designation">Designation</label>
-								<select ref={register} id="designation" name="desigantions" multiple>
+								<select
+									multiple={true}
+									value={defaultDesignation}
+									ref={register}
+									id="designation"
+									name="desigantions"
+								>
 									{designations.map((des) => {
 										return (
 											<option
@@ -414,37 +380,19 @@ function EditUserDetails() {
 									})}
 								</select>
 							</div>
-							<div className="col-50">
-								<table>
-									<tbody>
-										<tr>
-											<th>
-												<p>Current Designations</p>
-											</th>
-										</tr>
-									</tbody>
-								</table>
-								<ol>
-									{employee.designations.map((des) => {
-										return (
-											<li key={des.designation_id}>
-												<p>
-													{des.designation}{' '}
-													<button type="button" className="float-right">
-														<i className="fa fa-trash" />
-													</button>
-												</p>
-											</li>
-										);
-									})}
-								</ol>
-							</div>
 						</div>
 
 						<div className="form-row">
 							<div className="col-50">
 								<label htmlFor="role">Roles</label>
-								<select ref={register} type="text" id="role" name="roles" multiple>
+								<select
+									multiple={true}
+									value={defaultRoles}
+									ref={register}
+									type="text"
+									id="role"
+									name="roles"
+								>
 									{roles.map((rol) => {
 										return (
 											<option className="form-option" key={rol.role_id} value={rol.role_id}>
@@ -454,35 +402,12 @@ function EditUserDetails() {
 									})}
 								</select>
 							</div>
-							<div className="col-50">
-								<table>
-									<tbody>
-										<tr>
-											<th>
-												<p>Current Roles</p>
-											</th>
-										</tr>
-									</tbody>
-								</table>
-								<ol>
-									{employee.roles.map((rol) => {
-										return (
-											<li key={rol.role_id}>
-												<p>
-													{rol.role}
-													<button className="float-right" type="button">
-														<i className="fa fa-trash" />
-													</button>
-												</p>
-											</li>
-										);
-									})}
-								</ol>
-							</div>
+						</div>
+						<div className="col-50">
+							<input type="submit" value="Submit" className="form-btn" />
 						</div>
 					</div>
 				</div>
-				<input type="submit" value="Submit" className="form-btn" />
 			</form>
 		</div>
 	);
