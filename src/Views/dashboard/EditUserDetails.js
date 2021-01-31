@@ -170,12 +170,6 @@ function EditUserDetails() {
 		});
 	};
 
-	const handleConfirmDelete = (target, data) => {
-		switch (target) {
-			case DEPARTMENTS:
-		}
-	};
-
 	return loading ? (
 		<MyLoader />
 	) : (
@@ -383,7 +377,7 @@ function EditUserDetails() {
 												<p>
 													{d.department}
 													<input
-														defaultChecked={employeeDepartments.indexOf(d) == -1}
+														defaultChecked={employeeDepartments.indexOf(d) === -1}
 														type="checkbox"
 														value={d.department_id}
 														className="float-right"
