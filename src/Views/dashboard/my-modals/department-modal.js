@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { useAuth } from '../../../_services/auth-context';
-import Config from '../../../data-operations/data-queries/config';
-import { useAlert } from 'react-alert';
+import React from 'react';
+
 import { useForm } from 'react-hook-form';
 
 export default function DepartmentModal(props) {
-	const { currentUser } = useAuth();
-	const instance = Config(currentUser);
-	const alert = useAlert();
+	// const { currentUser } = useAuth();
+	// const instance = Config(currentUser);
+	// const alert = useAlert();
 	// const [ departments, setDepartments ] = useState([ Department ]);
-	const { register, handleSubmit, errors, reset } = useForm();
+	const { register, handleSubmit, reset } = useForm();
 
 	// useEffect(
 	// 	() => {
@@ -26,26 +24,7 @@ export default function DepartmentModal(props) {
 	const onSubmit = (data) => {
 		if (!data) return;
 		if (!data.department) return;
-		if (props.isEdit) {
-			instance
-				.updateDepartment({
-					department_id : props.data.department_id,
-					department    : data.department
-				})
-				.then((res) => {
-					alert.success('successfully updated..');
-					props.onClose();
-				})
-				.catch((err) => alert.error(`oop err ${err.message}`));
-		} else {
-			instance
-				.createDepartment({ department: data.department })
-				.then((res) => {
-					alert.success('succefully submited data..');
-					props.onClose();
-				})
-				.catch((err) => alert.error('oops ' + err.message));
-		}
+		props.handleSubmit(data);
 	};
 
 	return props.show ? (

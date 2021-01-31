@@ -50,7 +50,7 @@ function Home({ page }) {
 		}
 	};
 
-	let strName = currentUser.displayName;
+	let strName = currentUser ? currentUser.displayName : '';
 	var initials = strName.split(' ');
 	var userInit = initials[0];
 
@@ -82,7 +82,10 @@ function Home({ page }) {
 
 						<li className="nav-item avt-wrapper">
 							<div className="avt dropdown">
-								<img src={currentUser ? currentUser.photoURL : '../../../public/img/usr.png'} />
+								<img
+									src={currentUser ? currentUser.photoURL : '../../../public/img/usr.png'}
+									alt="profile"
+								/>
 								<div className="switcher-icon">
 									<i className="fas fa-cog dropdown-toggle" data-toggle="user-menu" alt="" />
 								</div>
@@ -98,6 +101,7 @@ function Home({ page }) {
 									</li>
 									<li className="dropdown-menu-item">
 										<a
+											href="#"
 											className="dropdown-menu-link"
 											onClick={() =>
 												handleConfirm(
@@ -115,6 +119,7 @@ function Home({ page }) {
 
 									<li className="dropdown-menu-item">
 										<a
+											href="#"
 											onClick={() =>
 												handleConfirm('Confirm', 'Continue to signout?', handleSignOut)}
 											className="dropdown-menu-link"

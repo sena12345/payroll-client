@@ -33,7 +33,7 @@ export default function AllowanceModal(props) {
 					alert.error('oops! ' + err.message);
 				});
 		},
-		[ props.isEdit ]
+		[ props.isEdit, alert, instance ]
 	);
 
 	const handleSetDesignation = (val) => {
@@ -56,12 +56,12 @@ export default function AllowanceModal(props) {
 			amount            : data.amount,
 			percentage        : parseFloat(data.percentage) ? parseFloat(data.percentage) : 0,
 			frequency         : parseInt(data.frequency) ? parseInt(data.frequency) : 0,
-			toAllDesignations : parseInt(data.designation) == -1 ? true : false,
-			toAllDepartments  : parseInt(data.department) == -1 ? true : false,
-			departments       : parseInt(data.department) == -1 ? departments : [ { department_id: data.department } ],
+			toAllDesignations : parseInt(data.designation) === -1 ? true : false,
+			toAllDepartments  : parseInt(data.department) === -1 ? true : false,
+			departments       : parseInt(data.department) === -1 ? departments : [ { department_id: data.department } ],
 			designations      :
-				parseInt(data.designation) == -1 ? designations : [ { designation_id: data.designation } ],
-			departmental      : parseInt(data.department) == -1,
+				parseInt(data.designation) === -1 ? designations : [ { designation_id: data.designation } ],
+			departmental      : parseInt(data.department) === -1,
 			flat              : isFlat
 		};
 		console.log(processedAllowance);

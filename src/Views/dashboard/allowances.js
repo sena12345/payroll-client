@@ -6,8 +6,6 @@ import Config from '../../data-operations/data-queries/config';
 import { showConfirmAlert } from '../my-alerts';
 import { MyLoader } from './my-spiner';
 export default function Allowances() {
-	const [ designations, setDesignations ] = useState([]);
-
 	const [ allowances, setAllowances ] = useState([]);
 	const [ show, setShow ] = useState(false);
 	const [ isEdit, setIsEdit ] = useState(false);
@@ -22,25 +20,21 @@ export default function Allowances() {
 			.getAllowances()
 			.then((res) => {
 				setAllowances(res.data);
-				setLoading(false);
 			})
 			.catch((err) => {
 				alert.error(`oops error ${err.message}`);
-				setLoading(false);
 			});
 	};
 
 	const handleDelete = (data) => {
-		setLoading(true);
 		instance
 			.deleteAllowance(data)
 			.then((res) => {
+				setLoading(true);
 				alert.success('Allowance deleted successfully!');
-				setLoading(false);
 			})
 			.catch((err) => {
 				alert.error(`oops error ${err.message}`);
-				setLoading(false);
 			});
 	};
 
@@ -65,12 +59,15 @@ export default function Allowances() {
 		});
 	};
 
-	useEffect(
-		() => {
+	useEffect(() => {
+		if (loading === true) {
+			console.log('loading allowances..');
 			init();
-		},
-		[ loading, show ]
-	);
+		}
+		return () => {
+			setLoading(false);
+		};
+	});
 
 	return loading ? (
 		<MyLoader />
@@ -104,6 +101,7 @@ export default function Allowances() {
 									<div className="card-btns">
 										{' '}
 										<a
+											href="#"
 											onClick={() => {
 												setSelected(all);
 												setIsEdit(true);
@@ -113,6 +111,7 @@ export default function Allowances() {
 											<i className="fa fa-pen" />
 										</a>
 										<a
+											href="#"
 											title="delete"
 											onClick={(e) => {
 												handleConfirmDelete(all);

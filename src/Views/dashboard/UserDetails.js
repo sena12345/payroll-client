@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Image from '../../assets/images/img.png';
 import '../../assets/css/Form.css';
 
@@ -24,7 +24,7 @@ function UserDetails() {
 								<div className="form-row">
 									<div className="col-25">
 										<div className="imgcontainer">
-											<img src={Image} alt="image" className="image" />
+											<img src={Image} alt="dp" className="image" />
 										</div>
 										<div className="details-box">
 											<b>Employee ID :</b>
@@ -110,7 +110,7 @@ function UserDetails() {
 												</tr>
 												{employee.roles.map((r) => {
 													return (
-														<tr key={r.rolde_id}>
+														<tr key={r.role_id}>
 															<td>{r.role}</td>
 														</tr>
 													);

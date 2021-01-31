@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import app, { auth } from './firebase';
+import { auth } from './firebase';
 import firebase from 'firebase';
 import { useHistory } from 'react-router-dom';
 
@@ -32,7 +32,7 @@ export function AuthProvider({ children }) {
 	}
 
 	function resetPassword(email) {
-		return auth.sendPasswordResetEmail(email, { url: 'http://localhost:3000/' });
+		return auth.sendPasswordResetEmail(email, { url: 'https://amalitech-payroll.web.app/' });
 	}
 
 	function updateEmail(email) {
@@ -51,7 +51,7 @@ export function AuthProvider({ children }) {
 		});
 
 		return unsubscribe;
-	}, []);
+	});
 
 	const value = {
 		currentUser,

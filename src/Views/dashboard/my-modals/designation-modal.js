@@ -10,7 +10,7 @@ export default function DesignationModal(props) {
 	const instance = Config(currentUser);
 	const alert = useAlert();
 	const [ departments, setDepartments ] = useState([ Department ]);
-	const { register, handleSubmit, errors, reset } = useForm();
+	const { register, handleSubmit, reset } = useForm();
 	const selectedDepartments = props.isEdit ? props.data.departments : [];
 
 	useEffect(
@@ -22,48 +22,13 @@ export default function DesignationModal(props) {
 				})
 				.catch((err) => alert.error('oops ' + err.message));
 		},
-		[ props.isEdit ]
+		[ props.isEdit, alert, instance ]
 	);
 
 	const onSubmit = (data) => {
 		if (!data) return;
 		if (!data.designation) return;
-		let departmentData = [];
-		if (props.isEdit) {
-			departmentData.push(...props.data.departments);
-			data.department.forEach((dep) => {
-				departmentData.push({ department_id: parseInt(dep) });
-			});
-			if (departmentData.length < 1) {
-				alert.error('Kindly select department!');
-				return;
-			}
-			instance
-				.updateDesignation({
-					designation_id : props.data.designation_id,
-					designation    : data.designation,
-					departments    : departmentData
-				})
-				.then((res) => {
-					alert.success('successfully updated..');
-					props.onClose();
-				})
-				.catch((err) => alert.error(`oop err ${err.message}`));
-		} else {
-			data.department.forEach((dep) => {
-				departmentData.push({ department_id: parseInt(dep) });
-			});
-			instance
-				.createDesignation({
-					designation : data.designation,
-					departments : departmentData
-				})
-				.then((res) => {
-					alert.success('succefully submited data..');
-					props.onClose();
-				})
-				.catch((err) => alert.error('oops ' + err.message));
-		}
+		props.handleSubmit(data);
 	};
 
 	return props.show ? (

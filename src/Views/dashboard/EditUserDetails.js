@@ -8,6 +8,7 @@ import { MyLoader } from './my-spiner';
 import EmployeeInstance from '../../data-operations/data-queries/employees';
 import { useAlert } from 'react-alert';
 import { showConfirmAlert } from '../my-alerts';
+import { DEPARTMENTS } from '../../data-operations/_sahred/constants';
 
 function EditUserDetails() {
 	const location = useLocation();
@@ -20,11 +21,19 @@ function EditUserDetails() {
 	const { currentUser } = useAuth();
 	const instance = Config(currentUser);
 	const empInstance = EmployeeInstance(currentUser);
-	const { register, handleSubmit, errors, reset } = useForm();
+	const { register, handleSubmit, errors } = useForm();
 	const [ loading, setLoading ] = useState(true);
 	const alert = useAlert();
+	const employeeDepartments = [];
+	employee.departments.forEach((d) => {
+		employeeDepartments.push(d);
+	});
 
-	useEffect(() => {
+	const onChange = (d) => {
+		console.log(d);
+	};
+
+	const init = () => {
 		instance
 			.getCardTypes()
 			.then((res) => {
@@ -33,27 +42,47 @@ function EditUserDetails() {
 			.catch((err) => {
 				alert.error(`oops failed to load cardTypes ${err.message}`);
 			});
-		instance.getDepartments().then((res) => {
-			setDepartments(res.data);
-		});
-		instance.getAllDesignation().then((res) => {
-			setDesignation(res.data);
-		});
-		instance.getRoles().then((res) => {
-			setRoles(res.data);
-			setLoading(false);
-		});
-	}, []);
-
-	const removeByAttr = function(arr, attr, value) {
-		let i = arr.length;
-		while (i--) {
-			if (arr[i] && arr[i].hasOwnProperty(attr) && (arguments.length > 2 && arr[i][attr] === value)) {
-				arr.splice(i, 1);
-			}
-		}
-		return arr;
+		instance
+			.getDepartments()
+			.then((res) => {
+				setDepartments(res.data);
+			})
+			.catch((err) => alert.error(`oops failed to load departments ${err.message}`));
+		instance
+			.getAllDesignation()
+			.then((res) => {
+				setDesignation(res.data);
+			})
+			.catch((err) => alert.error(`oops failed to load cardTypes ${err.message}`));
+		instance
+			.getRoles()
+			.then((res) => {
+				setRoles(res.data);
+			})
+			.catch((err) => alert.error(`oops failed to load roles ${err.message}`));
 	};
+
+	useEffect(
+		() => {
+			if (loading) {
+				init();
+			}
+			return () => {
+				setLoading(false);
+			};
+		},
+		[ loading, init ]
+	);
+
+	// const removeByAttr = function(arr, attr, value) {
+	// 	let i = arr.length;
+	// 	while (i--) {
+	// 		if (arr[i] && arr[i].hasOwnProperty(attr) && (arguments.length > 2 && arr[i][attr] === value)) {
+	// 			arr.splice(i, 1);
+	// 		}
+	// 	}
+	// 	return arr;
+	// };
 
 	// const handleChange = (e) => {
 	// 	let { options } = e.target;
@@ -70,6 +99,9 @@ function EditUserDetails() {
 	// };
 
 	const onSubmit = (data) => {
+		console.log(data.chkboxList);
+		return;
+
 		setLoading(true);
 		let rolesData = [];
 		rolesData.push(...employee.roles);
@@ -141,17 +173,26 @@ function EditUserDetails() {
 		});
 	};
 
+	const handleConfirmDelete = (target, data) => {
+		switch (target) {
+			case DEPARTMENTS:
+		}
+	};
+
 	return loading ? (
 		<MyLoader />
 	) : (
 		<div className="edituserdetails">
-			<h2>Edit User Details</h2>
+			<h5>
+				Modify <b>{employee.name}</b>
+			</h5>
+			<hr />
 			<br />
 
 			<form onSubmit={handleSubmit(handleConfirm)}>
 				<div className="form-row">
 					<div className="col-50 left-col">
-						<h3>Personal Information</h3>
+						<b>Personal Information</b>
 						<br />
 						<div className="form-row">
 							<div className="col-50">
@@ -239,7 +280,7 @@ function EditUserDetails() {
 						</div>
 					</div>
 					<div className="col-50">
-						<h3>Other Details</h3>
+						<b>Other Details</b>
 						<br />
 						<div className="form-row">
 							<div className="col-50">
@@ -304,14 +345,20 @@ function EditUserDetails() {
 								/>
 							</div>
 						</div>
-						//departments
+
 						<div className="form-row">
 							<div className="col-50">
 								<label htmlFor="department">Department</label>
 								<select ref={register} multiple name="departments">
 									{departments.map((dep) => {
+										let select = false;
+										employee.departments.forEach((dp) => {
+											if (dp.department_id === dep.department_id) select = true;
+										});
+
 										return (
 											<option
+												selected={select}
 												className="form-option"
 												key={dep.department_id}
 												value={dep.department_id}
@@ -333,14 +380,24 @@ function EditUserDetails() {
 									</thead>
 								</table>
 								<ol>
-									{employee.departments.map((d) => {
+									{departments.map((d) => {
 										return (
 											<li key={d.department_id}>
 												<p>
 													{d.department}
-													<button type="button" className="float-right">
-														<i className="fa fa-trash" />
-													</button>
+													<input
+														defaultChecked={employeeDepartments.indexOf(d) == -1}
+														type="checkbox"
+														value={d.department_id}
+														className="float-right"
+														onChange={(e) => {
+															let ind = employeeDepartments.indexOf(d);
+															if (ind === -1) employeeDepartments.push(d);
+															else employeeDepartments.splice(ind, 1);
+
+															console.log(employeeDepartments);
+														}}
+													/>
 												</p>
 											</li>
 										);
@@ -348,7 +405,7 @@ function EditUserDetails() {
 								</ol>
 							</div>
 						</div>
-						//designations
+
 						<div className="form-row">
 							<div className="col-50">
 								<label htmlFor="designation">Designation</label>
@@ -392,7 +449,7 @@ function EditUserDetails() {
 								</ol>
 							</div>
 						</div>
-						//roles
+
 						<div className="form-row">
 							<div className="col-50">
 								<label htmlFor="role">Roles</label>

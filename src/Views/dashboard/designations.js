@@ -20,12 +20,51 @@ export default function Designations() {
 			.getAllDesignation()
 			.then((res) => {
 				setDesignations(res.data);
-				setLoading(false);
 			})
 			.catch((err) => {
 				alert.error(`oops error ${err.message}`);
-				setLoading(false);
 			});
+	};
+
+	const handleSubmit = (data) => {
+		let departmentData = [];
+		if (isEdit) {
+			departmentData.push(...selected.departments);
+			data.department.forEach((dep) => {
+				departmentData.push({ department_id: parseInt(dep) });
+			});
+			if (departmentData.length < 1) {
+				alert.error('Kindly select department!');
+				return;
+			}
+			instance
+				.updateDesignation({
+					designation_id : selected.designation_id,
+					designation    : data.designation,
+					departments    : departmentData
+				})
+				.then((res) => {
+					setLoading(true);
+					setShow(false);
+					alert.success('successfully updated..');
+				})
+				.catch((err) => alert.error(`oop err ${err.message}`));
+		} else {
+			data.department.forEach((dep) => {
+				departmentData.push({ department_id: parseInt(dep) });
+			});
+			instance
+				.createDesignation({
+					designation : data.designation,
+					departments : departmentData
+				})
+				.then((res) => {
+					setShow(false);
+					setLoading(true);
+					alert.success('succefully submited data..');
+				})
+				.catch((err) => alert.error('oops ' + err.message));
+		}
 	};
 
 	const handleDelete = (data) => {
@@ -63,12 +102,15 @@ export default function Designations() {
 		});
 	};
 
-	useEffect(
-		() => {
+	useEffect(() => {
+		if (loading === true) {
+			console.log('loading designations..');
 			init();
-		},
-		[ loading, show ]
-	);
+		}
+		return () => {
+			setLoading(false);
+		};
+	});
 
 	return loading ? (
 		<MyLoader />
@@ -93,7 +135,13 @@ export default function Designations() {
 					>
 						New <i className="fa fa-plus" />
 					</button>
-					<DesignationModal show={show} onClose={() => setShow(false)} isEdit={isEdit} data={selected} />
+					<DesignationModal
+						show={show}
+						onClose={() => setShow(false)}
+						isEdit={isEdit}
+						data={selected}
+						handleSubmit={handleSubmit}
+					/>
 				</div>
 
 				{
@@ -110,6 +158,7 @@ export default function Designations() {
 									<div className="card-btns">
 										{' '}
 										<a
+											href="#"
 											onClick={() => {
 												setSelected(des);
 												setIsEdit(true);
@@ -119,6 +168,7 @@ export default function Designations() {
 											<i className="fa fa-pen" />
 										</a>
 										<a
+											href="#"
 											title="delete"
 											onClick={(e) => {
 												handleConfirmDelete(des);
