@@ -344,7 +344,12 @@ function EditUserDetails() {
 						<div className="form-row">
 							<div className="col-50">
 								<label htmlFor="department">Department</label>
-								<select multiple={true} ref={register} name="departments" value={defaultDepartment}>
+								<select
+									multiple={true}
+									ref={register}
+									name="departments"
+									defaultValue={defaultDepartment}
+								>
 									{departments.map((dep) => {
 										return (
 											<option
@@ -362,7 +367,7 @@ function EditUserDetails() {
 								<label htmlFor="designation">Designation</label>
 								<select
 									multiple={true}
-									value={defaultDesignation}
+									defaultValue={defaultDesignation}
 									ref={register}
 									id="designation"
 									name="desigantions"
@@ -387,7 +392,7 @@ function EditUserDetails() {
 								<label htmlFor="role">Roles</label>
 								<select
 									multiple={true}
-									value={defaultRoles}
+									defaultValue={defaultRoles}
 									ref={register}
 									type="text"
 									id="role"
