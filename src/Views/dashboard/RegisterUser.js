@@ -24,7 +24,7 @@ function RegisterUser() {
 	const empInstance = EmployeeInstance(currentUser);
 	const { register, handleSubmit, errors, reset } = useForm();
 
-	function fetchInits() {
+	const init = () => {
 		queriesStore
 			.getRoles()
 			.then((res) => {
@@ -55,18 +55,20 @@ function RegisterUser() {
 			.getAllDesignation()
 			.then((res) => {
 				setDesignations(res.data);
-
-				setLoading(false);
 			})
 			.catch((err) => {
 				alert.error(`oops failed to load designations ${err.message}`);
-				setLoading(false);
 			});
-	}
+	};
 
 	useEffect(() => {
-		fetchInits();
-	}, []);
+		if (loading === true) init();
+		console.log('loaded register...');
+
+		return () => {
+			setLoading(false);
+		};
+	});
 
 	const onSubmit = (data) => {
 		let rolesData = [];

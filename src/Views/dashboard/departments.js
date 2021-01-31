@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import DesignationModal from './my-modals/designation-modal';
 import { useAlert } from 'react-alert';
 import { useAuth } from '../../_services/auth-context';
 import Config from '../../data-operations/data-queries/config';
@@ -20,8 +19,8 @@ export default function Departments() {
 		instance
 			.getDepartments()
 			.then((res) => {
-				setDepartments(res.data);
 				setLoading(false);
+				setDepartments(res.data);
 			})
 			.catch((err) => {
 				setLoading(false);
@@ -29,17 +28,40 @@ export default function Departments() {
 			});
 	};
 
+	const handleSubmit = (data) => {
+		if (isEdit) {
+			instance
+				.updateDepartment({
+					department_id : selected.department_id,
+					department    : data.department
+				})
+				.then((res) => {
+					setShow(false);
+					setLoading(true);
+					alert.success('successfully updated..');
+				})
+				.catch((err) => alert.error(`oop err ${err.message}`));
+		} else {
+			instance
+				.createDepartment({ department: data.department })
+				.then((res) => {
+					setShow(false);
+					setLoading(true);
+					alert.success('succefully submited data..');
+				})
+				.catch((err) => alert.error('oops ' + err.message));
+		}
+	};
+
 	const handleDelete = (data) => {
-		setLoading(true);
 		instance
 			.deleteDepartment(data)
 			.then((res) => {
+				setLoading(true);
 				alert.success('Department deleted successfully!');
-				setLoading(false);
 			})
 			.catch((err) => {
 				alert.error(`oops error ${err.message}`);
-				setLoading(false);
 			});
 	};
 
@@ -64,12 +86,15 @@ export default function Departments() {
 		});
 	};
 
-	useEffect(
-		() => {
+	useEffect(() => {
+		if (loading && !show) {
+			console.log('loading departments..');
 			init();
-		},
-		[ loading, show ]
-	);
+		}
+		return () => {
+			setLoading(false);
+		};
+	});
 
 	return loading ? (
 		<MyLoader />
@@ -90,7 +115,13 @@ export default function Departments() {
 					>
 						New <i className="fa fa-plus" />
 					</button>
-					<DepartmentModal show={show} onClose={() => setShow(false)} isEdit={isEdit} data={selected} />
+					<DepartmentModal
+						show={show}
+						onClose={() => setShow(false)}
+						isEdit={isEdit}
+						data={selected}
+						handleSubmit={handleSubmit}
+					/>
 				</div>
 
 				{
@@ -102,6 +133,7 @@ export default function Departments() {
 									<div className="card-btns">
 										{' '}
 										<a
+											href="#"
 											onClick={() => {
 												setSelected(dep);
 												setIsEdit(true);
@@ -111,6 +143,7 @@ export default function Departments() {
 											<i className="fa fa-pen" />
 										</a>
 										<a
+											href="#"
 											title="delete"
 											onClick={(e) => {
 												handleConfirmDelete(dep);

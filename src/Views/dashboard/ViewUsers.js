@@ -10,29 +10,33 @@ function ViewUsers() {
 	const history = useHistory();
 	const empInstance = EmployeeInstance(currentUser);
 	const [ employeesData, setEmployeesData ] = useState([]);
-	const [ selectedEmployee, setSeletecEmployee ] = useState();
 	const [ load, setLoading ] = useState(true);
 	const alert = useAlert();
 	const selectedEmployees = [];
-	useEffect(
-		() => {
-			if (load) {
-				empInstance
-					.getEmployees()
-					.then((res) => {
-						setEmployeesData(res.data.content);
-						setLoading(false);
-					})
-					.catch((err) => {
-						setLoading(false);
-						console.log(err);
-					});
-			}
-		},
-		[ load ]
-	);
 
-	const handleConfirm = (title, message, action) => {
+	const init = () => {
+		empInstance
+			.getEmployees()
+			.then((res) => {
+				setLoading(false);
+				setEmployeesData(res.data.content);
+			})
+			.catch((err) => {
+				setLoading(false);
+				console.log(err);
+			});
+	};
+	useEffect(() => {
+		if (load === true) {
+			console.log('loading viewusers..');
+			init();
+		}
+		return () => {
+			setLoading(false);
+		};
+	});
+
+	const handleConfirm = (title, message, action, data) => {
 		showConfirmAlert({
 			title   : title,
 			message : message,
@@ -45,7 +49,7 @@ function ViewUsers() {
 				},
 				{
 					label   : 'Yes',
-					onClick : () => action()
+					onClick : () => action(data)
 				}
 			]
 		});
@@ -92,64 +96,66 @@ function ViewUsers() {
 		return;
 	};
 
-	const handleMultiDisable = () => {
-		setLoading(true);
+	const handleMultiDisable = (employees = []) => {
 		empInstance
-			.disableEmployees(selectedEmployees)
+			.disableEmployees(employees)
 			.then((res) => {
+				setLoading(true);
+				// setLoading(false);
 				alert.success('successfully change state of employees!');
 				for (const emp of selectedEmployees) {
 					const index = employeesData.indexOf(emp);
 					employeesData[index] = { ...emp, disable: !emp.disable };
 					setEmployeesData([ ...employeesData ]);
 				}
-				setLoading(false);
 			})
 			.catch((err) => {
-				setLoading(false);
+				// setLoading(false);
 				alert.error(`oops! error due to ${err.message}`);
 			});
 	};
 
-	const handleMultiDelete = () => {
-		setLoading(true);
+	const handleMultiDelete = (employees = []) => {
 		empInstance
-			.deleteEmployees(selectedEmployees)
+			.deleteEmployees(employees)
 			.then((res) => {
 				setLoading(true);
 				alert.success('successfully deleted employees!');
 			})
 			.catch((err) => {
-				setLoading(false);
 				alert.error(`oops! error due to ${err.message}`);
 			});
 	};
 
-	const handleSingleDisable = () => {
-		// setLoading(true);
+	const handleSingleDisable = (employee) => {
+		const data = [ employee ];
 		empInstance
-			.disableEmployees([ selectedEmployee ])
+			.disableEmployees(data)
 			.then((res) => {
+				// const isDone = res.data.disable;
+
+				setLoading(true);
 				alert.success('successfully change state employees!');
-				setLoading(true);
+				// setLoading(true);
 			})
 			.catch((err) => {
-				setLoading(false);
+				// setLoading(false);
 				alert.error(`oops! error due to ${err.message}`);
 			});
 	};
 
-	const handleSingleDelete = () => {
-		setLoading(true);
+	const handleSingleDelete = (employee) => {
+		const data = [ employee ];
 		empInstance
-			.deleteEmployees([ selectedEmployee ])
+			.deleteEmployees(data)
 			.then((res) => {
+				setLoading(true);
 				alert.success('successfully deleted employees!');
-				setLoading(false);
+				// setLoading(false);
 			})
 			.catch((err) => {
 				alert.error(`oops! error due to ${err.message}`);
-				setLoading(false);
+				// setLoading(false);
 			});
 	};
 
@@ -158,26 +164,29 @@ function ViewUsers() {
 			handleConfirm(
 				'Confirm',
 				`Continue to change status of ${selectedEmployees.length} employees?`,
-				handleMultiDisable
+				handleMultiDisable,
+				selectedEmployees
 			);
 		} else {
 			handleConfirm(
 				'Warning',
 				`You are about to permanently delete ${selectedEmployees.length} employees?`,
-				handleMultiDelete
+				handleMultiDelete,
+				selectedEmployees
 			);
 		}
 	};
 
 	const handleConfirmSingleDisable = (employee) => {
+		console.log('current ', employee);
 		if (!employee) return;
 
-		handleConfirm('Confirm', `Continue to changes status of ${employee.name}?`, handleSingleDisable);
+		handleConfirm('Confirm', `Continue to change status of ${employee.name}?`, handleSingleDisable, employee);
 	};
 
 	const handleConfirmSingleDelete = (employee) => {
 		if (!employee) return;
-		handleConfirm('Confirm', `Continue to changes status of ${employee.name}?`, handleSingleDelete);
+		handleConfirm('Confirm', `Continue to permanently delete ${employee.name}?`, handleSingleDelete, employee);
 	};
 
 	return load ? (
@@ -266,7 +275,7 @@ function ViewUsers() {
 											})}
 										</ol>
 									</td>
-									<td>{<pre>{emp.disable == true ? 'Disabled' : 'Active'}</pre>}</td>
+									<td>{<pre>{emp.disable === true ? 'Disabled' : 'Active'}</pre>}</td>
 									<td>
 										<input
 											type="checkbox"
@@ -309,10 +318,7 @@ function ViewUsers() {
 											className="bg-primary"
 											title="Disable Employee"
 											onClick={(e) => {
-												if (e.target.dispatchEvent) {
-													setSeletecEmployee(emp);
-													handleConfirmSingleDisable(emp);
-												}
+												handleConfirmSingleDisable(emp);
 											}}
 										>
 											<i className="fa fa-times" />
@@ -321,10 +327,7 @@ function ViewUsers() {
 											className="bg-danger"
 											title="Delete Employee"
 											onClick={(e) => {
-												if (e.target.dispatchEvent) {
-													setSeletecEmployee(emp);
-													handleConfirmSingleDelete(emp);
-												}
+												handleConfirmSingleDelete(emp);
 											}}
 										>
 											<i className="fa fa-trash" />
