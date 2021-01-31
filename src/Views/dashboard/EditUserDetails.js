@@ -8,13 +8,21 @@ import { MyLoader } from './my-spiner';
 import EmployeeInstance from '../../data-operations/data-queries/employees';
 import { useAlert } from 'react-alert';
 import { showConfirmAlert } from '../my-alerts';
-
+import MultiSelect from 'react-multi-select-component';
+import {
+	ConvertedRoles,
+	ConvertedDepartment,
+	ConvertedDesignations
+} from '../../data-operations/data-queries/converter';
 function EditUserDetails() {
 	const location = useLocation();
 	const history = useHistory();
 	const employee = location.state.data;
+	const [ selectedDepartments, setSelectedDepartments ] = useState([]);
 	const [ departments, setDepartments ] = useState([]);
+	const [ selectedRoles, setSelectedRoles ] = useState([]);
 	const [ roles, setRoles ] = useState([]);
+	const [ selectedDesignations, setSelectedDesignations ] = useState([]);
 	const [ designations, setDesignation ] = useState([]);
 	const [ cardTypes, setCardTypes ] = useState([]);
 	const { currentUser } = useAuth();
@@ -24,20 +32,23 @@ function EditUserDetails() {
 	const [ loading, setLoading ] = useState(true);
 	const alert = useAlert();
 
-	const defaultRoles = [];
-	employee.roles.forEach((r) => {
-		defaultRoles.push(r.role_id);
-	});
+	// const departments  : [],
+	// designations : [],
+	// cardTypes    : []
 	const defaultDepartment = [];
 	employee.departments.forEach((d) => {
-		defaultDepartment.push(d.department_id);
+		defaultDepartment.push({ label: d.department, value: d.department_id });
 	});
 	const defaultDesignation = [];
 	employee.designations.forEach((d) => {
-		defaultDesignation.push(d.designation_id);
+		defaultDesignation.push({ label: d.designation, value: d.designation_id });
 	});
 
 	const init = () => {
+		setSelectedRoles(ConvertedRoles(employee.roles));
+		setSelectedDepartments(ConvertedDepartment(employee.departments));
+		setSelectedDesignations(ConvertedDesignations(employee.designations));
+
 		instance
 			.getCardTypes()
 			.then((res) => {
@@ -49,19 +60,19 @@ function EditUserDetails() {
 		instance
 			.getDepartments()
 			.then((res) => {
-				setDepartments(res.data);
+				setDepartments(ConvertedDepartment(res.data));
 			})
 			.catch((err) => alert.error(`oops failed to load departments ${err.message}`));
 		instance
 			.getAllDesignation()
 			.then((res) => {
-				setDesignation(res.data);
+				setDesignation(ConvertedDesignations(res.data));
 			})
 			.catch((err) => alert.error(`oops failed to load cardTypes ${err.message}`));
 		instance
 			.getRoles()
 			.then((res) => {
-				setRoles(res.data);
+				setRoles(ConvertedRoles(res.data));
 			})
 			.catch((err) => alert.error(`oops failed to load roles ${err.message}`));
 	};
@@ -107,18 +118,18 @@ function EditUserDetails() {
 		setLoading(true);
 		let rolesData = [];
 		// rolesData.push(...employee.roles);
-		data.roles.forEach((rol) => {
-			rolesData.push({ role_id: parseInt(rol) });
+		selectedRoles.forEach((rol) => {
+			rolesData.push({ role_id: parseInt(rol.value) });
 		});
 		let departmentData = [];
 		// departmentData.push(...employee.departments);
-		data.departments.forEach((dep) => {
-			departmentData.push({ department_id: parseInt(dep) });
+		selectedDepartments.forEach((dep) => {
+			departmentData.push({ department_id: parseInt(dep.value) });
 		});
 		let designationData = [];
 		// designationData.push(...employee.designations);
-		data.desigantions.forEach((des) => {
-			designationData.push({ designation_id: parseInt(des) });
+		selectedDesignations.forEach((des) => {
+			designationData.push({ designation_id: parseInt(des.value) });
 		});
 		const employeeData = {
 			uid           : employee.uid,
@@ -281,7 +292,12 @@ function EditUserDetails() {
 									</option>
 									{cardTypes.map((card) => {
 										return (
-											<option className="form-option" key={card} value={cardTypes.indexOf(card)}>
+											<option
+												selected={employee.cardType === card}
+												className="form-option"
+												key={card}
+												value={cardTypes.indexOf(card)}
+											>
 												{card}
 											</option>
 										);
@@ -344,68 +360,35 @@ function EditUserDetails() {
 						<div className="form-row">
 							<div className="col-50">
 								<label htmlFor="department">Department</label>
-								<select
-									multiple={true}
-									ref={register}
-									name="departments"
-									defaultValue={defaultDepartment}
-								>
-									{departments.map((dep) => {
-										return (
-											<option
-												className="form-option"
-												key={dep.department_id}
-												value={dep.department_id}
-											>
-												{dep.department}
-											</option>
-										);
-									})}
-								</select>
+								<MultiSelect
+									options={departments}
+									value={selectedDepartments}
+									onChange={setSelectedDepartments}
+									labelledBy={'Select'}
+								/>
 							</div>
+						</div>
+						<div className="form-row">
 							<div className="col-50">
 								<label htmlFor="designation">Designation</label>
-								<select
-									multiple={true}
-									defaultValue={defaultDesignation}
-									ref={register}
-									id="designation"
-									name="desigantions"
-								>
-									{designations.map((des) => {
-										return (
-											<option
-												className="form-option"
-												key={des.designation_id}
-												value={des.designation_id}
-											>
-												{des.designation}
-											</option>
-										);
-									})}
-								</select>
+								<MultiSelect
+									options={designations}
+									value={selectedDesignations}
+									onChange={setSelectedDesignations}
+									labelledBy={'Select'}
+								/>
 							</div>
 						</div>
 
 						<div className="form-row">
 							<div className="col-50">
 								<label htmlFor="role">Roles</label>
-								<select
-									multiple={true}
-									defaultValue={defaultRoles}
-									ref={register}
-									type="text"
-									id="role"
-									name="roles"
-								>
-									{roles.map((rol) => {
-										return (
-											<option className="form-option" key={rol.role_id} value={rol.role_id}>
-												{rol.role}
-											</option>
-										);
-									})}
-								</select>
+								<MultiSelect
+									options={roles}
+									value={selectedRoles}
+									onChange={setSelectedRoles}
+									labelledBy={'Select'}
+								/>
 							</div>
 						</div>
 						<div className="col-50">

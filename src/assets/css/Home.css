@@ -660,14 +660,14 @@ tr button {
 	margin: 0.5rem;
 }
 tr a {
-	width: 1.5rem;
-	height: 1.5rem;
-	margin: 0.5rem;
+	width: 1.0rem;
+	height: 1.0rem;
+	margin: 0.1rem;
 }
 
 tr input {
-	width: 1.2rem;
-	height: 1.2rem;
+	width: 1rem;
+	height: 1rem;
 	cursor: pointer;
 }
 
@@ -919,9 +919,9 @@ input[type="radio"] {
 }
 
 ol {
-	padding-right: 1rem;
-	padding-left: 1rem;
-	padding-top: 1rem;
+	padding-right: 0.5rem;
+	padding-left: 0.5rem;
+	padding-top: 0.5rem;
 }
 ol p {
 	margin-bottom: 0.5rem;
@@ -940,16 +940,35 @@ ol p {
 	text-decoration: none;
 	margin: 2px;
 	background-color: #d95a27;
-	border-radius: 1rem;
+	border-radius: 0.1rem;
 	border-color: transparent;
+	font-size: small;
+	opacity: 0.6;
+}
+
+.pagination a:hover {
+	color: #fff;
+	opacity: 1;
 }
 
 .pagination ul {
 	display: inline-block;
-	padding-left: 15px;
-	padding-right: 15px;
+	padding-left: 5px;
+	padding-right: 5px;
 }
 
 .pagination li {
 	display: inline-block;
+}
+
+.multi-select {
+	--rmsc-primary: #d95a27;
+	--rmsc-hover: #f1f3f5;
+	--rmsc-selected: #e2e6ea;
+	--rmsc-border: #ccc;
+	--rmsc-gray: #aaa;
+	--rmsc-background: #fff;
+	--rmsc-spacing: 10px;
+	--rmsc-border-radius: 4px;
+	--rmsc-height: 38px;
 }

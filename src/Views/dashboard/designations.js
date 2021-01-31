@@ -41,11 +41,11 @@ const Designations = () => {
 			});
 	};
 
-	const handleSubmit = (data) => {
-		let departmentData = [];
+	const handleSubmit = (selectedDepartments, data) => {
+		const departmentData = [];
 		if (isEdit) {
-			data.department.forEach((dep) => {
-				departmentData.push({ department_id: parseInt(dep) });
+			selectedDepartments.forEach((dep) => {
+				departmentData.push({ department_id: parseInt(dep.value) });
 			});
 			if (departmentData.length < 1) {
 				alert.error('Kindly select department!');

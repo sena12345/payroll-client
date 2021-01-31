@@ -3,47 +3,49 @@ import { useAuth } from '../../../_services/auth-context';
 import Config from '../../../data-operations/data-queries/config';
 import { useAlert } from 'react-alert';
 import { useForm } from 'react-hook-form';
-
+import MultiSelect from 'react-multi-select-component';
+import { ConvertedDepartment, ConvertedDesignations } from '../../../data-operations/data-queries/converter';
 const AllowanceModal = (props) => {
 	const { currentUser } = useAuth();
 	const instance = Config(currentUser);
 	const alert = useAlert();
 	const [ isFlat, setIsFlat ] = useState(props.isEdit ? (props.data.flat ? true : false) : true);
 	const [ loading, setLoading ] = useState(true);
+	const [ selectedDepartments, setSelectedDepartments ] = useState([]);
+	const [ selectedDesignations, setSelectedDesignations ] = useState([]);
+	const [ designations, setDesignation ] = useState([]);
 	const [ departments, setDepartments ] = useState([]);
-	const [ designations, setDesignations ] = useState([]);
 	const [ departmental, setDepartmental ] = useState(props.isEdit ? (props.data.departmental ? true : false) : true);
 	const { register, handleSubmit, reset } = useForm();
 	const freqs = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ];
-	const selectedDepartments = props.isEdit ? props.data.departments : [];
-	const selectedDesignations = props.isEdit ? props.data.designations : [];
-	const defaultValueDepartments = [];
-	selectedDepartments.forEach((d) => {
-		defaultValueDepartments.push(d.department_id);
-	});
-	const defaultValueDesignations = [];
-	selectedDesignations.forEach((d) => {
-		defaultValueDesignations.push(d.designation_id);
-	});
+
+	const init = () => {
+		setSelectedDepartments(props.isEdit ? ConvertedDepartment(props.data.departments) : []);
+
+		setSelectedDesignations(props.isEdit ? ConvertedDesignations(props.data.designations) : []);
+
+		instance
+			.getDepartments()
+			.then((res) => {
+				setDepartments(ConvertedDepartment(res.data));
+			})
+			.catch((err) => alert.error('oops ' + err.message));
+
+		instance
+			.getAllDesignation()
+			.then((res) => {
+				setDesignation(ConvertedDesignations(res.data));
+				setLoading(false);
+			})
+			.catch((err) => {
+				alert.error('oops! ' + err.message);
+			});
+	};
 
 	useEffect(
 		() => {
 			if (loading) {
-				instance
-					.getDepartments()
-					.then((res) => {
-						setDepartments(res.data);
-					})
-					.catch((err) => alert.error('oops ' + err.message));
-
-				instance
-					.getAllDesignation()
-					.then((res) => {
-						setDesignations(res.data);
-					})
-					.catch((err) => {
-						alert.error('oops! ' + err.message);
-					});
+				init();
 			}
 			return () => {
 				setLoading(false);
@@ -67,9 +69,13 @@ const AllowanceModal = (props) => {
 
 	// };
 
+	const handleWork = (data) => {
+		props.handleSubmit(selectedDepartments, selectedDesignations, data);
+	};
+
 	return props.show ? (
 		<div className="modal" onClick={props.onClose}>
-			<form onSubmit={handleSubmit(props.handleSubmit)}>
+			<form onSubmit={handleSubmit(handleWork)}>
 				<div className="modal-content" onClick={(e) => e.stopPropagation()}>
 					<div className="modal-head">
 						<h4>{`Allowances`}</h4>
@@ -192,40 +198,42 @@ const AllowanceModal = (props) => {
 							<div className="col-50">
 								<label htmlFor="department">Departments</label>
 
-								<select
-									multiple={true}
-									id="department"
-									defaultValue={defaultValueDepartments}
-									name="department"
-									ref={register}
-								>
-									{departments.map((dep) => {
-										return (
-											<option key={'k' + dep.department_id} value={dep.department_id}>
-												{dep.department}
-											</option>
-										);
-									})}
-								</select>
+								<MultiSelect
+									name="designation"
+									options={departments}
+									value={selectedDepartments}
+									onChange={setSelectedDepartments}
+									labelledBy={'Select'}
+								/>
+								{
+									// <select
+									// 	multiple={true}
+									// 	id="department"
+									// 	defaultValue={defaultValueDepartments}
+									// 	name="department"
+									// 	ref={register}
+									// >
+									// 	{departments.map((dep) => {
+									// 		return (
+									// 			<option key={'k' + dep.department_id} value={dep.department_id}>
+									// 				{dep.department}
+									// 			</option>
+									// 		);
+									// 	})}
+									// </select>
+								}
 							</div>
+						</div>
 
+						<div className="form-row">
 							<div className="col-50">
 								<label htmlFor="designation">Designations</label>
-								<select
-									defaultValue={defaultValueDesignations}
-									ref={register}
-									name="designation"
-									id="designation"
-									multiple
-								>
-									{designations.map((des) => {
-										return (
-											<option key={des.designation_id} value={des.designation_id}>
-												{des.designation}
-											</option>
-										);
-									})}
-								</select>
+								<MultiSelect
+									options={designations}
+									value={selectedDesignations}
+									onChange={setSelectedDesignations}
+									labelledBy={'Select'}
+								/>
 							</div>
 						</div>
 
@@ -257,6 +265,8 @@ const AllowanceModal = (props) => {
 							type="reset"
 							className="modal-btn"
 							onClick={() => {
+								setSelectedDepartments([]);
+								setSelectedDesignations([]);
 								reset();
 								props.onClose();
 							}}
