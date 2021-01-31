@@ -4,93 +4,72 @@ import Config from '../../../data-operations/data-queries/config';
 import { useAlert } from 'react-alert';
 import { useForm } from 'react-hook-form';
 
-export default function AllowanceModal(props) {
+const AllowanceModal = (props) => {
 	const { currentUser } = useAuth();
 	const instance = Config(currentUser);
 	const alert = useAlert();
-	const [ isFlat, setIsFlat ] = useState(true);
+	const [ isFlat, setIsFlat ] = useState(props.isEdit ? (props.data.flat ? true : false) : true);
+	const [ loading, setLoading ] = useState(true);
 	const [ departments, setDepartments ] = useState([]);
 	const [ designations, setDesignations ] = useState([]);
-	const [ sortedDesignations, setSortedDesignations ] = useState([]);
+	const [ departmental, setDepartmental ] = useState(props.isEdit ? (props.data.departmental ? true : false) : true);
 	const { register, handleSubmit, reset } = useForm();
 	const freqs = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ];
+	const selectedDepartments = props.isEdit ? props.data.departments : [];
+	const selectedDesignations = props.isEdit ? props.data.designations : [];
+	const defaultValueDepartments = [];
+	selectedDepartments.forEach((d) => {
+		defaultValueDepartments.push(d.department_id);
+	});
+	const defaultValueDesignations = [];
+	selectedDesignations.forEach((d) => {
+		defaultValueDesignations.push(d.designation_id);
+	});
 
 	useEffect(
 		() => {
-			instance
-				.getDepartments()
-				.then((res) => {
-					setDepartments(res.data);
-				})
-				.catch((err) => alert.error('oops ' + err.message));
+			if (loading) {
+				instance
+					.getDepartments()
+					.then((res) => {
+						setDepartments(res.data);
+					})
+					.catch((err) => alert.error('oops ' + err.message));
 
-			instance
-				.getAllDesignation()
-				.then((res) => {
-					setDesignations(res.data);
-				})
-				.catch((err) => {
-					alert.error('oops! ' + err.message);
-				});
+				instance
+					.getAllDesignation()
+					.then((res) => {
+						setDesignations(res.data);
+					})
+					.catch((err) => {
+						alert.error('oops! ' + err.message);
+					});
+			}
+			return () => {
+				setLoading(false);
+			};
 		},
-		[ props.isEdit, alert, instance ]
+		[ loading ]
 	);
 
-	const handleSetDesignation = (val) => {
-		const sortData = [];
-		designations.forEach((des) => {
-			des.departments.forEach((dep) => {
-				if (dep.department_id === val.target.value) {
-					sortData.push(des);
-				}
-			});
-		});
-		setSortedDesignations(sortData);
-	};
+	// const handleSetDesignation = (val) => {
+	// 	const sortData = [];
+	// 	designations.forEach((des) => {
+	// 		des.departments.forEach((dep) => {
+	// 			if (dep.department_id === val.target.value) {
+	// 				sortData.push(des);
+	// 			}
+	// 		});
+	// 	});
+	// };
 
-	const onSubmit = (data) => {
-		if (!data) return;
-		//allowance_id      : '',
-		const processedAllowance = {
-			allowance         : data.allowance,
-			amount            : data.amount,
-			percentage        : parseFloat(data.percentage) ? parseFloat(data.percentage) : 0,
-			frequency         : parseInt(data.frequency) ? parseInt(data.frequency) : 0,
-			toAllDesignations : parseInt(data.designation) === -1 ? true : false,
-			toAllDepartments  : parseInt(data.department) === -1 ? true : false,
-			departments       : parseInt(data.department) === -1 ? departments : [ { department_id: data.department } ],
-			designations      :
-				parseInt(data.designation) === -1 ? designations : [ { designation_id: data.designation } ],
-			departmental      : parseInt(data.department) === -1,
-			flat              : isFlat
-		};
-		console.log(processedAllowance);
+	// const onSubmit = (data) => {
 
-		if (props.isEdit) {
-			instance
-				.updateAllowance({ ...processedAllowance, allowance_id: props.data.allowance_id })
-				.then((res) => {
-					alert.success('successfully updated..');
-					props.onClose();
-				})
-				.catch((err) => alert.error(`oop err ${err.message}`));
-		} else {
-			instance
-				.createAllowance(processedAllowance)
-				.then((res) => {
-					alert.success('succefully submited data..');
-					props.onClose();
-				})
-				.catch((err) => {
-					alert.error('oops ' + err.message);
-					console.log(err);
-				});
-		}
-	};
+	// };
 
 	return props.show ? (
 		<div className="modal" onClick={props.onClose}>
-			<form onSubmit={handleSubmit(onSubmit)}>
+			<form onSubmit={handleSubmit(props.handleSubmit)}>
 				<div className="modal-content" onClick={(e) => e.stopPropagation()}>
 					<div className="modal-head">
 						<h4>{`Allowances`}</h4>
@@ -110,6 +89,74 @@ export default function AllowanceModal(props) {
 							/>
 						</div>
 
+						<div className="radio-container">
+							<label htmlFor="flat">
+								<input
+									required
+									type="radio"
+									id="flat"
+									defaultChecked={props && props.isEdit ? props.data.flat ? true : false : true}
+									name="flat"
+									value={isFlat}
+									ref={register({ required: true })}
+									onChange={(e) => {
+										if (e.target.checked) setIsFlat(true);
+									}}
+								/>
+								Flat
+							</label>
+
+							<label htmlFor="calculated">
+								<input
+									required
+									type="radio"
+									id="calculated"
+									defaultChecked={props && props.isEdit ? props.data.flat ? false : true : false}
+									name="flat"
+									value={isFlat}
+									ref={register({ required: true })}
+									onChange={(e) => {
+										if (e.target.checked) setIsFlat(false);
+									}}
+								/>
+								Percentage
+							</label>
+
+							<label htmlFor="departmental1">
+								<input
+									type="radio"
+									id="departmental1"
+									name="departmental"
+									value={1}
+									defaultChecked={
+										props && props.isEdit ? props.data.departmental ? true : false : true
+									}
+									ref={register({ required: true })}
+									onChange={(e) => {
+										if (e.target.checked) setDepartmental(true);
+									}}
+								/>
+								Departmental
+							</label>
+
+							<label htmlFor="designational">
+								<input
+									type="radio"
+									id="designational"
+									defaultChecked={
+										props && props.isEdit ? props.data.departmental ? false : true : false
+									}
+									name="departmental"
+									value={0}
+									ref={register({ required: true })}
+									onChange={(e) => {
+										if (e.target.checked) setDepartmental(false);
+									}}
+								/>
+								Designation
+							</label>
+						</div>
+
 						<div>
 							<label htmlFor="amount">Amount</label>
 							<input
@@ -124,111 +171,68 @@ export default function AllowanceModal(props) {
 							/>
 						</div>
 
-						<div className="radio-container">
-							<label htmlFor="flat">
+						{isFlat ? (
+							<div />
+						) : (
+							<div>
+								<label htmlFor="percentage">Percentage(%)</label>
 								<input
-									required
-									type="radio"
-									id="flat"
-									defaultChecked={props && props.isEdit ? props.data.flat ? true : false : true}
-									name="flat"
-									value={isFlat}
-									ref={register({ required: true })}
-									onChange={(e) => setIsFlat(true)}
+									defaultValue={props.data && props.isEdit ? props.data.percentage : 0}
+									ref={register()}
+									id="percentage"
+									name="percentage"
+									className="modal-field-value"
+									type="text"
+									placeholder="example: 0.2"
 								/>
-								Flat
-							</label>
+							</div>
+						)}
 
-							<label htmlFor="calculated">
-								<input
-									required
-									type="radio"
-									id="calculated"
-									defaultChecked={props && props.isEdit ? props.data.flat ? false : true : false}
-									name="flat"
-									value={isFlat}
-									ref={register({ required: true })}
-									onChange={(e) => setIsFlat(false)}
-								/>
-								Calculated
-							</label>
-						</div>
+						<div className="form-row">
+							<div className="col-50">
+								<label htmlFor="department">Departments</label>
 
-						<div>
-							<label htmlFor="percentage">Percentage(%)</label>
-							<input
-								required
-								defaultValue={props.data && props.isEdit ? props.data.percentage : 0}
-								readOnly={
-									!props && !props.data.isEdit ? isFlat ? (
-										true
-									) : (
-										false
-									) : props && props.data.flat ? (
-										true
-									) : (
-										false
-									)
-								}
-								ref={register()}
-								id="percentage"
-								name="percentage"
-								className="modal-field-value"
-								type="text"
-								placeholder="example: 0.2"
-							/>
-						</div>
+								<select
+									multiple={true}
+									id="department"
+									defaultValue={defaultValueDepartments}
+									name="department"
+									ref={register}
+								>
+									{departments.map((dep) => {
+										return (
+											<option key={'k' + dep.department_id} value={dep.department_id}>
+												{dep.department}
+											</option>
+										);
+									})}
+								</select>
+							</div>
 
-						<div>
-							<label htmlFor="department">Departments</label>
-							<select
-								required
-								defaultValue={props && props.isEdit ? props.data.department_id : ''}
-								ref={register({ required: true })}
-								name="department"
-								id="department"
-								onChange={(val) => {
-									handleSetDesignation(val);
-								}}
-							>
-								<option key={-1} value={-1}>
-									All
-								</option>
-
-								{departments.map((dep) => {
-									return (
-										<option key={dep.department_id} value={dep.department_id}>
-											{dep.department}
-										</option>
-									);
-								})}
-							</select>
-							<label htmlFor="designation">Designations</label>
-							<select
-								required
-								defaultValue={props && props.isEdit ? props.data.department_id : ''}
-								ref={register}
-								name="designation"
-								id="designation"
-							>
-								<option key={-1} value={-1}>
-									All
-								</option>
-
-								{sortedDesignations.map((des) => {
-									return (
-										<option key={des.designation_id} value={des.designation_id}>
-											{des.designation}
-										</option>
-									);
-								})}
-							</select>
+							<div className="col-50">
+								<label htmlFor="designation">Designations</label>
+								<select
+									defaultValue={defaultValueDesignations}
+									ref={register}
+									name="designation"
+									id="designation"
+									multiple
+								>
+									{designations.map((des) => {
+										return (
+											<option key={des.designation_id} value={des.designation_id}>
+												{des.designation}
+											</option>
+										);
+									})}
+								</select>
+							</div>
 						</div>
 
 						<div>
 							<label htmlFor="frequency">Frequency(Monthly)</label>
 							<input
-								defaultValue={props && props.isEdit ? props.data.frequency : '0.0'}
+								defaultValue={props && props.isEdit ? props.data.frequency : 1}
 								required
 								className="modal-field-value"
 								list="dl"
@@ -253,8 +257,8 @@ export default function AllowanceModal(props) {
 							type="reset"
 							className="modal-btn"
 							onClick={() => {
-								props.onClose();
 								reset();
+								props.onClose();
 							}}
 						>
 							Close
@@ -267,4 +271,6 @@ export default function AllowanceModal(props) {
 			</form>
 		</div>
 	) : null;
-}
+};
+
+export default AllowanceModal;

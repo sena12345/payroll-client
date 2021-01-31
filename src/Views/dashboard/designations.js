@@ -5,7 +5,7 @@ import { useAuth } from '../../_services/auth-context';
 import Config from '../../data-operations/data-queries/config';
 import { showConfirmAlert } from '../my-alerts';
 import { MyLoader } from './my-spiner';
-export default function Designations() {
+const Designations = () => {
 	const [ designations, setDesignations ] = useState([]);
 	const [ show, setShow ] = useState(false);
 	const [ isEdit, setIsEdit ] = useState(false);
@@ -15,13 +15,28 @@ export default function Designations() {
 	const instance = Config(currentUser);
 	const alert = useAlert();
 
+	useEffect(
+		() => {
+			if (loading === true) {
+				console.log('loading designations..');
+				init();
+			}
+			return () => {
+				setLoading(false);
+			};
+		},
+		[ loading ]
+	);
+
 	const init = () => {
 		instance
 			.getAllDesignation()
 			.then((res) => {
+				setLoading(false);
 				setDesignations(res.data);
 			})
 			.catch((err) => {
+				setLoading(false);
 				alert.error(`oops error ${err.message}`);
 			});
 	};
@@ -29,7 +44,6 @@ export default function Designations() {
 	const handleSubmit = (data) => {
 		let departmentData = [];
 		if (isEdit) {
-			departmentData.push(...selected.departments);
 			data.department.forEach((dep) => {
 				departmentData.push({ department_id: parseInt(dep) });
 			});
@@ -37,6 +51,7 @@ export default function Designations() {
 				alert.error('Kindly select department!');
 				return;
 			}
+			setLoading(false);
 			instance
 				.updateDesignation({
 					designation_id : selected.designation_id,
@@ -44,8 +59,8 @@ export default function Designations() {
 					departments    : departmentData
 				})
 				.then((res) => {
-					setLoading(true);
 					setShow(false);
+					setLoading(true);
 					alert.success('successfully updated..');
 				})
 				.catch((err) => alert.error(`oop err ${err.message}`));
@@ -53,6 +68,11 @@ export default function Designations() {
 			data.department.forEach((dep) => {
 				departmentData.push({ department_id: parseInt(dep) });
 			});
+			if (departmentData.length < 1) {
+				alert.error('Kindly select department!');
+				return;
+			}
+			setLoading(false);
 			instance
 				.createDesignation({
 					designation : data.designation,
@@ -68,16 +88,16 @@ export default function Designations() {
 	};
 
 	const handleDelete = (data) => {
-		setLoading(true);
+		setLoading(false);
 		instance
 			.deleteDesignation(data)
 			.then((res) => {
+				setLoading(true);
 				alert.success('Designation deleted successfully!');
-				setLoading(false);
 			})
 			.catch((err) => {
-				alert.error(`oops error ${err.message}`);
 				setLoading(false);
+				alert.error(`oops error ${err.message}`);
 			});
 	};
 
@@ -102,16 +122,6 @@ export default function Designations() {
 		});
 	};
 
-	useEffect(() => {
-		if (loading === true) {
-			console.log('loading designations..');
-			init();
-		}
-		return () => {
-			setLoading(false);
-		};
-	});
-
 	return loading ? (
 		<MyLoader />
 	) : (
@@ -119,11 +129,11 @@ export default function Designations() {
 			<div className="card bg-grey">
 				<div className="card-head">
 					<h2>
-						<b>Designation</b>
+						<b>Designations</b>
 					</h2>
 
 					<h2>
-						<b>Department</b>
+						<b>Departments</b>
 					</h2>
 
 					<button
@@ -185,4 +195,6 @@ export default function Designations() {
 			</div>
 		</div>
 	);
-}
+};
+
+export default Designations;

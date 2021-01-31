@@ -145,6 +145,9 @@ hr {
 }
 
 /*RegisterUser*/
+.registeruser {
+	zoom: 0.9;
+}
 .registeruser .form-row .col-50 input[type="text"],
 input[type="email"],
 select,
@@ -195,6 +198,7 @@ option {
 
 /*EditUserDetails */
 
-.edituserdetails table td {
+.edituserdetails {
 	width: 100rem;
+	zoom: 0.9;
 }

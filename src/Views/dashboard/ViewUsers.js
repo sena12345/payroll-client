@@ -5,19 +5,26 @@ import { useAlert } from 'react-alert';
 import { useAuth } from '../../_services/auth-context';
 import { MyLoader } from './my-spiner';
 import { useHistory } from 'react-router-dom';
+import ReactPaginate from 'react-paginate';
 function ViewUsers() {
 	const { currentUser, resetPassword } = useAuth();
 	const history = useHistory();
 	const empInstance = EmployeeInstance(currentUser);
 	const [ employeesData, setEmployeesData ] = useState([]);
 	const [ load, setLoading ] = useState(true);
+	const [ pageCount, setPageCount ] = useState(5);
 	const alert = useAlert();
 	const selectedEmployees = [];
 
-	const init = () => {
+	const handlePageClick = (d) => {
+		init(d.selected);
+	};
+
+	const init = (page) => {
 		empInstance
-			.getEmployees()
+			.getEmployees(page)
 			.then((res) => {
+				setPageCount(parseInt(res.data.totalPages));
 				setLoading(false);
 				setEmployeesData(res.data.content);
 			})
@@ -352,6 +359,24 @@ function ViewUsers() {
 					)}
 				</tbody>
 			</table>
+
+			{pageCount > 0 ? (
+				<div>
+					<ReactPaginate
+						previousLabel={'previous'}
+						nextLabel={'next'}
+						breakLabel={'...'}
+						breakClassName={'break-me'}
+						pageCount={pageCount}
+						marginPagesDisplayed={2}
+						pageRangeDisplayed={5}
+						onPageChange={handlePageClick}
+						containerClassName={'pagination'}
+						subContainerClassName={'pages pagination'}
+						activeClassName={'active'}
+					/>
+				</div>
+			) : null}
 		</div>
 	);
 }

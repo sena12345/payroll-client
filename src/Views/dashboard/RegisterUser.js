@@ -174,6 +174,21 @@ function RegisterUser() {
 									/>
 									{errors.employee_id && <p className="valid">This is required</p>}
 								</div>
+								<div className="col-50">
+									<label htmlFor="gender">Gender</label>
+									<select
+										className="form-select"
+										ref={register}
+										type="text"
+										id="gender"
+										name="gender"
+									>
+										<option disabled>choose option...</option>
+										<option value={0}>Female</option>
+										<option value={1}>Male</option>
+										<option value={2}>Others</option>
+									</select>
+								</div>
 							</div>
 							<div className="form-row">
 								<div className="col-50">
@@ -207,17 +222,6 @@ function RegisterUser() {
 							</div>
 							<div className="form-row">
 								<div className="col-50">
-									<label htmlFor="ssnit">
-										{' '}
-										<i className="fas fa-money-check" /> SSNIT Number
-									</label>
-									<input ref={register({ required: true })} name="ssnit" type="text" id="ssnit" />
-									{errors.ssnit && <p className="valid">SSNIT number is required</p>}
-								</div>
-							</div>
-
-							<div className="form-row">
-								<div className="col-50">
 									<label htmlFor="contact">
 										<i className="fa fa-phone-alt" /> Contact
 									</label>
@@ -229,11 +233,89 @@ function RegisterUser() {
 										placeholder="XXXXXXXXXXXX"
 									/>
 								</div>
+								<div className="col-50">
+									<label htmlFor="ssnit">
+										{' '}
+										<i className="fas fa-money-check" /> SSNIT Number
+									</label>
+									<input ref={register({ required: true })} name="ssnit" type="text" id="ssnit" />
+									{errors.ssnit && <p className="valid">SSNIT number is required</p>}
+								</div>
+							</div>
+
+							<div className="form-row">
+								<div className="col-50">
+									<label htmlFor="cardtype">National Card Type</label>
+									<select className="form-select" ref={register} id="cardtype" name="cardtype">
+										<option defaultValue disabled>
+											choose option...
+										</option>
+										{cardTypes.map((card) => {
+											return (
+												<option key={card} value={cardTypes.indexOf(card)}>
+													{card}
+												</option>
+											);
+										})}
+									</select>
+								</div>
+								<div className="col-50">
+									<label htmlFor="cardnumber"> Card Number</label>
+									<input
+										ref={register({ required: true })}
+										type="text"
+										id="cardnumber"
+										name="cardnumber"
+									/>
+									{errors.cardnumber && <p className="valid">ID number is required!</p>}
+								</div>
+							</div>
+
+							<div className="form-row">
+								<div className="col-50">
+									<label htmlFor="marriage-cert">Marriage Certificate Number</label>
+									<input ref={register} type="text" id="marriage-cert" name="marriage_certificate" />
+								</div>
+								<div className="col-50">
+									<label htmlFor="tin-number"> Tin Number</label>
+									<input ref={register} type="text" id="tin-number" name="tin_number" />
+								</div>
 							</div>
 						</div>
+
 						<div className="col-50">
 							<b>Other Details</b>
 							<br />
+							<div className="form-row">
+								<div className="col-50">
+									<label htmlFor="basic_salary">
+										<b>GH&#162;</b> Basic Salary
+									</label>
+									<input
+										ref={register}
+										type="text"
+										id="basic_salary"
+										name="basic_salary"
+										placeholder="0.0"
+									/>
+								</div>
+								<div className="col-50">
+									<label htmlFor="enable-user-check">
+										Employee status<br />
+										<input
+											ref={register}
+											defaultChecked="true"
+											onChange={(e) => {
+												setEnabled(e.target.checked);
+											}}
+											type="checkbox"
+											id="enable-user-check"
+											name="disbale_employee"
+										/>
+										<b>Check to enable</b>
+									</label>
+								</div>
+							</div>
 							<div className="form-row">
 								<div className="col-50">
 									<label htmlFor="department">Department</label>
@@ -274,18 +356,7 @@ function RegisterUser() {
 									</select>
 								</div>
 							</div>
-							<div className="form-row">
-								<div className="col-50">
-									<label htmlFor="basic-salary">Basic Salary</label>
-									<input
-										ref={register}
-										type="text"
-										id="basic-salary"
-										name="basic_salary"
-										placeholder="0.0"
-									/>
-								</div>
-							</div>
+
 							<div className="form-row">
 								<div className="col-50">
 									<label htmlFor="role">Role</label>
@@ -303,81 +374,13 @@ function RegisterUser() {
 										})}
 									</select>
 								</div>
-								<div className="col-50">
-									<label htmlFor="gender">Gender</label>
-									<select
-										className="form-select"
-										ref={register}
-										type="text"
-										id="gender"
-										name="gender"
-									>
-										<option disabled>choose option...</option>
-										<option value={0}>Female</option>
-										<option value={1}>Male</option>
-										<option value={2}>Others</option>
-									</select>
-								</div>
 							</div>
 
-							<div className="form-row">
-								<div className="col-50">
-									<label htmlFor="cardtype">National Card Type</label>
-									<select className="form-select" ref={register} id="cardtype" name="cardtype">
-										<option defaultValue disabled>
-											choose option...
-										</option>
-										{cardTypes.map((card) => {
-											return (
-												<option key={card} value={cardTypes.indexOf(card)}>
-													{card}
-												</option>
-											);
-										})}
-									</select>
-								</div>
-								<div className="col-50">
-									<label htmlFor="cardnumber"> Card Number</label>
-									<input
-										ref={register({ required: true })}
-										type="text"
-										id="cardnumber"
-										name="cardnumber"
-									/>
-									{errors.cardnumber && <p className="valid">ID number is required!</p>}
-								</div>
-							</div>
-							<div className="form-row">
-								<div className="col-50">
-									<label htmlFor="marriage-cert">Marriage Certificate Number</label>
-									<input ref={register} type="text" id="marriage-cert" name="marriage_certificate" />
-								</div>
-								<div className="col-50">
-									<label htmlFor="tin-number"> Tin Number</label>
-									<input ref={register} type="text" id="tin-number" name="tin_number" />
-								</div>
-							</div>
-							<div className="form-row">
-								<div className="col-50">
-									<label htmlFor="enable-user-check">
-										<input
-											ref={register}
-											defaultChecked="true"
-											onChange={(e) => {
-												setEnabled(e.target.checked);
-											}}
-											type="checkbox"
-											id="enable-user-check"
-											name="disbale_employee"
-										/>
-										<b>Enable Employee</b>
-									</label>
-								</div>
+							<div className="col-50">
+								<input type="submit" value="Register" className="form-btn" />
 							</div>
 						</div>
 					</div>
-
-					<input type="submit" value="Register" className="form-btn" />
 				</form>
 			</div>
 		</div>
