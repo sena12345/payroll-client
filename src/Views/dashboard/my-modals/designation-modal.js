@@ -4,35 +4,45 @@ import Config from '../../../data-operations/data-queries/config';
 import { Department } from '../../../data-operations/_sahred/models';
 import { useAlert } from 'react-alert';
 import { useForm } from 'react-hook-form';
-
+import MultiSelect from 'react-multi-select-component';
+import { ConvertedDepartment } from '../../../data-operations/data-queries/converter';
 export default function DesignationModal(props) {
 	const { currentUser } = useAuth();
 	const instance = Config(currentUser);
 	const alert = useAlert();
+	const [ selectedDepartments, setSelectedDepartments ] = useState([]);
 	const [ departments, setDepartments ] = useState([ Department ]);
 	const { register, handleSubmit, reset } = useForm();
-	const selectedDepartments = props.isEdit ? props.data.departments : [];
-	const defaultValue = [];
-	selectedDepartments.forEach((d) => {
-		defaultValue.push(d.department_id);
-	});
+	// const selectedDepartments = props.isEdit ? props.data.departments : [];
+	// const defaultValue = [];
+	// selectedDepartments.forEach((d) => {
+	// 	defaultValue.push(d.department_id);
+	// });
+
+	const init = () => {
+		setSelectedDepartments(props.isEdit ? ConvertedDepartment(props.data.departments) : []);
+
+		instance
+			.getDepartments()
+			.then((res) => {
+				setDepartments(ConvertedDepartment(res.data));
+			})
+			.catch((err) => alert.error('oops ' + err.message));
+	};
+
 	useEffect(
 		() => {
-			instance
-				.getDepartments()
-				.then((res) => {
-					setDepartments(res.data);
-				})
-				.catch((err) => alert.error('oops ' + err.message));
+			init();
+			return () => {};
 		},
-		[ props.isEdit, alert, instance ]
+		[ props.isEdit ]
 	);
 
 	const onSubmit = (data) => {
 		if (!data) return;
 		if (!data.designation) return;
 
-		props.handleSubmit(data);
+		props.handleSubmit(selectedDepartments, data);
 	};
 
 	return props.show ? (
@@ -60,26 +70,33 @@ export default function DesignationModal(props) {
 
 						<div>
 							<label htmlFor="department">Department</label>
-
-							<select
-								ref={register}
-								name="department"
-								id="department"
-								multiple
-								defaultValue={defaultValue}
-							>
-								<option key={-1} disabled>
-									choose...
-								</option>
-
-								{departments.map((dep) => {
-									return (
-										<option key={dep.department_id} value={dep.department_id}>
-											{dep.department}
-										</option>
-									);
-								})}
-							</select>
+							<MultiSelect
+								name="designation"
+								options={departments}
+								value={selectedDepartments}
+								onChange={setSelectedDepartments}
+								labelledBy={'Select'}
+							/>
+							{
+								// 							<select
+								// 								ref={register}
+								// 								name="department"
+								// 								id="department"
+								// 								multiple
+								// 								defaultValue={defaultValue}
+								// 							>
+								// 								<option key={-1} disabled>
+								// 									choose...
+								// 								</option>
+								// 								{departments.map((dep) => {
+								// 									return (
+								// 										<option key={dep.department_id} value={dep.department_id}>
+								// 											{dep.department}
+								// 										</option>
+								// 									);
+								// 								})}
+								//						</select>
+							}
 						</div>
 					</div>
 					<div className="modal-footer">

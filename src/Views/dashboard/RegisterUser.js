@@ -2,20 +2,32 @@ import '../../assets/css/Form.css';
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Config from '../../data-operations/data-queries/config';
-import { Roles, Department, Designation } from '../../data-operations/_sahred/models';
+
 import { useAuth } from '../../_services/auth-context';
 
 import EmployeeInstance from '../../data-operations/data-queries/employees';
 import { showConfirmAlert } from '../my-alerts';
 import { useAlert } from 'react-alert';
 import { MyLoader } from './my-spiner';
+import MultiSelect from 'react-multi-select-component';
+import {
+	ConvertedRoles,
+	ConvertedDepartment,
+	ConvertedDesignations
+} from '../../data-operations/data-queries/converter';
 function RegisterUser() {
 	const { currentUser } = useAuth();
 	const alert = useAlert();
-	const [ roles, setRoles ] = useState([ Roles ]);
-	const [ departments, setDepartments ] = useState([ Department ]);
-	const [ designations, setDesignations ] = useState([ Designation ]);
+	// const [ roles, setRoles ] = useState([ Roles ]);
+	// const [ departments, setDepartments ] = useState([ Department ]);
+	// const [ designations, setDesignations ] = useState([ Designation ]);
 	// const [ sortedDesignations, setSortedDesignations ] = useState([ Designation ]);
+	const [ selectedDepartments, setSelectedDepartments ] = useState([]);
+	const [ departments, setDepartments ] = useState([]);
+	const [ selectedRoles, setSelectedRoles ] = useState([]);
+	const [ roles, setRoles ] = useState([]);
+	const [ selectedDesignations, setSelectedDesignations ] = useState([]);
+	const [ designations, setDesignation ] = useState([]);
 	const [ cardTypes, setCardTypes ] = useState([]);
 	const [ isEnabled, setEnabled ] = useState(false);
 	const [ loading, setLoading ] = useState(true);
@@ -28,7 +40,7 @@ function RegisterUser() {
 		queriesStore
 			.getRoles()
 			.then((res) => {
-				setRoles(res.data);
+				setRoles(ConvertedRoles(res.data));
 			})
 			.catch((err) => {
 				alert.error(`oops failed to load roles ${err.message}`);
@@ -45,7 +57,7 @@ function RegisterUser() {
 		queriesStore
 			.getDepartments()
 			.then((res) => {
-				setDepartments(res.data);
+				setDepartments(ConvertedDepartment(res.data));
 			})
 			.catch((err) => {
 				alert.error(`oops failed to load departments ${err.message}`);
@@ -54,34 +66,38 @@ function RegisterUser() {
 		queriesStore
 			.getAllDesignation()
 			.then((res) => {
-				setDesignations(res.data);
+				setDesignation(ConvertedDesignations(res.data));
+				setLoading(false);
 			})
 			.catch((err) => {
 				alert.error(`oops failed to load designations ${err.message}`);
 			});
 	};
 
-	useEffect(() => {
-		if (loading === true) init();
-		console.log('loaded register...');
+	useEffect(
+		() => {
+			if (loading) init();
+			console.log('loaded register...');
 
-		return () => {
-			setLoading(false);
-		};
-	});
+			return () => {
+				setLoading(false);
+			};
+		},
+		[ loading ]
+	);
 
 	const onSubmit = (data) => {
 		let rolesData = [];
-		data.role.forEach((rol) => {
-			rolesData.push({ role_id: parseInt(rol) });
+		selectedRoles.forEach((rol) => {
+			rolesData.push({ role_id: parseInt(rol.value) });
 		});
 		let departmentData = [];
-		data.department.forEach((dep) => {
-			departmentData.push({ department_id: parseInt(dep) });
+		selectedDepartments.forEach((dep) => {
+			departmentData.push({ department_id: parseInt(dep.value) });
 		});
 		let designationData = [];
-		data.designation.forEach((des) => {
-			designationData.push({ designation_id: parseInt(des) });
+		selectedDesignations.forEach((des) => {
+			designationData.push({ designation_id: parseInt(des.value) });
 		});
 		const employee = {
 			employee_id   : data.employee_id,
@@ -319,60 +335,36 @@ function RegisterUser() {
 							<div className="form-row">
 								<div className="col-50">
 									<label htmlFor="department">Department</label>
-									<select ref={register} multiple type="text" id="department" name="department">
-										<option className="form-option" defaultValue disabled>
-											choose option...
-										</option>
-										{departments.map((department) => {
-											return (
-												<option
-													className="form-option"
-													key={department.department}
-													value={department.department_id}
-												>
-													{department.department}
-												</option>
-											);
-										})}
-									</select>
+									<MultiSelect
+										options={departments}
+										value={selectedDepartments}
+										onChange={setSelectedDepartments}
+										labelledBy={'Select'}
+									/>
 								</div>
+							</div>
+
+							<div className="form-row">
 								<div className="col-50">
 									<label htmlFor="designation">Designation</label>
-									<select ref={register} type="text" id="designation" name="designation" multiple>
-										<option className="form-option" defaultValue disabled>
-											choose option...
-										</option>
-										{designations.map((designation) => {
-											return (
-												<option
-													className="form-option"
-													key={designation.designation_id}
-													value={designation.designation_id}
-												>
-													{designation.designation}
-												</option>
-											);
-										})}
-									</select>
+									<MultiSelect
+										options={designations}
+										value={selectedDesignations}
+										onChange={setSelectedDesignations}
+										labelledBy={'Select'}
+									/>
 								</div>
 							</div>
 
 							<div className="form-row">
 								<div className="col-50">
 									<label htmlFor="role">Role</label>
-									<select multiple ref={register} type="text" id="role" name="role">
-										<option className="form-option" defaultValue disabled>
-											choose option...
-										</option>
-
-										{roles.map((role) => {
-											return (
-												<option className="form-option" key={role.role_id} value={role.role_id}>
-													{role.role}
-												</option>
-											);
-										})}
-									</select>
+									<MultiSelect
+										options={roles}
+										value={selectedRoles}
+										onChange={setSelectedRoles}
+										labelledBy={'Select'}
+									/>
 								</div>
 							</div>
 

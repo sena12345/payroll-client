@@ -42,22 +42,22 @@ const Allowances = () => {
 			});
 	};
 
-	const handleSubmit = (data) => {
+	const handleSubmit = (departments, designations, data) => {
 		const departments1 = [];
 		const designations1 = [];
 		if (!data) return;
 
-		if (data.department) {
+		if (departments) {
 			console.log('fetc..');
-			data.department.forEach((dep) => {
-				departments1.push({ department_id: dep });
+			departments.forEach((dep) => {
+				departments1.push({ department_id: dep.value });
 			});
 		}
 
-		if (data.designation) {
+		if (designations) {
 			console.log('fetchin...');
-			data.designation.forEach((des) => {
-				designations1.push({ designation_id: des });
+			designations.forEach((des) => {
+				designations1.push({ designation_id: des.value });
 			});
 		}
 
@@ -159,13 +159,17 @@ const Allowances = () => {
 					>
 						New <i className="fa fa-plus" />
 					</button>
-					<AllowanceModal
-						show={show}
-						onClose={() => setShow(false)}
-						isEdit={isEdit}
-						data={selected}
-						handleSubmit={handleSubmit}
-					/>
+					{show ? (
+						<AllowanceModal
+							show={show}
+							onClose={() => setShow(false)}
+							isEdit={isEdit}
+							data={selected}
+							handleSubmit={handleSubmit}
+						/>
+					) : (
+						''
+					)}
 				</div>
 
 				{
