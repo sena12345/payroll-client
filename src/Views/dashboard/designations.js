@@ -65,8 +65,8 @@ const Designations = () => {
 				})
 				.catch((err) => alert.error(`oop err ${err.message}`));
 		} else {
-			data.department.forEach((dep) => {
-				departmentData.push({ department_id: parseInt(dep) });
+			selectedDepartments.forEach((dep) => {
+				departmentData.push({ department_id: parseInt(dep.value) });
 			});
 			if (departmentData.length < 1) {
 				alert.error('Kindly select department!');
