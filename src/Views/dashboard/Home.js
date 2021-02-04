@@ -86,7 +86,7 @@ function Home({ page }) {
 									src={currentUser ? currentUser.photoURL : '../../../public/img/usr.png'}
 									alt="profile"
 								/>
-								<div className="switcher-icon">
+								<div className="switcher-icon dropdown-toggle" data-toggle="user-menu">
 									<i className="fas fa-cog dropdown-toggle" data-toggle="user-menu" alt="" />
 								</div>
 
